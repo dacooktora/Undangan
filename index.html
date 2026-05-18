@@ -1727,121 +1727,89 @@
 }
         .hidden{display:none;}
 
-/* CARD */
-.love-card{
-    background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+.door-card{
+    background: rgba(255,255,255,0.04);
     border: 1px solid rgba(255,255,255,0.1);
-    padding: 34px;
-    border-radius: 28px;
+    padding: 30px;
+    border-radius: 30px;
     text-align: center;
     margin-top: 30px;
-    backdrop-filter: blur(18px);
-    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+    backdrop-filter: blur(10px);
 }
 
-/* QUOTE */
-.love-quote{
-    font-family: 'Playfair Display', serif;
-    font-size: 1.2rem;
-    color: #f5f1eb;
-    margin-bottom: 10px;
-}
-
-.love-desc{
-    font-size: 0.85rem;
-    opacity: 0.75;
-    margin-bottom: 20px;
-}
-
-/* BUTTON */
-.love-btn{
-    padding: 12px 26px;
+.door-btn{
+    margin-top: 20px;
+    padding: 12px 28px;
     border-radius: 30px;
-    border: 1px solid rgba(255,255,255,0.2);
-    background: rgba(255,255,255,0.05);
-    color: #f5f1eb;
+    border: 1px solid #fff;
+    background: transparent;
+    color: #fff;
     cursor: pointer;
-    transition: 0.3s;
 }
 
-.love-btn:hover{
-    transform: translateY(-3px);
-    background: rgba(255,255,255,0.1);
-}
-
-/* QUIZ ERROR */
-.love-error{
-    margin-top: 12px;
-    color: #ffb3c6;
-    font-size: 0.85rem;
-    opacity: 0;
-    transition: 0.2s;
-}
-
-.love-error.show{opacity:1;}
-
-/* WHEEL */
-.wheel-wrap{
+/* wheel */
+.wheel-wrapper{
     position: relative;
-    width: 260px;
-    height: 260px;
+    width: 280px;
+    height: 280px;
     margin: auto;
 }
 
-.love-wheel{
+.wheel{
     width: 100%;
     height: 100%;
     border-radius: 50%;
-    border: 2px solid rgba(255,255,255,0.2);
-    background: conic-gradient(
-        #f7e7ce 0deg 20deg,
-        #e8caa4 20deg 40deg,
-        #f3d5b5 40deg 60deg,
-        #f7e7ce 60deg 80deg,
-        #e8caa4 80deg 100deg,
-        #f3d5b5 100deg 120deg,
-        #f7e7ce 120deg 140deg,
-        #e8caa4 140deg 160deg,
-        #f3d5b5 160deg 180deg,
-        #f7e7ce 180deg 200deg,
-        #e8caa4 200deg 220deg,
-        #f3d5b5 220deg 240deg,
-        #f7e7ce 240deg 260deg,
-        #e8caa4 260deg 280deg,
-        #f3d5b5 280deg 300deg,
-        #f7e7ce 300deg 320deg,
-        #e8caa4 320deg 340deg,
-        #f3d5b5 340deg 360deg
-    );
+    border: 3px solid rgba(255,255,255,0.3);
     transition: 4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    box-shadow: 0 0 40px rgba(255,255,255,0.08);
+    background: conic-gradient(
+        #f7e7ce 0deg 12deg,
+        #e8caa4 12deg 24deg,
+        #f3d5b5 24deg 36deg,
+        #f7e7ce 36deg 48deg,
+        #e8caa4 48deg 60deg,
+        #f3d5b5 60deg 72deg,
+        #f7e7ce 72deg 84deg,
+        #e8caa4 84deg 96deg,
+        #f3d5b5 96deg 108deg,
+        #f7e7ce 108deg 120deg,
+        #e8caa4 120deg 132deg,
+        #f3d5b5 132deg 144deg,
+        #f7e7ce 144deg 156deg,
+        #e8caa4 156deg 168deg,
+        #f3d5b5 168deg 180deg,
+        #f7e7ce 180deg 192deg,
+        #e8caa4 192deg 204deg,
+        #f3d5b5 204deg 216deg,
+        #f7e7ce 216deg 228deg,
+        #e8caa4 228deg 240deg,
+        #f3d5b5 240deg 252deg,
+        #f7e7ce 252deg 264deg,
+        #e8caa4 264deg 276deg,
+        #f3d5b5 276deg 288deg,
+        #f7e7ce 288deg 300deg,
+        #e8caa4 300deg 312deg,
+        #f3d5b5 312deg 324deg,
+        #f7e7ce 324deg 336deg,
+        #e8caa4 336deg 348deg,
+        #f3d5b5 348deg 360deg
+    );
 }
 
-/* CENTER HEART */
-.love-center{
+.wheel-center{
     position: absolute;
     top: 50%;
     left: 50%;
     transform: translate(-50%,-50%);
-    width: 65px;
-    height: 65px;
-    border-radius: 50%;
+    width: 70px;
+    height: 70px;
     background: #fff;
-    color: #c8a95c;
+    color: #000;
+    border-radius: 50%;
     display:flex;
     align-items:center;
     justify-content:center;
-    font-size: 1.4rem;
+    font-weight: bold;
     cursor:pointer;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
-}
-
-/* RESULT */
-.love-result{
-    margin-top: 18px;
-    font-family: 'Playfair Display', serif;
-    font-size: 1.1rem;
-    color: #f5f1eb;
 }
         /* amplop + live streaming */
         .simple-card {
@@ -2432,52 +2400,54 @@
 </section>
 
 <!-- ROMANTIC DOORPRIZE -->
-<section class="section love-game-section">
+<section class="section doorprize-section">
 
     <div class="container">
 
         <div class="section-header">
-            <div class="section-subtitle">A Little Gift of Love</div>
-            <h2 class="section-title">Doorprize Keberuntungan</h2>
+            <div class="section-subtitle">Wedding Doorprize</div>
+            <h2 class="section-title">Claim Doorprize</h2>
+        </div>
+
+        <!-- STATUS DONE -->
+        <div id="doorDone" class="door-card hidden">
+            <h3>🎉 Claim Doorprize Success</h3>
+            <p>Kamu sudah melakukan spin sebelumnya 🤍</p>
         </div>
 
         <!-- INTRO -->
-        <div id="loveIntro" class="love-card">
+        <div id="doorIntro" class="door-card">
 
-            <div class="love-quote">
-                “Dalam setiap langkah cinta, selalu ada kejutan kecil dari Tuhan 🤍”
-            </div>
-
-            <p class="love-desc">
-                Jawab 3 pertanyaan sederhana tentang kami, lalu putar roda keberuntungan cinta.
+            <p>
+                Jawab 3 pertanyaan sederhana, lalu putar roda keberuntungan untuk mendapatkan hadiah pernikahan 🎁
             </p>
 
-            <button class="love-btn" onclick="startLoveQuiz()">
-                💌 Mulai
+            <button class="door-btn" onclick="startQuiz()">
+                🎁 Claim Doorprize
             </button>
 
         </div>
 
         <!-- QUIZ -->
-        <div id="loveQuiz" class="love-card hidden">
+        <div id="doorQuiz" class="door-card hidden">
 
-            <div id="loveQuizBox"></div>
+            <div id="quizBox"></div>
 
-            <button class="love-btn" onclick="nextLoveQuestion()">
-                Lanjut
+            <button class="door-btn" onclick="nextQuestion()">
+                Next
             </button>
 
         </div>
 
         <!-- WHEEL -->
-        <div id="loveWheel" class="love-card hidden">
+        <div id="doorWheel" class="door-card hidden">
 
-            <div class="wheel-wrap">
-                <div id="loveWheelBox" class="love-wheel"></div>
-                <div class="love-center" onclick="spinLoveWheel()">♥</div>
+            <div class="wheel-wrapper">
+                <div id="wheel" class="wheel"></div>
+                <div class="wheel-center" onclick="spinWheel()">SPIN</div>
             </div>
 
-            <div id="loveResult" class="love-result"></div>
+            <div id="resultText" style="margin-top:20px;"></div>
 
         </div>
 
@@ -2498,7 +2468,53 @@
 <div id="toastMsg" class="toast-msg">Tersalin</div>
 
 <script>
-const loveQuestions = [
+    const prizes = [
+    "Uang Rp10.000",
+    "Uang Rp20.000",
+    "Uang Rp50.000",
+    "Uang Rp100.000",
+    "Hampers Mini",
+    "Hampers Makanan",
+    "Souvenir Eksklusif",
+    "Minyak Wangi Mini",
+    "Voucher Kopi",
+    "Voucher Makanan",
+    "Gift Box Sweet",
+    "Snack Box Premium",
+    "Buket Bunga Mini",
+    "Kalung Couple",
+    "Gelang Couple",
+    "Coklat Premium",
+    "Peralatan Rumah Tangga",
+    "Powerbank Mini",
+    "Tumbler Eksklusif",
+    "Foto Cetak Wedding",
+    "Frame Foto Couple",
+    "Goodie Bag",
+    "Diskon Undangan Digital",
+    "Voucher Belanja",
+    "Uang Rp15.000",
+    "Uang Rp25.000",
+    "Uang Rp75.000",
+    "Hampers Snack",
+    "Mystery Gift",
+    "Grand Prize (Special Gift)"
+];
+
+let currentQ = 0;
+let hasSpun = localStorage.getItem("doorprize_done");
+
+window.onload = function(){
+    if(hasSpun){
+        document.getElementById('doorIntro').classList.add('hidden');
+        document.getElementById('doorQuiz').classList.add('hidden');
+        document.getElementById('doorWheel').classList.add('hidden');
+        document.getElementById('doorDone').classList.remove('hidden');
+    }
+};
+
+/* QUIZ */
+const questions = [
     {
         q: "Bagaimana tentang Delia Asri Cahya Oktora?",
         options: [
@@ -2522,93 +2538,80 @@ const loveQuestions = [
         options: [
             "Sukses",
             "Bahagia",
-            "Sakinah Mawadah Warahmah, cinta sampai akhir, diberkahi dunia akhirat"
+            "Sakinah Mawadah Warahmah, cinta sampai akhir"
         ],
         answer: 2
     }
 ];
 
-let loveIndex = 0;
-
-function startLoveQuiz(){
-    document.getElementById('loveIntro').classList.add('hidden');
-    document.getElementById('loveQuiz').classList.remove('hidden');
-    renderLove();
+function startQuiz(){
+    document.getElementById('doorIntro').classList.add('hidden');
+    document.getElementById('doorQuiz').classList.remove('hidden');
+    renderQ();
 }
 
-function renderLove(){
+function renderQ(){
+    const q = questions[currentQ];
 
-    const q = loveQuestions[loveIndex];
-
-    document.getElementById('loveQuizBox').innerHTML = `
-        <p style="margin-bottom:15px;">${q.q}</p>
+    document.getElementById('quizBox').innerHTML = `
+        <p>${q.q}</p>
 
         ${q.options.map((o,i)=>`
             <div style="text-align:left;margin:10px 0;">
                 <label>
-                    <input type="radio" name="love" value="${i}">
+                    <input type="radio" name="quiz" value="${i}">
                     ${o}
                 </label>
             </div>
         `).join('')}
-
-        <div id="loveError" class="love-error">
-            Jawaban belum tepat 🤍 coba lagi ya
-        </div>
     `;
 }
 
-function nextLoveQuestion(){
+function nextQuestion(){
 
-    const sel = document.querySelector('input[name="love"]:checked');
-    const err = document.getElementById('loveError');
+    const sel = document.querySelector('input[name="quiz"]:checked');
 
-    if(!sel){
-        err.innerText = "Pilih jawaban dulu 🤍";
-        err.classList.add('show');
+    if(!sel) return alert("Pilih jawaban dulu");
+
+    if(parseInt(sel.value) !== questions[currentQ].answer){
+        alert("Jawaban belum tepat 🤍");
         return;
     }
 
-    if(parseInt(sel.value) !== loveQuestions[loveIndex].answer){
-        err.innerText = "Jawaban belum tepat 🤍 coba lagi ya";
-        err.classList.add('show');
+    currentQ++;
+
+    if(currentQ >= questions.length){
+        document.getElementById('doorQuiz').classList.add('hidden');
+        document.getElementById('doorWheel').classList.remove('hidden');
         return;
     }
 
-    err.classList.remove('show');
-
-    loveIndex++;
-
-    if(loveIndex >= loveQuestions.length){
-        document.getElementById('loveQuiz').classList.add('hidden');
-        document.getElementById('loveWheel').classList.remove('hidden');
-        return;
-    }
-
-    renderLove();
+    renderQ();
 }
 
-/* WHEEL */
-function spinLoveWheel(){
+/* SPIN */
+function spinWheel(){
 
-    const wheel = document.getElementById('loveWheelBox');
+    if(hasSpun) return;
 
-    let deg = Math.floor(3000 + Math.random()*2000);
+    const wheel = document.getElementById('wheel');
+
+    let index = Math.floor(Math.random() * prizes.length);
+    let deg = 3600 + (index * (360 / prizes.length));
 
     wheel.style.transform = `rotate(${deg}deg)`;
 
     setTimeout(()=>{
-        document.getElementById('loveResult').innerHTML =
-            "🤍 Kamu mendapatkan: Berkah Cinta & Kebahagiaan Selamanya";
+
+        document.getElementById('resultText').innerHTML =
+            "🎉 Selamat! Kamu mendapatkan: <br><b>" + prizes[index] + "</b>";
+
+        localStorage.setItem("doorprize_done", true);
+
+        setTimeout(()=> location.reload(), 2500);
+
     }, 4200);
 }
-    function copyText(text){
-    navigator.clipboard.writeText(text);
-    const t = document.getElementById('toastMsg');
-    t.innerText = 'Tersalin ✓';
-    t.style.opacity = '1';
-    setTimeout(()=> t.style.opacity = '0', 1500);
-    }
     /* =========================
    FUTURISTIC GALLERY JS
 ========================= */
