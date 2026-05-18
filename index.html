@@ -1811,6 +1811,26 @@
     font-weight: bold;
     cursor:pointer;
 }
+
+        .wheel-labels{
+    position:absolute;
+    inset:0;
+    border-radius:50%;
+    pointer-events:none;
+}
+
+.wheel-label{
+    position:absolute;
+    top:50%;
+    left:50%;
+    transform-origin:0 0;
+    font-size:9px;
+    color:#fff;
+    width:90px;
+    text-align:center;
+    font-weight:500;
+    opacity:0.85;
+}
         /* amplop + live streaming */
         .simple-card {
             background: rgba(25, 23, 21, 0.7);
@@ -2442,12 +2462,19 @@
         <!-- WHEEL -->
         <div id="doorWheel" class="door-card hidden">
 
-            <div class="wheel-wrapper">
-                <div id="wheel" class="wheel"></div>
-                <div class="wheel-center" onclick="spinWheel()">SPIN</div>
-            </div>
+    <div class="wheel-wrapper">
 
-            <div id="resultText" style="margin-top:20px;"></div>
+        <div id="wheel" class="wheel"></div>
+
+        <div class="wheel-labels" id="wheelLabels"></div>
+
+        <div class="wheel-center" onclick="spinWheel()">
+            SPIN
+        </div>
+
+    </div>
+
+    <div id="resultText" class="love-result"></div>
 
         </div>
 
@@ -2612,6 +2639,35 @@ function spinWheel(){
 
     }, 4200);
 }
+
+    function renderWheelLabels(){
+
+    const container = document.getElementById("wheelLabels");
+
+    container.innerHTML = "";
+
+    const angleStep = 360 / prizes.length;
+
+    prizes.forEach((prize, i)=>{
+
+        const angle = i * angleStep;
+
+        const label = document.createElement("div");
+        label.className = "wheel-label";
+
+        label.innerText = prize;
+
+        label.style.transform = `
+            rotate(${angle}deg)
+            translate(120px)
+            rotate(${angle * -1}deg)
+        `;
+
+        container.appendChild(label);
+    });
+}
+
+renderWheelLabels();
     /* =========================
    FUTURISTIC GALLERY JS
 ========================= */
