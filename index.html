@@ -1725,6 +1725,124 @@
         height: 300px;
     }
 }
+        .hidden{display:none;}
+
+/* CARD */
+.love-card{
+    background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
+    border: 1px solid rgba(255,255,255,0.1);
+    padding: 34px;
+    border-radius: 28px;
+    text-align: center;
+    margin-top: 30px;
+    backdrop-filter: blur(18px);
+    box-shadow: 0 20px 60px rgba(0,0,0,0.4);
+}
+
+/* QUOTE */
+.love-quote{
+    font-family: 'Playfair Display', serif;
+    font-size: 1.2rem;
+    color: #f5f1eb;
+    margin-bottom: 10px;
+}
+
+.love-desc{
+    font-size: 0.85rem;
+    opacity: 0.75;
+    margin-bottom: 20px;
+}
+
+/* BUTTON */
+.love-btn{
+    padding: 12px 26px;
+    border-radius: 30px;
+    border: 1px solid rgba(255,255,255,0.2);
+    background: rgba(255,255,255,0.05);
+    color: #f5f1eb;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.love-btn:hover{
+    transform: translateY(-3px);
+    background: rgba(255,255,255,0.1);
+}
+
+/* QUIZ ERROR */
+.love-error{
+    margin-top: 12px;
+    color: #ffb3c6;
+    font-size: 0.85rem;
+    opacity: 0;
+    transition: 0.2s;
+}
+
+.love-error.show{opacity:1;}
+
+/* WHEEL */
+.wheel-wrap{
+    position: relative;
+    width: 260px;
+    height: 260px;
+    margin: auto;
+}
+
+.love-wheel{
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    border: 2px solid rgba(255,255,255,0.2);
+    background: conic-gradient(
+        #f7e7ce 0deg 20deg,
+        #e8caa4 20deg 40deg,
+        #f3d5b5 40deg 60deg,
+        #f7e7ce 60deg 80deg,
+        #e8caa4 80deg 100deg,
+        #f3d5b5 100deg 120deg,
+        #f7e7ce 120deg 140deg,
+        #e8caa4 140deg 160deg,
+        #f3d5b5 160deg 180deg,
+        #f7e7ce 180deg 200deg,
+        #e8caa4 200deg 220deg,
+        #f3d5b5 220deg 240deg,
+        #f7e7ce 240deg 260deg,
+        #e8caa4 260deg 280deg,
+        #f3d5b5 280deg 300deg,
+        #f7e7ce 300deg 320deg,
+        #e8caa4 320deg 340deg,
+        #f3d5b5 340deg 360deg
+    );
+    transition: 4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    box-shadow: 0 0 40px rgba(255,255,255,0.08);
+}
+
+/* CENTER HEART */
+.love-center{
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%,-50%);
+    width: 65px;
+    height: 65px;
+    border-radius: 50%;
+    background: #fff;
+    color: #c8a95c;
+    display:flex;
+    align-items:center;
+    justify-content:center;
+    font-size: 1.4rem;
+    cursor:pointer;
+    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
+}
+
+/* RESULT */
+.love-result{
+    margin-top: 18px;
+    font-family: 'Playfair Display', serif;
+    font-size: 1.1rem;
+    color: #f5f1eb;
+}
         /* amplop + live streaming */
         .simple-card {
             background: rgba(25, 23, 21, 0.7);
@@ -2313,7 +2431,59 @@
     </div>
 </section>
 
+<!-- ROMANTIC DOORPRIZE -->
+<section class="section love-game-section">
 
+    <div class="container">
+
+        <div class="section-header">
+            <div class="section-subtitle">A Little Gift of Love</div>
+            <h2 class="section-title">Doorprize Keberuntungan</h2>
+        </div>
+
+        <!-- INTRO -->
+        <div id="loveIntro" class="love-card">
+
+            <div class="love-quote">
+                “Dalam setiap langkah cinta, selalu ada kejutan kecil dari Tuhan 🤍”
+            </div>
+
+            <p class="love-desc">
+                Jawab 3 pertanyaan sederhana tentang kami, lalu putar roda keberuntungan cinta.
+            </p>
+
+            <button class="love-btn" onclick="startLoveQuiz()">
+                💌 Mulai
+            </button>
+
+        </div>
+
+        <!-- QUIZ -->
+        <div id="loveQuiz" class="love-card hidden">
+
+            <div id="loveQuizBox"></div>
+
+            <button class="love-btn" onclick="nextLoveQuestion()">
+                Lanjut
+            </button>
+
+        </div>
+
+        <!-- WHEEL -->
+        <div id="loveWheel" class="love-card hidden">
+
+            <div class="wheel-wrap">
+                <div id="loveWheelBox" class="love-wheel"></div>
+                <div class="love-center" onclick="spinLoveWheel()">♥</div>
+            </div>
+
+            <div id="loveResult" class="love-result"></div>
+
+        </div>
+
+    </div>
+
+</section>
 <footer>
     © 2026 Resa & Delia — Terima kasih atas doa restu
 </footer>
@@ -2328,7 +2498,110 @@
 <div id="toastMsg" class="toast-msg">Tersalin</div>
 
 <script>
+const loveQuestions = [
+    {
+        q: "Bagaimana tentang Delia Asri Cahya Oktora?",
+        options: [
+            "Biasa aja",
+            "Baik",
+            "Baik, Cantik, Soleha, Rajin, Pinter, Pekerja Keras, perfect girl"
+        ],
+        answer: 2
+    },
+    {
+        q: "Seberapa cocok Delia & Resa?",
+        options: [
+            "Cocok",
+            "Cocok banget",
+            "Gatau"
+        ],
+        answer: 1
+    },
+    {
+        q: "Apa doa terbaik untuk kami?",
+        options: [
+            "Sukses",
+            "Bahagia",
+            "Sakinah Mawadah Warahmah, cinta sampai akhir, diberkahi dunia akhirat"
+        ],
+        answer: 2
+    }
+];
 
+let loveIndex = 0;
+
+function startLoveQuiz(){
+    document.getElementById('loveIntro').classList.add('hidden');
+    document.getElementById('loveQuiz').classList.remove('hidden');
+    renderLove();
+}
+
+function renderLove(){
+
+    const q = loveQuestions[loveIndex];
+
+    document.getElementById('loveQuizBox').innerHTML = `
+        <p style="margin-bottom:15px;">${q.q}</p>
+
+        ${q.options.map((o,i)=>`
+            <div style="text-align:left;margin:10px 0;">
+                <label>
+                    <input type="radio" name="love" value="${i}">
+                    ${o}
+                </label>
+            </div>
+        `).join('')}
+
+        <div id="loveError" class="love-error">
+            Jawaban belum tepat 🤍 coba lagi ya
+        </div>
+    `;
+}
+
+function nextLoveQuestion(){
+
+    const sel = document.querySelector('input[name="love"]:checked');
+    const err = document.getElementById('loveError');
+
+    if(!sel){
+        err.innerText = "Pilih jawaban dulu 🤍";
+        err.classList.add('show');
+        return;
+    }
+
+    if(parseInt(sel.value) !== loveQuestions[loveIndex].answer){
+        err.innerText = "Jawaban belum tepat 🤍 coba lagi ya";
+        err.classList.add('show');
+        return;
+    }
+
+    err.classList.remove('show');
+
+    loveIndex++;
+
+    if(loveIndex >= loveQuestions.length){
+        document.getElementById('loveQuiz').classList.add('hidden');
+        document.getElementById('loveWheel').classList.remove('hidden');
+        return;
+    }
+
+    renderLove();
+}
+
+/* WHEEL */
+function spinLoveWheel(){
+
+    const wheel = document.getElementById('loveWheelBox');
+
+    let deg = Math.floor(3000 + Math.random()*2000);
+
+    wheel.style.transform = `rotate(${deg}deg)`;
+
+    setTimeout(()=>{
+        document.getElementById('loveResult').innerHTML =
+            "🤍 Kamu mendapatkan: Berkah Cinta & Kebahagiaan Selamanya";
+    }, 4200);
+}
     function copyText(text){
     navigator.clipboard.writeText(text);
     const t = document.getElementById('toastMsg');
