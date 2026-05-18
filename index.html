@@ -65,16 +65,45 @@
 
         /* hero with overlay minimal */
         .hero {
-            height: 100vh;
-            background: linear-gradient(0deg, rgba(10,9,8,0.75), rgba(10,9,8,0.65)), url('https://images.unsplash.com/photo-1519741497674-611481863552?q=80&w=2070');
-            background-size: cover;
-            background-position: center 30%;
-            display: flex;
-            align-items: center;
-            justify-content: center;
-            text-align: center;
-            padding: 0 24px;
-        }
+    position: relative;
+    height: 100vh;
+    overflow: hidden;
+
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    text-align: center;
+    padding: 0 24px;
+}
+
+/* background video */
+.hero-video {
+    position: absolute;
+    inset: 0;
+
+    width: 100%;
+    height: 100%;
+
+    object-fit: cover;
+}
+
+/* overlay gelap cinematic */
+.hero-overlay {
+    position: absolute;
+    inset: 0;
+
+    background: linear-gradient(
+        0deg,
+        rgba(10,9,8,0.82),
+        rgba(10,9,8,0.45)
+    );
+}
+
+/* isi tulisan */
+.hero-content {
+    position: relative;
+    z-index: 2;
+}
         .hero-badge {
             font-size: 0.75rem;
             letter-spacing: 4px;
@@ -428,15 +457,33 @@
 
 <!-- Hero -->
 <section class="hero" id="home">
-    <div>
-        <div class="hero-badge">SAVE THE DATE</div>
-        <h1 class="hero-title">Resa <span style="font-weight:300">&</span> Delia</h1>
+
+    <!-- Background Video -->
+    <video class="hero-video" autoplay muted loop playsinline>
+        <source src="Gold and Brown Traditional Wayang Blank Page Border A4 Document_20260518_231035_0000.mp4" type="video/mp4">
+    </video>
+
+    <!-- Overlay -->
+    <div class="hero-overlay"></div>
+
+    <!-- Hero Content -->
+    <div class="hero-content">
+        <div class="hero-badge">THE WEDDING OF</div>
+
+        <h1 class="hero-title">
+            Resa <span style="font-weight:300">&</span> Delia
+        </h1>
+
         <div class="hero-divider"></div>
+
         <div class="hero-date">12 Juli 2026</div>
-        <div class="scroll-down" onclick="document.getElementById('info-acara').scrollIntoView({behavior:'smooth'})">
+
+        <div class="scroll-down"
+            onclick="document.getElementById('info-acara').scrollIntoView({behavior:'smooth'})">
             <i class="fas fa-chevron-down"></i>
         </div>
     </div>
+
 </section>
 
 <!-- Informasi Acara -->
