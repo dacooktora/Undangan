@@ -1170,74 +1170,403 @@
 
 
         /* double form layout */
-        .double-col {
-            display: grid;
-            grid-template-columns: 1fr 1fr;
-            gap: 32px;
-        }
-        .form-card {
-            background: rgba(25, 23, 21, 0.7);
-            backdrop-filter: blur(4px);
-            border-radius: 28px;
-            padding: 32px 28px;
-            border: 1px solid rgba(200,169,92,0.2);
-        }
-        .form-card h3 {
-            font-size: 1.3rem;
-            font-weight: 500;
-            margin-bottom: 24px;
-            color: #c8a95c;
-        }
-        input, select, textarea {
-            width: 100%;
-            padding: 14px 16px;
-            background: #141210;
-            border: 1px solid #2e2a26;
-            border-radius: 24px;
-            color: #e5d9c5;
-            font-family: 'Poppins', sans-serif;
-            font-size: 0.85rem;
-            transition: 0.2s;
-        }
-        input:focus, select:focus, textarea:focus {
-            outline: none;
-            border-color: #d8d3cc;
-        }
-        .btn-gold {
-            background: #d8d3cc;
-            border: none;
-            padding: 12px 20px;
-            border-radius: 40px;
-            font-weight: 600;
-            color: #0c0b0a;
-            cursor: pointer;
-            width: 100%;
-            font-size: 0.85rem;
-            transition: 0.2s;
-        }
-        .btn-gold:hover {
-            background: #dbbc7a;
-            transform: scale(1.01);
-        }
+        /* =========================
+   WEDDING WISHES SECTION
+========================= */
 
-        /* guestbook list */
-        .guestbook-list {
-            margin-top: 40px;
-            display: flex;
-            flex-direction: column;
-            gap: 16px;
-        }
-        .guest-card {
-            background: rgba(20,18,16,0.6);
-            border-radius: 20px;
-            padding: 20px 24px;
-            border-left: 3px solid #d8d3cc;
-        }
-        .guest-name {
-            font-weight: 600;
-            color: #d8d3cc;
-            margin-bottom: 6px;
-        }
+.wishes-section {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 120px 0;
+}
+
+/* ambient glow */
+.wishes-bg-glow {
+
+    position: absolute;
+
+    width: 800px;
+    height: 800px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.04),
+            transparent 70%
+        );
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    pointer-events: none;
+}
+
+/* wrapper */
+.wish-form-wrapper {
+
+    position: relative;
+
+    z-index: 2;
+
+    max-width: 950px;
+
+    margin: 70px auto 0;
+}
+
+/* glass form */
+.wish-form-card {
+
+    position: relative;
+
+    padding: 50px;
+
+    border-radius: 45px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.05),
+            rgba(255,255,255,0.015)
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(24px);
+
+    overflow: hidden;
+
+    box-shadow:
+        0 25px 80px rgba(0,0,0,0.55),
+        inset 0 1px 0 rgba(255,255,255,0.04);
+}
+
+/* glow */
+.wish-form-card::before {
+
+    content: '';
+
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.06),
+            transparent 70%
+        );
+
+    top: -120px;
+    right: -120px;
+}
+
+/* top text */
+.wish-top-text {
+
+    text-align: center;
+
+    margin-bottom: 40px;
+
+    letter-spacing: 4px;
+
+    text-transform: uppercase;
+
+    font-size: .75rem;
+
+    color: rgba(255,255,255,0.45);
+}
+
+/* grid */
+.wish-grid {
+
+    display: grid;
+
+    grid-template-columns: repeat(3,1fr);
+
+    gap: 18px;
+
+    margin-bottom: 18px;
+}
+
+/* input wrapper */
+.wish-input {
+
+    position: relative;
+}
+
+/* input style */
+.wish-input input,
+.wish-input select,
+.wish-input textarea {
+
+    width: 100%;
+
+    padding: 18px 22px;
+
+    border-radius: 24px;
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    background:
+        rgba(255,255,255,0.03);
+
+    color: #f5f1eb;
+
+    font-family: 'Poppins', sans-serif;
+
+    font-size: .9rem;
+
+    outline: none;
+
+    transition:
+        border .3s ease,
+        background .3s ease,
+        transform .3s ease;
+}
+
+/* focus */
+.wish-input input:focus,
+.wish-input select:focus,
+.wish-input textarea:focus {
+
+    border:
+        1px solid rgba(255,255,255,0.18);
+
+    background:
+        rgba(255,255,255,0.05);
+
+    transform: translateY(-2px);
+}
+
+/* textarea */
+.textarea-input {
+
+    margin-bottom: 26px;
+}
+
+.wish-input textarea {
+
+    resize: none;
+}
+
+/* button */
+.wish-submit-btn {
+
+    width: 100%;
+
+    padding: 20px;
+
+    border: none;
+
+    border-radius: 30px;
+
+    background:
+        linear-gradient(
+            135deg,
+            rgba(255,255,255,0.12),
+            rgba(255,255,255,0.04)
+        );
+
+    color: #f5f1eb;
+
+    font-size: .95rem;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    cursor: pointer;
+
+    transition:
+        transform .4s ease,
+        background .4s ease,
+        box-shadow .4s ease;
+
+    backdrop-filter: blur(20px);
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+}
+
+.wish-submit-btn:hover {
+
+    transform:
+        translateY(-4px);
+
+    background:
+        rgba(255,255,255,0.08);
+
+    box-shadow:
+        0 20px 40px rgba(0,0,0,0.35);
+}
+
+/* =========================
+   WISHES WALL
+========================= */
+
+.wishes-wall {
+
+    margin-top: 70px;
+
+    display: grid;
+
+    grid-template-columns:
+        repeat(auto-fit,minmax(300px,1fr));
+
+    gap: 24px;
+}
+
+/* card */
+.wish-card {
+
+    position: relative;
+
+    padding: 30px;
+
+    border-radius: 34px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.05),
+            rgba(255,255,255,0.015)
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(20px);
+
+    overflow: hidden;
+
+    transition:
+        transform .4s ease,
+        border .4s ease,
+        box-shadow .4s ease;
+}
+
+/* hover */
+.wish-card:hover {
+
+    transform:
+        translateY(-8px);
+
+    border:
+        1px solid rgba(255,255,255,0.16);
+
+    box-shadow:
+        0 20px 50px rgba(0,0,0,0.4);
+}
+
+/* avatar */
+.wish-avatar {
+
+    width: 58px;
+    height: 58px;
+
+    border-radius: 50%;
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    font-size: 1.2rem;
+
+    font-weight: 600;
+
+    margin-bottom: 18px;
+
+    background:
+        rgba(255,255,255,0.08);
+
+    color: #f5f1eb;
+}
+
+/* name */
+.wish-name {
+
+    font-size: 1.1rem;
+
+    font-weight: 500;
+
+    color: #f5f1eb;
+
+    margin-bottom: 8px;
+}
+
+/* attendance */
+.wish-attendance {
+
+    font-size: .75rem;
+
+    letter-spacing: 2px;
+
+    text-transform: uppercase;
+
+    color: rgba(255,255,255,0.45);
+
+    margin-bottom: 18px;
+}
+
+/* message */
+.wish-message {
+
+    line-height: 1.8;
+
+    color: rgba(255,255,255,0.75);
+}
+
+/* floating animation */
+@keyframes floatingWish {
+
+    0% {
+        transform: translateY(0px);
+    }
+
+    50% {
+        transform: translateY(-6px);
+    }
+
+    100% {
+        transform: translateY(0px);
+    }
+}
+
+.wish-card {
+
+    animation:
+        floatingWish 6s ease-in-out infinite;
+}
+
+/* mobile */
+@media (max-width: 768px) {
+
+    .wish-grid {
+
+        grid-template-columns: 1fr;
+    }
+
+    .wish-form-card {
+
+        padding: 32px 20px;
+
+        border-radius: 34px;
+    }
+
+    .wishes-section {
+
+        padding: 90px 0;
+    }
+}
 
         /* amplop + live streaming */
         .simple-card {
@@ -1660,41 +1989,103 @@
 </div>
 
 <!-- RSVP + Kirim Ucapan -->
-<section class="section">
+<section class="section wishes-section">
+
+    <div class="wishes-bg-glow"></div>
+
     <div class="container">
+
+        <!-- heading -->
         <div class="section-header">
-            <div class="section-subtitle">Doa & Konfirmasi</div>
-            <h2 class="section-title">Ucapan & Kehadiran</h2>
+            <div class="section-subtitle">
+                Wedding Wishes
+            </div>
+
+            <h2 class="section-title">
+                Doa & Kehadiran
+            </h2>
         </div>
-        <div class="double-col">
-            <!-- RSVP card -->
-            <div class="form-card">
-                <h3><i class="fas fa-check-circle"></i> Konfirmasi Hadir</h3>
-                <div style="margin-bottom: 16px;"><input type="text" id="rsvpName" placeholder="Nama lengkap"></div>
-                <div style="margin-bottom: 16px;">
-                    <select id="rsvpStatus">
-                        <option value="">Pilih kehadiran</option>
-                        <option value="Hadir">✅ Hadir</option>
-                        <option value="Tidak Hadir">❌ Tidak hadir</option>
-                        <option value="Ragu">🤔 Masih ragu</option>
-                    </select>
+
+        <!-- glass form -->
+        <div class="wish-form-wrapper">
+
+            <div class="wish-form-card">
+
+                <div class="wish-top-text">
+                    Leave your beautiful wishes for us
                 </div>
-                <div style="margin-bottom: 24px;"><input type="number" id="rsvpTotal" placeholder="Jumlah tamu"></div>
-                <button class="btn-gold" id="btnRsvp">Kirim Konfirmasi</button>
+
+                <div class="wish-grid">
+
+                    <!-- name -->
+                    <div class="wish-input">
+                        <input
+                            type="text"
+                            id="wishName"
+                            placeholder="Nama lengkap">
+                    </div>
+
+                    <!-- attendance -->
+                    <div class="wish-input">
+                        <select id="wishStatus">
+                            <option value="">
+                                Konfirmasi Kehadiran
+                            </option>
+
+                            <option value="Hadir">
+                                ✅ Hadir
+                            </option>
+
+                            <option value="Tidak Hadir">
+                                ❌ Tidak Hadir
+                            </option>
+
+                            <option value="Masih Ragu">
+                                🤍 Masih Ragu
+                            </option>
+                        </select>
+                    </div>
+
+                    <!-- total -->
+                    <div class="wish-input">
+                        <input
+                            type="number"
+                            id="wishTotal"
+                            placeholder="Jumlah tamu">
+                    </div>
+
+                </div>
+
+                <!-- textarea -->
+                <div class="wish-input textarea-input">
+                    <textarea
+                        id="wishMessage"
+                        rows="5"
+                        placeholder="Tulis doa dan ucapan terbaik..."></textarea>
+                </div>
+
+                <!-- submit -->
+                <button
+                    class="wish-submit-btn"
+                    id="submitWish">
+
+                    Kirim Ucapan
+
+                </button>
+
             </div>
-            <!-- Kirim Ucapan -->
-            <div class="form-card">
-                <h3><i class="fas fa-heart"></i> Kiram Ucapan & Doa</h3>
-                <div style="margin-bottom: 16px;"><input type="text" id="guestName" placeholder="Nama anda"></div>
-                <div style="margin-bottom: 24px;"><textarea id="guestMsg" rows="3" placeholder="Tulis ucapan pernikahan..."></textarea></div>
-                <button class="btn-gold" id="btnGuestbook">Kirim Ucapan</button>
-            </div>
+
         </div>
-        <!-- list guestbook -->
-        <div class="guestbook-list" id="guestbookList">
-            <div class="guest-card"><div class="guest-name">Contoh</div> Selamat menikah, semoga sakinah mawadah warahmah! 🎉</div>
+
+        <!-- guest wall -->
+        <div class="wishes-wall" id="wishesWall">
+
+            <!-- generated by js -->
+
         </div>
+
     </div>
+
 </section>
 
 <!-- Amplop Digital -->
@@ -1858,61 +2249,137 @@ galleries.forEach(gallery => {
             showToast('Nomor Dana tersalin ✓');
         });
         // rsvp localstorage
-        let rsvpStore = JSON.parse(localStorage.getItem('rsvp_wedding') || '[]');
-        let guestStore = JSON.parse(localStorage.getItem('guestbook_wedding') || '[]');
-        function renderGuestbook(){
-            const container = document.getElementById('guestbookList');
-            if(!container) return;
-            if(guestStore.length === 0){
-                container.innerHTML = '<div class="guest-card"><div class="guest-name">✨</div> Jadilah yang pertama memberi ucapan ✨</div>';
-                return;
-            }
-            let html = '';
-            [...guestStore].reverse().slice(0,12).forEach(g => {
-                html += `<div class="guest-card"><div class="guest-name">${escapeHtml(g.name)}</div> ${escapeHtml(g.message)}</div>`;
-            });
-            container.innerHTML = html;
-        }
-        function escapeHtml(str){
-            if(!str) return '';
-            return str.replace(/[&<>]/g, function(m){
-                if(m === '&') return '&amp;';
-                if(m === '<') return '&lt;';
-                if(m === '>') return '&gt;';
-                return m;
-            });
-        }
-        document.getElementById('btnRsvp')?.addEventListener('click', ()=>{
-            const name = document.getElementById('rsvpName').value.trim();
-            const status = document.getElementById('rsvpStatus').value;
-            const total = document.getElementById('rsvpTotal').value;
-            if(!name || !status){
-                showToast('Isi nama & konfirmasi hadir');
-                return;
-            }
-            rsvpStore.push({name, status, total, date: new Date().toISOString()});
-            localStorage.setItem('rsvp_wedding', JSON.stringify(rsvpStore));
-            showToast('Terima kasih sudah mengkonfirmasi 🙏');
-            document.getElementById('rsvpName').value = '';
-            document.getElementById('rsvpStatus').value = '';
-            document.getElementById('rsvpTotal').value = '';
-        });
-        document.getElementById('btnGuestbook')?.addEventListener('click', ()=>{
-            const name = document.getElementById('guestName').value.trim();
-            const msg = document.getElementById('guestMsg').value.trim();
-            if(!name || !msg){
-                showToast('Isi nama dan ucapan terlebih dahulu');
-                return;
-            }
-            guestStore.unshift({name, message: msg, date: Date.now()});
-            if(guestStore.length > 40) guestStore = guestStore.slice(0,40);
-            localStorage.setItem('guestbook_wedding', JSON.stringify(guestStore));
-            renderGuestbook();
-            showToast('Ucapan terkirim 💖');
-            document.getElementById('guestName').value = '';
-            document.getElementById('guestMsg').value = '';
-        });
-        renderGuestbook();
+        // =========================
+// WEDDING WISHES SYSTEM
+// =========================
+
+let wishesStore =
+JSON.parse(
+localStorage.getItem('wedding_wishes') || '[]'
+);
+
+function renderWishes() {
+
+    const wall =
+    document.getElementById('wishesWall');
+
+    if(!wall) return;
+
+    if(wishesStore.length === 0){
+
+        wall.innerHTML = `
+
+        <div class="wish-card">
+
+            <div class="wish-name">
+                Belum ada ucapan 🤍
+            </div>
+
+            <div class="wish-message">
+                Jadilah yang pertama memberikan doa terbaik.
+            </div>
+
+        </div>
+        `;
+
+        return;
+    }
+
+    wall.innerHTML = '';
+
+    [...wishesStore]
+    .reverse()
+    .forEach(wish => {
+
+        const initial =
+        wish.name.charAt(0).toUpperCase();
+
+        wall.innerHTML += `
+
+        <div class="wish-card">
+
+            <div class="wish-avatar">
+                ${initial}
+            </div>
+
+            <div class="wish-name">
+                ${escapeHtml(wish.name)}
+            </div>
+
+            <div class="wish-attendance">
+                ${wish.status}
+                •
+                ${wish.total || 1} Tamu
+            </div>
+
+            <div class="wish-message">
+                "${escapeHtml(wish.message)}"
+            </div>
+
+        </div>
+        `;
+    });
+}
+
+document
+.getElementById('submitWish')
+?.addEventListener('click', ()=>{
+
+    const name =
+    document.getElementById('wishName')
+    .value
+    .trim();
+
+    const status =
+    document.getElementById('wishStatus')
+    .value;
+
+    const total =
+    document.getElementById('wishTotal')
+    .value;
+
+    const message =
+    document.getElementById('wishMessage')
+    .value
+    .trim();
+
+    if(!name || !status || !message){
+
+        showToast(
+            'Lengkapi data terlebih dahulu'
+        );
+
+        return;
+    }
+
+    wishesStore.push({
+
+        name,
+        status,
+        total,
+        message,
+
+        date: Date.now()
+    });
+
+    localStorage.setItem(
+        'wedding_wishes',
+        JSON.stringify(wishesStore)
+    );
+
+    renderWishes();
+
+    showToast(
+        'Ucapan berhasil dikirim 🤍'
+    );
+
+    document.getElementById('wishName').value = '';
+    document.getElementById('wishStatus').value = '';
+    document.getElementById('wishTotal').value = '';
+    document.getElementById('wishMessage').value = '';
+});
+
+renderWishes();
 
         // live button 
         document.getElementById('liveStreamBtn')?.addEventListener('click', (e)=>{
