@@ -176,49 +176,260 @@
             color: #bfc7d5;
         }
 
-        /* card grid informasi */
-        .info-grid {
-            display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(260px, 1fr));
-            gap: 32px;
-        }
-        .info-card {
-            background: rgba(25, 23, 21, 0.7);
-            backdrop-filter: blur(2px);
-            padding: 32px 20px;
-            text-align: center;
-            border-radius: 28px;
-            border: 1px solid rgba(200,169,92,0.2);
-            transition: 0.25s ease;
-        }
-        .info-card:hover {
-            border-color: rgba(200,169,92,0.6);
-            transform: translateY(-4px);
-        }
-        .info-icon {
-            font-size: 2rem;
-            color: #d8d3cc;
-            margin-bottom: 20px;
-        }
-        .info-card h3 {
-            font-size: 1.2rem;
-            font-weight: 500;
-            margin-bottom: 12px;
-        }
-        .info-time {
-            font-size: 0.85rem;
-            color: #d8d3cc;
-            margin-top: 12px;
-        }
-        .map-link {
-            display: inline-block;
-            margin-top: 16px;
-            color: #d8d3cc;
-            text-decoration: none;
-            font-size: 0.75rem;
-            border-bottom: 1px dotted #d8d3cc;
-        }
+        /* =========================
+   FUTURISTIC EVENT SECTION
+========================= */
 
+.event-section {
+
+    position: relative;
+
+    overflow: hidden;
+
+    padding: 120px 0;
+}
+
+/* glow background */
+.event-bg-glow {
+
+    position: absolute;
+
+    width: 700px;
+    height: 700px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.04),
+            transparent 70%
+        );
+
+    top: 50%;
+    left: 50%;
+
+    transform: translate(-50%, -50%);
+
+    pointer-events: none;
+}
+
+/* wrapper */
+.event-wrapper {
+
+    position: relative;
+
+    z-index: 2;
+
+    display: flex;
+
+    flex-direction: column;
+
+    gap: 28px;
+
+    max-width: 1000px;
+
+    margin: 70px auto 0;
+}
+
+/* card */
+.event-card {
+
+    position: relative;
+
+    display: flex;
+
+    align-items: center;
+
+    gap: 40px;
+
+    padding: 40px;
+
+    border-radius: 38px;
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.05),
+            rgba(255,255,255,0.015)
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(24px);
+
+    overflow: hidden;
+
+    transition:
+        transform .5s ease,
+        border .5s ease,
+        box-shadow .5s ease;
+}
+
+/* hover */
+.event-card:hover {
+
+    transform:
+        translateY(-8px)
+        scale(1.01);
+
+    border:
+        1px solid rgba(255,255,255,0.16);
+
+    box-shadow:
+        0 25px 60px rgba(0,0,0,0.45);
+}
+
+/* top glow */
+.event-card::before {
+
+    content: '';
+
+    position: absolute;
+
+    width: 300px;
+    height: 300px;
+
+    background:
+        radial-gradient(
+            circle,
+            rgba(255,255,255,0.06),
+            transparent 70%
+        );
+
+    top: -120px;
+    right: -120px;
+}
+
+/* number */
+.event-number {
+
+    font-family: 'Playfair Display', serif;
+
+    font-size: 5rem;
+
+    line-height: 1;
+
+    color: rgba(255,255,255,0.08);
+
+    min-width: 120px;
+}
+
+/* content */
+.event-content {
+
+    position: relative;
+
+    z-index: 2;
+}
+
+/* type */
+.event-type {
+
+    font-family: 'Playfair Display', serif;
+
+    font-size: 2rem;
+
+    color: #f5f1eb;
+
+    margin-bottom: 12px;
+}
+
+/* date */
+.event-time {
+
+    letter-spacing: 3px;
+
+    text-transform: uppercase;
+
+    font-size: .75rem;
+
+    color: rgba(255,255,255,0.45);
+
+    margin-bottom: 18px;
+}
+
+/* clock */
+.event-clock {
+
+    font-size: 1.1rem;
+
+    color: #f5f1eb;
+
+    margin-bottom: 12px;
+}
+
+/* location */
+.event-location {
+
+    color: rgba(255,255,255,0.65);
+
+    line-height: 1.7;
+}
+
+/* map button */
+.event-map-btn {
+
+    margin-top: 24px;
+
+    padding: 14px 28px;
+
+    border-radius: 50px;
+
+    border:
+        1px solid rgba(255,255,255,0.12);
+
+    background:
+        rgba(255,255,255,0.04);
+
+    color: #f5f1eb;
+
+    cursor: pointer;
+
+    transition: .3s ease;
+
+    backdrop-filter: blur(10px);
+}
+
+.event-map-btn:hover {
+
+    background:
+        rgba(255,255,255,0.08);
+
+    transform:
+        translateY(-3px);
+}
+
+/* MOBILE */
+@media (max-width: 768px) {
+
+    .event-card {
+
+        flex-direction: column;
+
+        align-items: flex-start;
+
+        gap: 20px;
+
+        padding: 30px;
+    }
+
+    .event-number {
+
+        font-size: 3.5rem;
+
+        min-width: auto;
+    }
+
+    .event-type {
+
+        font-size: 1.7rem;
+    }
+
+    .event-section {
+
+        padding: 90px 0;
+    }
+}
         /* countdown minimal */
         .countdown-wrapper {
             background: rgba(20, 18, 16, 0.6);
@@ -1169,34 +1380,111 @@
 </section>
 
 <!-- Informasi Acara -->
-<section id="info-acara" class="section">
+    <section id="info-acara" class="event-section">
+
+    <div class="event-bg-glow"></div>
+
     <div class="container">
+
         <div class="section-header">
-            <div class="section-subtitle">Acara</div>
-            <h2 class="section-title">Rangkaian Pernikahan</h2>
+            <div class="section-subtitle">Wedding Event</div>
+            <h2 class="section-title">
+                Rangkaian Pernikahan
+            </h2>
         </div>
-        <div class="info-grid">
-            <div class="info-card">
-                <div class="info-icon"><i class="fas fa-ring"></i></div>
-                <h3>Akad Nikah</h3>
-                <p>Pukul 09.00 WIB</p>
-                <div class="info-time">📍 Ruang Utama</div>
+
+        <div class="event-wrapper">
+
+            <!-- AKAD -->
+            <div class="event-card">
+
+                <div class="event-number">01</div>
+
+                <div class="event-content">
+
+                    <div class="event-type">
+                        Akad Nikah
+                    </div>
+
+                    <div class="event-time">
+                        Minggu, 12 Juli 2026
+                    </div>
+
+                    <div class="event-clock">
+                        09.00 WIB
+                    </div>
+
+                    <div class="event-location">
+                        Ruang Utama — Gedung Serbaguna
+                    </div>
+
+                </div>
+
             </div>
-            <div class="info-card">
-                <div class="info-icon"><i class="fas fa-champagne-glasses"></i></div>
-                <h3>Resepsi</h3>
-                <p>Pukul 11.00 WIB</p>
-                <div class="info-time">📍 Balai Pertemuan</div>
+
+            <!-- RESEPSI -->
+            <div class="event-card">
+
+                <div class="event-number">02</div>
+
+                <div class="event-content">
+
+                    <div class="event-type">
+                        Resepsi
+                    </div>
+
+                    <div class="event-time">
+                        Minggu, 12 Juli 2026
+                    </div>
+
+                    <div class="event-clock">
+                        11.00 WIB
+                    </div>
+
+                    <div class="event-location">
+                        Balai Pertemuan — Gedung Serbaguna
+                    </div>
+
+                </div>
+
             </div>
-            <div class="info-card">
-                <div class="info-icon"><i class="fas fa-map-pin"></i></div>
-                <h3>Lokasi</h3>
-                <p>Gedung Serbaguna, Kota</p>
-                <a class="map-link" onclick="openMapModal()"><i class="fas fa-directions"></i> Buka Google Maps</a>
+
+            <!-- LOKASI -->
+            <div class="event-card map-card">
+
+                <div class="event-number">03</div>
+
+                <div class="event-content">
+
+                    <div class="event-type">
+                        Lokasi Acara
+                    </div>
+
+                    <div class="event-time">
+                        Jakarta, Indonesia
+                    </div>
+
+                    <div class="event-location">
+                        Gedung Serbaguna, Kota Jakarta
+                    </div>
+
+                    <button class="event-map-btn"
+                        onclick="openMapModal()">
+
+                        Open Maps
+
+                    </button>
+
+                </div>
+
             </div>
+
         </div>
+
     </div>
+
 </section>
+ 
 
 <!-- Countdown -->
 <section class="section countdown-section">
