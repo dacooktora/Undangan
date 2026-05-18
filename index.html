@@ -1831,6 +1831,14 @@
     font-weight:500;
     opacity:0.85;
 }
+
+        .wheel-rotor{
+    position: absolute;
+    inset: 0;
+    border-radius: 50%;
+    transition: 4s cubic-bezier(0.2, 0.8, 0.2, 1);
+    transform: rotate(0deg);
+        }
         /* amplop + live streaming */
         .simple-card {
             background: rgba(25, 23, 21, 0.7);
@@ -2464,13 +2472,19 @@
 
     <div class="wheel-wrapper">
 
+    <!-- 🔥 ROTOR (INI YANG MUTER) -->
+    <div id="wheelRotor" class="wheel-rotor">
+
         <div id="wheel" class="wheel"></div>
 
         <div class="wheel-labels" id="wheelLabels"></div>
 
-        <div class="wheel-center" onclick="spinWheel()">
-            SPIN
-        </div>
+    </div>
+
+    <!-- tombol DI ATAS (TIDAK IKUT MUTER) -->
+    <div class="wheel-center" onclick="spinWheel()">
+        SPIN
+    </div>
 
     </div>
 
@@ -2565,7 +2579,7 @@ const questions = [
         options: [
             "Sukses",
             "Bahagia",
-            "Sakinah Mawadah Warahmah, cinta sampai akhir"
+            "Sukses dunia akhirat, bahagia selalu, beli rumah, beli mobil, semua impian bisa diwujudkan, Sakinah Mawadah Warahmah"
         ],
         answer: 2
     }
@@ -2621,8 +2635,8 @@ function spinWheel(){
 
     if(hasSpun) return;
 
-    const wheel = document.getElementById('wheel');
-
+    const wheel = document.getElementById('wheelRotor');
+    
     let index = Math.floor(Math.random() * prizes.length);
     let deg = 3600 + (index * (360 / prizes.length));
 
