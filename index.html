@@ -259,118 +259,7 @@
    ADVANCED 3D EFFECT
 ========================= */
 
-.prewed-card {
 
-    position: relative;
-
-    transform-style: preserve-3d;
-    perspective: 2000px;
-
-    will-change: transform;
-
-    overflow: hidden;
-
-    isolation: isolate;
-}
-
-.prewed-card img {
-
-    width: 100%;
-    height: 100%;
-
-    object-fit: cover;
-
-    transition:
-        transform .7s ease,
-        filter .7s ease;
-
-    backface-visibility: hidden;
-
-    image-rendering: auto;
-
-    transform: translateZ(0);
-
-    will-change: transform;
-}
-
-/* floating hover */
-.prewed-card:hover {
-
-    transform:
-        perspective(2000px)
-        rotateX(7deg)
-        rotateY(-7deg)
-        translateY(-12px)
-        scale(1.02);
-}
-
-/* image zoom cinematic */
-.prewed-card:hover img {
-
-    transform: scale(1.05);
-
-    filter: brightness(1.03);
-}
-
-/* moving light reflection */
-.prewed-card::after {
-
-    content: '';
-
-    position: absolute;
-
-    top: -120%;
-    left: -40%;
-
-    width: 60%;
-    height: 300%;
-
-    transform: rotate(25deg);
-
-    background:
-        linear-gradient(
-            to right,
-            transparent,
-            rgba(255,255,255,0.12),
-            transparent
-        );
-
-    transition: .9s ease;
-
-    z-index: 3;
-}
-
-.prewed-card:hover::after {
-
-    left: 140%;
-}
-
-/* cinematic dark overlay */
-.prewed-card::before {
-
-    content: '';
-
-    position: absolute;
-    inset: 0;
-
-    background:
-        radial-gradient(
-            circle at top right,
-            rgba(200,169,92,0.18),
-            transparent 40%
-        );
-
-    z-index: 2;
-
-    opacity: 0;
-
-    transition: .6s ease;
-}
-
-.prewed-card:hover::before {
-
-    opacity: 1;
-}
         /* =========================
    PREWEDDING FUTURISTIC
 ========================= */
@@ -474,18 +363,27 @@
         0 30px 70px rgba(0,0,0,0.7),
         0 0 40px rgba(200,169,92,0.08);
 }
-
-.prewed-card img {
+        .prewed-card img {
 
     width: 100%;
     height: 100%;
 
     object-fit: cover;
 
+    display: block;
+
+    transform: scale(1);
+
+    backface-visibility: hidden;
+
+    -webkit-backface-visibility: hidden;
+
+    image-rendering: crisp-edges;
+
     transition:
         transform 1s ease,
         filter 1s ease;
-}
+        }
 
 .prewed-card:hover img {
 
