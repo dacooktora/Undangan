@@ -1568,6 +1568,163 @@
     }
 }
 
+        /* =========================
+   GIFT 3D SECTION
+========================= */
+
+.gift-section {
+    position: relative;
+    overflow: hidden;
+}
+
+.gift-bg-glow {
+    position: absolute;
+    width: 800px;
+    height: 800px;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 70%);
+    pointer-events: none;
+}
+
+.gift-3d-wrapper {
+    position: relative;
+    display: flex;
+    justify-content: center;
+    margin-top: 60px;
+    perspective: 2000px;
+}
+
+/* rotating ring */
+.gift-ring {
+    position: absolute;
+    width: 420px;
+    height: 420px;
+    border-radius: 50%;
+    border: 1px solid rgba(255,255,255,0.1);
+    animation: spinRing 18s linear infinite;
+    box-shadow: 0 0 60px rgba(255,255,255,0.05);
+}
+
+.gift-ring::before {
+    content: "";
+    position: absolute;
+    inset: -10px;
+    border-radius: 50%;
+    border: 1px dashed rgba(255,255,255,0.08);
+}
+
+@keyframes spinRing {
+    from { transform: rotate(0deg); }
+    to { transform: rotate(360deg); }
+}
+
+/* main card */
+.gift-card-3d {
+    position: relative;
+    z-index: 2;
+    width: 520px;
+    padding: 40px;
+    border-radius: 40px;
+    background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.015));
+    border: 1px solid rgba(255,255,255,0.1);
+    backdrop-filter: blur(25px);
+    box-shadow: 0 30px 80px rgba(0,0,0,0.6);
+    transform: rotateX(6deg);
+    transition: 0.5s;
+}
+
+.gift-card-3d:hover {
+    transform: rotateX(0deg) scale(1.02);
+}
+
+/* title */
+.gift-title {
+    font-family: 'Playfair Display', serif;
+    font-size: 1.8rem;
+    color: #f5f1eb;
+    text-align: center;
+}
+
+.gift-desc {
+    text-align: center;
+    font-size: 0.85rem;
+    opacity: 0.7;
+    margin: 10px 0 30px;
+}
+
+/* item row */
+.gift-item {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 18px;
+    margin-bottom: 18px;
+    border-radius: 20px;
+    background: rgba(255,255,255,0.03);
+    border: 1px solid rgba(255,255,255,0.08);
+    transition: 0.3s;
+}
+
+.gift-item:hover {
+    transform: translateY(-4px);
+    background: rgba(255,255,255,0.06);
+}
+
+/* logo */
+.gift-logo {
+    width: 54px;
+    height: 54px;
+    object-fit: contain;
+    filter: drop-shadow(0 0 10px rgba(255,255,255,0.15));
+}
+
+/* text */
+.gift-info {
+    flex: 1;
+    margin-left: 16px;
+}
+
+.gift-number {
+    font-size: 1rem;
+    font-weight: 500;
+    color: #f5f1eb;
+}
+
+.gift-name {
+    font-size: 0.75rem;
+    opacity: 0.6;
+}
+
+/* button */
+.gift-copy {
+    padding: 8px 16px;
+    border-radius: 20px;
+    border: 1px solid rgba(255,255,255,0.15);
+    background: rgba(255,255,255,0.05);
+    color: #f5f1eb;
+    cursor: pointer;
+    transition: 0.3s;
+}
+
+.gift-copy:hover {
+    background: rgba(255,255,255,0.12);
+    transform: scale(1.05);
+}
+
+/* mobile */
+@media (max-width: 768px) {
+    .gift-card-3d {
+        width: 100%;
+        transform: none;
+    }
+
+    .gift-ring {
+        width: 300px;
+        height: 300px;
+    }
+}
         /* amplop + live streaming */
         .simple-card {
             background: rgba(25, 23, 21, 0.7);
@@ -2088,31 +2245,74 @@
 
 </section>
 
-<!-- Amplop Digital -->
-<section class="section">
+<!-- Amplop Digital 3D -->
+<section class="section gift-section">
+
+    <div class="gift-bg-glow"></div>
+
     <div class="container">
-        <div class="simple-card">
-            <i class="fas fa-gift" style="font-size: 2rem; color:#c8a95c; margin-bottom: 12px; display:inline-block;"></i>
-            <h3 style="font-size:1.4rem; font-weight: 400;">Amplop Digital</h3>
-            <div class="donation-number" id="danaNumber">089506446413</div>
-            <button class="btn-gold" id="copyDanaBtn" style="width:auto; padding: 8px 24px;">Salin Nomor</button>
-            <p style="margin-top: 28px; font-size:0.7rem;">Kirim hadiah pernikahan via Dana / transfer</p>
+
+        <div class="section-header">
+            <div class="section-subtitle">Wedding Gift</div>
+            <h2 class="section-title">Amplop Digital</h2>
         </div>
+
+        <div class="gift-3d-wrapper">
+
+            <!-- floating ring -->
+            <div class="gift-ring"></div>
+
+            <!-- card -->
+            <div class="gift-card-3d">
+
+                <div class="gift-title">
+                    Kirim Hadiah Pernikahan
+                </div>
+
+                <p class="gift-desc">
+                    Doa restu Anda adalah hadiah paling berharga bagi kami
+                </p>
+
+                <!-- DANA -->
+                <div class="gift-item">
+                    <img class="gift-logo"
+                        src="dana.png"
+                        alt="Dana Logo">
+
+                    <div class="gift-info">
+                        <div class="gift-number">089506446413</div>
+                        <div class="gift-name">A/n Muhamad Novreysa</div>
+                    </div>
+
+                    <button class="gift-copy"
+                        onclick="copyText('089506446413')">
+                        Copy
+                    </button>
+                </div>
+
+                <!-- BCA -->
+                <div class="gift-item">
+                    <img class="gift-logo"
+                        src="bca.png"
+                        alt="BCA Logo">
+
+                    <div class="gift-info">
+                        <div class="gift-number">572728627</div>
+                        <div class="gift-name">A/n Delia Asri Cahya Oktora</div>
+                    </div>
+
+                    <button class="gift-copy"
+                        onclick="copyText('572728627')">
+                        Copy
+                    </button>
+                </div>
+
+            </div>
+        </div>
+
     </div>
 </section>
 
-<!-- Live streaming -->
-<section class="section">
-    <div class="container">
-        <div class="simple-card">
-            <div class="live-icon"><i class="fas fa-video"></i></div>
-            <h3>Live Streaming</h3>
-            <p style="margin-top: 8px; opacity:0.8;">Saksikan momen bahagia dari mana saja</p>
-            <button class="btn-gold" id="liveStreamBtn" style="width:auto; margin-top: 28px; padding: 10px 32px;">🔴 Akses Live</button>
-            <div style="margin-top: 20px; font-size:0.65rem;">Link akan aktif pada hari H</div>
-        </div>
-    </div>
-</section>
 
 <footer>
     © 2026 Resa & Delia — Terima kasih atas doa restu
@@ -2128,6 +2328,14 @@
 <div id="toastMsg" class="toast-msg">Tersalin</div>
 
 <script>
+
+    function copyText(text){
+    navigator.clipboard.writeText(text);
+    const t = document.getElementById('toastMsg');
+    t.innerText = 'Tersalin ✓';
+    t.style.opacity = '1';
+    setTimeout(()=> t.style.opacity = '0', 1500);
+    }
     /* =========================
    FUTURISTIC GALLERY JS
 ========================= */
