@@ -256,33 +256,31 @@
 
         /* galeri grid - clean */
         /* =========================
-   ADVANCED 3D EFFECT
+   FUTURISTIC 3D GALLERY
 ========================= */
 
+.futuristic-gallery-section {
 
-        /* =========================
-   PREWEDDING FUTURISTIC
-========================= */
-
-.prewed-section {
     overflow: hidden;
+    position: relative;
 }
 
 .prewed-label {
 
     text-align: center;
 
-    margin-top: 10px;
-    margin-bottom: 30px;
+    margin-bottom: 40px;
+    margin-top: 20px;
 
     font-size: 0.9rem;
+
     letter-spacing: 6px;
 
     text-transform: uppercase;
 
     color: #c8a95c;
 
-    opacity: 0.85;
+    opacity: .9;
 }
 
 .prewed-divider {
@@ -290,7 +288,7 @@
     width: 100%;
     height: 1px;
 
-    margin: 80px 0;
+    margin: 100px 0;
 
     background:
         linear-gradient(
@@ -301,161 +299,311 @@
         );
 }
 
-.prewed-row {
+.gallery-3d-wrap {
 
-    display: grid;
+    height: 700px;
 
-    gap: 28px;
+    display: flex;
 
-    margin-bottom: 28px;
+    align-items: center;
+    justify-content: center;
+
+    perspective: 2500px;
+
+    position: relative;
 }
 
-.top-row {
-    grid-template-columns: 1.3fr 0.7fr;
-}
-
-.bottom-row {
-    grid-template-columns: 0.7fr 1.3fr;
-}
-
-.prewed-card.full {
-    grid-column: span 2;
-}
-
-.prewed-card {
+.gallery-3d {
 
     position: relative;
 
+    width: 320px;
+    height: 420px;
+
+    transform-style: preserve-3d;
+}
+
+/* black rotate */
+
+.black-gallery {
+
+    animation: autoRotate 40s linear infinite;
+}
+
+/* red rotate reverse */
+
+.red-gallery {
+
+    animation: autoRotateReverse 35s linear infinite;
+}
+
+.gallery-item {
+
+    position: absolute;
+
+    inset: 0;
+
+    border-radius: 32px;
+
     overflow: hidden;
 
-    min-height: 340px;
+    transform:
+        rotateY(calc(var(--i) * 45deg))
+        translateZ(650px);
 
-    border-radius: 34px;
+    cursor: pointer;
 
     background: rgba(255,255,255,0.03);
 
     border: 1px solid rgba(255,255,255,0.08);
 
-    box-shadow:
-        0 15px 40px rgba(0,0,0,0.45),
-        inset 0 1px 0 rgba(255,255,255,0.03);
+    backdrop-filter: blur(10px);
 
-    transform-style: preserve-3d;
+    box-shadow:
+        0 20px 60px rgba(0,0,0,0.5),
+        0 0 30px rgba(200,169,92,0.08);
 
     transition:
         transform .6s ease,
-        box-shadow .6s ease,
-        border .6s ease;
+        box-shadow .6s ease;
+
+    will-change: transform;
 }
 
-.prewed-card:hover {
-
-    transform:
-        perspective(1400px)
-        rotateX(4deg)
-        rotateY(-5deg)
-        translateY(-10px)
-        scale(1.015);
-
-    border: 1px solid rgba(200,169,92,0.4);
-
-    box-shadow:
-        0 30px 70px rgba(0,0,0,0.7),
-        0 0 40px rgba(200,169,92,0.08);
-}
-        .prewed-card img {
+.gallery-item img {
 
     width: 100%;
     height: 100%;
 
     object-fit: cover;
 
-    display: block;
+    transition:
+        transform .8s ease,
+        filter .8s ease;
 
-    transform: scale(1);
+    transform: translateZ(0);
 
     backface-visibility: hidden;
-
     -webkit-backface-visibility: hidden;
 
-    image-rendering: crisp-edges;
+    image-rendering: auto;
+}
 
-    transition:
-        transform 1s ease,
-        filter 1s ease;
-        }
+/* hover */
 
-.prewed-card:hover img {
+.gallery-item:hover {
+
+    transform:
+        rotateY(calc(var(--i) * 45deg))
+        translateZ(650px)
+        translateY(-20px)
+        scale(1.04);
+
+    box-shadow:
+        0 40px 80px rgba(0,0,0,0.75),
+        0 0 40px rgba(200,169,92,0.2);
+}
+
+.gallery-item:hover img {
 
     transform: scale(1.08);
 
-    filter: brightness(1.06);
+    filter: brightness(1.08);
 }
 
-/* overlay cinematic */
-.prewed-card::after {
+/* overlay */
+
+.gallery-item::before {
 
     content: '';
 
     position: absolute;
+
     inset: 0;
 
     background:
         linear-gradient(
             to top,
             rgba(0,0,0,0.55),
-            rgba(0,0,0,0.08),
-            rgba(0,0,0,0.2)
-        );
-}
-
-/* glow effect */
-.prewed-card::before {
-
-    content: '';
-
-    position: absolute;
-
-    width: 220px;
-    height: 220px;
-
-    top: -80px;
-    right: -80px;
-
-    background:
-        radial-gradient(
-            circle,
-            rgba(200,169,92,0.14),
-            transparent 70%
+            transparent
         );
 
     z-index: 2;
 }
 
-/* MOBILE */
-@media (max-width: 768px) {
+/* reflection */
 
-    .top-row,
-    .bottom-row {
+.gallery-item::after {
 
-        grid-template-columns: 1fr;
+    content: '';
+
+    position: absolute;
+
+    top: -100%;
+    left: -50%;
+
+    width: 60%;
+    height: 300%;
+
+    background:
+        linear-gradient(
+            to right,
+            transparent,
+            rgba(255,255,255,0.15),
+            transparent
+        );
+
+    transform: rotate(25deg);
+
+    transition: 1s ease;
+}
+
+.gallery-item:hover::after {
+
+    left: 150%;
+}
+
+/* rotate */
+
+@keyframes autoRotate {
+
+    from {
+
+        transform: rotateY(0deg);
     }
 
-    .prewed-card.full {
+    to {
 
-        grid-column: span 1;
+        transform: rotateY(360deg);
+    }
+}
+
+@keyframes autoRotateReverse {
+
+    from {
+
+        transform: rotateY(360deg);
     }
 
-    .prewed-card {
+    to {
 
-        min-height: 260px;
+        transform: rotateY(0deg);
+    }
+}
+
+/* modal */
+
+.gallery-modal {
+
+    position: fixed;
+
+    inset: 0;
+
+    background: rgba(0,0,0,0.94);
+
+    backdrop-filter: blur(15px);
+
+    display: flex;
+
+    align-items: center;
+    justify-content: center;
+
+    opacity: 0;
+    visibility: hidden;
+
+    transition: .4s ease;
+
+    z-index: 9999;
+}
+
+.gallery-modal.active {
+
+    opacity: 1;
+    visibility: visible;
+}
+
+.gallery-modal img {
+
+    width: auto;
+
+    max-width: 92%;
+    max-height: 90vh;
+
+    border-radius: 24px;
+
+    box-shadow:
+        0 40px 90px rgba(0,0,0,0.8);
+
+    animation: zoomIn .4s ease;
+}
+
+.close-gallery {
+
+    position: absolute;
+
+    top: 25px;
+    right: 40px;
+
+    font-size: 3rem;
+
+    color: #fff;
+
+    cursor: pointer;
+}
+
+@keyframes zoomIn {
+
+    from {
+
+        transform: scale(.8);
+        opacity: 0;
+    }
+
+    to {
+
+        transform: scale(1);
+        opacity: 1;
+    }
+}
+
+/* mobile */
+
+@media (max-width:768px){
+
+    .gallery-3d-wrap {
+
+        height: 500px;
+    }
+
+    .gallery-3d {
+
+        width: 180px;
+        height: 250px;
+    }
+
+    .gallery-item {
+
+        transform:
+            rotateY(calc(var(--i) * 45deg))
+            translateZ(320px);
+    }
+
+    .gallery-item:hover {
+
+        transform:
+            rotateY(calc(var(--i) * 45deg))
+            translateZ(320px)
+            translateY(-10px)
+            scale(1.03);
     }
 
     .prewed-divider {
 
-        margin: 60px 0;
+        margin: 70px 0;
     }
 }
+    
+
 
         /* double form layout */
         .double-col {
@@ -714,19 +862,21 @@
 
 <!-- Galeri Foto -->
 <!-- =========================
-     PREWEDDING
+     
+        <!-- =========================
+     FUTURISTIC PREWEDDING
 ========================= -->
-<section class="section prewed-section">
+
+<section class="section futuristic-gallery-section">
 
     <div class="container">
 
         <div class="section-header">
             <div class="section-subtitle">Our Moments</div>
-            <h2 class="section-title">Prewedding</h2>
+            <h2 class="section-title">Prewedding Gallery</h2>
         </div>
 
         <!-- =====================
-             SECTION 1
              BLACK SERIES
         ====================== -->
 
@@ -734,63 +884,51 @@
             Black Series
         </div>
 
-        <!-- ROW 1 -->
-        <div class="prewed-row top-row">
+        <div class="gallery-3d-wrap">
 
-            <div class="prewed-card large">
-                <img src="IMG-20260502-WA0356.jpg" alt="">
-            </div>
+            <div class="gallery-3d black-gallery">
 
-            <div class="prewed-card small">
-                <img src="IMG-20260502-WA0353.jpg" alt="">
-            </div>
+                <div class="gallery-item" style="--i:1;">
+                    <img src="https://i.postimg.cc/gxqM25y8/Baju-Hitam.jpg">
+                </div>
 
-        </div>
+                <div class="gallery-item" style="--i:2;">
+                    <img src="https://i.postimg.cc/7GbXXZFF/Baju-Hitam.jpg">
+                </div>
 
-        <!-- ROW 2 -->
-        <div class="prewed-row bottom-row">
+                <div class="gallery-item" style="--i:3;">
+                    <img src="https://i.postimg.cc/ygNp5PZX/Baju-Hitam.jpg">
+                </div>
 
-            <div class="prewed-card small">
-                <img src="IMG-20260502-WA0373.jpg" alt="">
-            </div>
+                <div class="gallery-item" style="--i:4;">
+                    <img src="https://i.postimg.cc/Z0BVd0Fv/Baju-Hitam.jpg">
+                </div>
 
-            <div class="prewed-card large">
-                <img src="https://i.postimg.cc/Z0BVd0Fv/Baju-Hitam.jpg" alt="">
-            </div>
+                <div class="gallery-item" style="--i:5;">
+                    <img src="https://i.postimg.cc/jWxMwXZd/Baju-Hitam.jpg">
+                </div>
 
-        </div>
+                <div class="gallery-item" style="--i:6;">
+                    <img src="https://i.postimg.cc/xXSxYYmj/Baju-Hitam.jpg">
+                </div>
 
-        <!-- ROW 3 -->
-        <div class="prewed-row top-row">
+                <div class="gallery-item" style="--i:7;">
+                    <img src="https://i.postimg.cc/hXqyggm9/Baju-Hitam.jpg">
+                </div>
 
-            <div class="prewed-card large">
-                <img src="https://i.postimg.cc/jWxMwXZd/Baju-Hitam.jpg" alt="">
-            </div>
+                <div class="gallery-item" style="--i:8;">
+                    <img src="https://i.postimg.cc/K1r98V7k/Baju-Hitam.jpg">
+                </div>
 
-            <div class="prewed-card small">
-                <img src="https://i.postimg.cc/xXSxYYmj/Baju-Hitam.jpg" alt="">
-            </div>
-
-        </div>
-
-        <!-- ROW 4 -->
-        <div class="prewed-row bottom-row">
-
-            <div class="prewed-card small">
-                <img src="https://i.postimg.cc/hXqyggm9/Baju-Hitam.jpg" alt="">
-            </div>
-
-            <div class="prewed-card large">
-                <img src="https://i.postimg.cc/K1r98V7k/Baju-Hitam.jpg" alt="">
             </div>
 
         </div>
 
-        <!-- DIVIDER -->
+        <!-- divider -->
+
         <div class="prewed-divider"></div>
 
         <!-- =====================
-             SECTION 2
              RED SERIES
         ====================== -->
 
@@ -798,50 +936,42 @@
             Red Series
         </div>
 
-        <!-- ROW 1 -->
-        <div class="prewed-row top-row">
+        <div class="gallery-3d-wrap">
 
-            <div class="prewed-card large">
-                <img src="https://i.postimg.cc/JDycZdJL/Baju-Merah.jpg" alt="">
-            </div>
+            <div class="gallery-3d red-gallery">
 
-            <div class="prewed-card small">
-                <img src="https://i.postimg.cc/cKLc4JLW/Baju-merah.jpg" alt="">
-            </div>
+                <div class="gallery-item" style="--i:1;">
+                    <img src="https://i.postimg.cc/JDycZdJL/Baju-Merah.jpg">
+                </div>
 
-        </div>
+                <div class="gallery-item" style="--i:2;">
+                    <img src="https://i.postimg.cc/cKLc4JLW/Baju-merah.jpg">
+                </div>
 
-        <!-- ROW 2 -->
-        <div class="prewed-row bottom-row">
+                <div class="gallery-item" style="--i:3;">
+                    <img src="https://i.postimg.cc/18tg8VD9/Baju-Merah.jpg">
+                </div>
 
-            <div class="prewed-card small">
-                <img src="https://i.postimg.cc/18tg8VD9/Baju-Merah.jpg" alt="">
-            </div>
+                <div class="gallery-item" style="--i:4;">
+                    <img src="https://i.postimg.cc/PL5Mrq5L/Baju-Merah.jpg">
+                </div>
 
-            <div class="prewed-card large">
-                <img src="https://i.postimg.cc/PL5Mrq5L/Baju-Merah.jpg" alt="">
-            </div>
+                <div class="gallery-item" style="--i:5;">
+                    <img src="https://i.postimg.cc/FYBY3FxK/Baju-Merah.jpg">
+                </div>
 
-        </div>
+                <div class="gallery-item" style="--i:6;">
+                    <img src="https://i.postimg.cc/DSMSLfc0/Baju-Merah.jpg">
+                </div>
 
-        <!-- ROW 3 -->
-        <div class="prewed-row top-row">
+                <div class="gallery-item" style="--i:7;">
+                    <img src="https://i.postimg.cc/5HKSHMXs/Baju-Merah.jpg">
+                </div>
 
-            <div class="prewed-card large">
-                <img src="https://i.postimg.cc/FYBY3FxK/Baju-Merah.jpg" alt="">
-            </div>
+                <div class="gallery-item" style="--i:8;">
+                    <img src="https://i.postimg.cc/JDycZdJL/Baju-Merah.jpg">
+                </div>
 
-            <div class="prewed-card small">
-                <img src="https://i.postimg.cc/DSMSLfc0/Baju-Merah.jpg" alt="">
-            </div>
-
-        </div>
-
-        <!-- ROW 4 -->
-        <div class="prewed-row bottom-row">
-
-            <div class="prewed-card full">
-                <img src="https://i.postimg.cc/5HKSHMXs/Baju-Merah.jpg" alt="">
             </div>
 
         </div>
@@ -849,6 +979,18 @@
     </div>
 
 </section>
+
+<!-- FULLSCREEN MODAL -->
+
+<div class="gallery-modal" id="galleryModal">
+
+    <span class="close-gallery" id="closeGallery">
+        &times;
+    </span>
+
+    <img id="galleryModalImg">
+
+</div>
 
 <!-- RSVP + Kirim Ucapan -->
 <section class="section">
@@ -928,48 +1070,66 @@
 <div id="toastMsg" class="toast-msg">Tersalin</div>
 
 <script>
-    // =========================
-// 3D PARALLAX PREWEDDING
-// =========================
+    /* =========================
+   FUTURISTIC GALLERY JS
+========================= */
 
-const cards = document.querySelectorAll('.prewed-card');
+const galleryItems = document.querySelectorAll('.gallery-item');
 
-cards.forEach(card => {
+const galleryModal = document.getElementById('galleryModal');
 
-    card.addEventListener('mousemove', (e) => {
+const galleryModalImg = document.getElementById('galleryModalImg');
 
-        const rect = card.getBoundingClientRect();
+const closeGallery = document.getElementById('closeGallery');
 
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
+/* open modal */
 
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
+galleryItems.forEach(item => {
 
-        const rotateX = ((y - centerY) / centerY) * -8;
-        const rotateY = ((x - centerX) / centerX) * 8;
+    item.addEventListener('click', () => {
 
-        card.style.transform = `
-            perspective(2000px)
-            rotateX(${rotateX}deg)
-            rotateY(${rotateY}deg)
-            translateY(-10px)
-            scale(1.01)
-        `;
-    });
+        const imgSrc = item.querySelector('img').src;
 
-    card.addEventListener('mouseleave', () => {
+        galleryModalImg.src = imgSrc;
 
-        card.style.transform = `
-            perspective(2000px)
-            rotateX(0deg)
-            rotateY(0deg)
-            translateY(0px)
-            scale(1)
-        `;
+        galleryModal.classList.add('active');
     });
 
 });
+
+/* close modal */
+
+closeGallery.addEventListener('click', () => {
+
+    galleryModal.classList.remove('active');
+});
+
+galleryModal.addEventListener('click', (e) => {
+
+    if(e.target === galleryModal){
+
+        galleryModal.classList.remove('active');
+    }
+});
+
+/* hover pause */
+
+const galleries = document.querySelectorAll('.gallery-3d');
+
+galleries.forEach(gallery => {
+
+    gallery.addEventListener('mouseenter', ()=>{
+
+        gallery.style.animationPlayState = 'paused';
+    });
+
+    gallery.addEventListener('mouseleave', ()=>{
+
+        gallery.style.animationPlayState = 'running';
+    });
+
+});
+
     (function(){
         // countdown 12 juli 2026
         function updateCountdown() {
