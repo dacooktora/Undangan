@@ -2429,6 +2429,7 @@
 </section>
 
 <!-- ROMANTIC DOORPRIZE -->
+ <!-- ROMANTIC DOORPRIZE - PERBAIKAN -->
 <section class="section doorprize-section">
 
     <div class="container">
@@ -2446,51 +2447,23 @@
 
         <!-- INTRO -->
         <div id="doorIntro" class="door-card">
-
-            <p>
-                Jawab 3 pertanyaan sederhana, lalu putar roda keberuntungan untuk mendapatkan hadiah pernikahan 🎁
-            </p>
-
-            <button class="door-btn" onclick="startQuiz()">
-                🎁 Claim Doorprize
-            </button>
-
+            <p>Jawab 3 pertanyaan sederhana, lalu putar roda keberuntungan untuk mendapatkan hadiah pernikahan 🎁</p>
+            <button class="door-btn" onclick="startQuiz()">🎁 Claim Doorprize</button>
         </div>
 
         <!-- QUIZ -->
         <div id="doorQuiz" class="door-card hidden">
-
             <div id="quizBox"></div>
-
-            <button class="door-btn" onclick="nextQuestion()">
-                Next
-            </button>
-
+            <button class="door-btn" onclick="nextQuestion()">Next</button>
         </div>
 
-        <!-- WHEEL -->
+        <!-- WHEEL - VERSI BARU RAPI -->
         <div id="doorWheel" class="door-card hidden">
-
-    <div class="wheel-wrapper">
-
-    <!-- 🔥 ROTOR (INI YANG MUTER) -->
-    <div id="wheelRotor" class="wheel-rotor">
-
-        <div id="wheel" class="wheel"></div>
-
-        <div class="wheel-labels" id="wheelLabels"></div>
-
-    </div>
-
-    <!-- tombol DI ATAS (TIDAK IKUT MUTER) -->
-    <div class="wheel-center" onclick="spinWheel()">
-        SPIN
-    </div>
-
-    </div>
-
-    <div id="resultText" class="love-result"></div>
-
+            <div class="wheel-wrapper">
+                <canvas id="wheelCanvas" width="500" height="500" style="width:100%; height:auto; background:#1A1A1A; border-radius:50%; box-shadow:0 10px 35px rgba(0,0,0,0.5);"></canvas>
+                <div id="spinBtn" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:70px; height:70px; background:#D6B98C; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-weight:bold; color:#111; font-size:1.2rem; box-shadow:0 4px 15px rgba(0,0,0,0.3); transition:0.2s;">SPIN</div>
+            </div>
+            <div id="resultText" style="margin-top:25px; font-size:1.1rem; color:#D6B98C; font-weight:bold;"></div>
         </div>
 
     </div>
@@ -2510,125 +2483,174 @@
 <div id="toastMsg" class="toast-msg">Tersalin</div>
 
 <script>
-    const prizes = [
-    "Uang Rp10.000",
-    "Uang Rp20.000",
-    "Uang Rp50.000",
-    "Uang Rp100.000",
-    "Hampers Mini",
-    "Hampers Makanan",
-    "Souvenir Eksklusif",
-    "Minyak Wangi Mini",
-    "Voucher Kopi",
-    "Voucher Makanan",
-    "Gift Box Sweet",
-    "Snack Box Premium",
-    "Buket Bunga Mini",
-    "Kalung Couple",
-    "Gelang Couple",
-    "Coklat Premium",
-    "Peralatan Rumah Tangga",
-    "Powerbank Mini",
-    "Tumbler Eksklusif",
-    "Foto Cetak Wedding",
-    "Frame Foto Couple",
-    "Goodie Bag",
-    "Diskon Undangan Digital",
-    "Voucher Belanja",
-    "Uang Rp15.000",
-    "Uang Rp25.000",
-    "Uang Rp75.000",
-    "Hampers Snack",
-    "Mystery Gift",
-    "Grand Prize (Special Gift)"
+            // ========================
+// DOORPRIZE - VERSI PERBAIKAN
+// ========================
+
+// DAFTAR HADIAH (disingkat biar muat di wheel)
+const doorPrizes = [
+    "Rp10k", "Rp20k", "Rp50k", "Rp100k", "Hampers",
+    "SnackBox", "Souvenir", "Minyak Wangi", "Voucher Kopi",
+    "Voucher Mkn", "GiftBox", "Snack Premium", "Buket Mini",
+    "Kalung", "Gelang", "Coklat", "Peralatan RT",
+    "Powerbank", "Tumbler", "Foto Cetak", "Frame Foto",
+    "GoodieBag", "Diskon Inv", "Voucher Belanja", "Rp15k",
+    "Rp25k", "Rp75k", "Hampers Snack", "Mystery", "Grand Prize"
+];
+
+const prizeColors = [
+    "#2E1E1A","#3D2A24","#4F362E","#6B4F43","#5E3F35",
+    "#7A5A4C","#2A1E18","#3B2A23","#4A3528","#5C4033",
+    "#2E241F","#3E2C24","#503A30","#624A3E","#745A4C",
+    "#2A201A","#3C2C24","#4E3A2E","#604A3E","#725C4E",
+    "#281E18","#3A2A22","#4C382C","#5E483C","#705A4E",
+    "#261C16","#382822","#4A362A","#5C463A","#6E584C"
 ];
 
 let currentQ = 0;
 let hasSpun = localStorage.getItem("doorprize_done");
+let spinning = false;
+let wheelCanvas, ctx, currentAngle = 0;
 
-window.onload = function(){
+window.onload = function() {
     if(hasSpun){
-        document.getElementById('doorIntro').classList.add('hidden');
-        document.getElementById('doorQuiz').classList.add('hidden');
-        document.getElementById('doorWheel').classList.add('hidden');
-        document.getElementById('doorDone').classList.remove('hidden');
+        document.getElementById('doorIntro')?.classList.add('hidden');
+        document.getElementById('doorQuiz')?.classList.add('hidden');
+        document.getElementById('doorWheel')?.classList.add('hidden');
+        document.getElementById('doorDone')?.classList.remove('hidden');
     }
+    initWheelCanvas();
 };
 
-/* QUIZ */
-const questions = [
-    {
-        q: "Bagaimana tentang Delia Asri Cahya Oktora?",
-        options: [
-            "Biasa aja",
-            "Baik",
-            "Baik, Cantik, Soleha, Rajin, Pinter, Pekerja Keras, perfect girl"
-        ],
-        answer: 2
-    },
-    {
-        q: "Seberapa cocok Delia & Resa?",
-        options: [
-            "Cocok",
-            "Cocok banget",
-            "Gatau"
-        ],
-        answer: 1
-    },
-    {
-        q: "Apa doa terbaik untuk kami?",
-        options: [
-            "Sukses",
-            "Bahagia",
-            "Sukses dunia akhirat, bahagia selalu, beli rumah, beli mobil, semua impian bisa diwujudkan, Sakinah Mawadah Warahmah"
-        ],
-        answer: 2
-    }
-];
-
-function startQuiz(){
-    document.getElementById('doorIntro').classList.add('hidden');
-    document.getElementById('doorQuiz').classList.remove('hidden');
-    renderQ();
+function initWheelCanvas() {
+    wheelCanvas = document.getElementById('wheelCanvas');
+    if(!wheelCanvas) return;
+    ctx = wheelCanvas.getContext('2d');
+    drawWheel();
 }
 
-function renderQ(){
-    const q = questions[currentQ];
+function drawWheel() {
+    if(!ctx || !wheelCanvas) return;
+    const size = wheelCanvas.width;
+    const anglePer = (Math.PI * 2) / doorPrizes.length;
+    
+    for(let i = 0; i < doorPrizes.length; i++) {
+        const angle = currentAngle + i * anglePer;
+        ctx.beginPath();
+        ctx.fillStyle = prizeColors[i % prizeColors.length];
+        ctx.moveTo(size/2, size/2);
+        ctx.arc(size/2, size/2, size/2, angle, angle + anglePer);
+        ctx.fill();
+        ctx.save();
+        ctx.translate(size/2, size/2);
+        ctx.rotate(angle + anglePer/2);
+        ctx.fillStyle = "#F5F1EB";
+        ctx.font = "bold 12px 'Poppins', sans-serif";
+        ctx.shadowBlur = 0;
+        const text = doorPrizes[i];
+        ctx.fillText(text, size/3.8, 6);
+        ctx.restore();
+    }
+    // border
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
+    ctx.strokeStyle = "#D6B98C";
+    ctx.lineWidth = 3;
+    ctx.stroke();
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, 12, 0, Math.PI*2);
+    ctx.fillStyle = "#D6B98C";
+    ctx.fill();
+}
 
-    document.getElementById('quizBox').innerHTML = `
-        <p>${q.q}</p>
+function spinWheel() {
+    if(spinning || hasSpun) return;
+    spinning = true;
+    
+    const spinAngle = Math.random() * Math.PI * 2 + 25 * Math.PI;
+    const start = performance.now();
+    const duration = 3500;
+    const startAngle = currentAngle;
+    
+    function animate(now) {
+        const elapsed = now - start;
+        const t = Math.min(1, elapsed / duration);
+        const ease = 1 - Math.pow(1 - t, 3);
+        currentAngle = startAngle + spinAngle * ease;
+        drawWheel();
+        if(t < 1) {
+            requestAnimationFrame(animate);
+        } else {
+            spinning = false;
+            const anglePer = (Math.PI * 2) / doorPrizes.length;
+            let rawAngle = (Math.PI * 2 - (currentAngle % (Math.PI * 2))) % (Math.PI * 2);
+            let index = Math.floor(rawAngle / anglePer) % doorPrizes.length;
+            const result = doorPrizes[index];
+            document.getElementById('resultText').innerHTML = `🎉 Selamat! Kamu mendapatkan: <span style="color:#D6B98C;">${result}</span> 🎉`;
+            
+            // confetti
+            canvasConfetti({ particleCount: 120, spread: 80, origin: { y: 0.7 }, colors: ['#D6B98C', '#EAE6DF', '#8C6A58'] });
+            
+            localStorage.setItem("doorprize_done", true);
+            setTimeout(() => location.reload(), 3000);
+        }
+    }
+    requestAnimationFrame(animate);
+}
 
+// Resize handler
+window.addEventListener('resize', () => {
+    if(wheelCanvas) drawWheel();
+});
+
+// QUIZ
+const quizQuestions = [
+    { q: "Bagaimana tentang Delia Asri Cahya Oktora?", options: ["Biasa aja", "Baik", "Baik, Cantik, Soleha, Rajin, Pinter, Pekerja Keras, perfect girl"], answer: 2 },
+    { q: "Seberapa cocok Delia & Resa?", options: ["Cocok", "Cocok banget", "Gatau"], answer: 1 },
+    { q: "Apa doa terbaik untuk kami?", options: ["Sukses", "Bahagia", "Sukses dunia akhirat, bahagia selalu, Sakinah Mawadah Warahmah"], answer: 2 }
+];
+
+function startQuiz() {
+    document.getElementById('doorIntro')?.classList.add('hidden');
+    document.getElementById('doorQuiz')?.classList.remove('hidden');
+    renderQuiz();
+}
+
+function renderQuiz() {
+    const q = quizQuestions[currentQ];
+    const quizBox = document.getElementById('quizBox');
+    if(!quizBox) return;
+    quizBox.innerHTML = `
+        <p style="margin-bottom:20px;">${q.q}</p>
         ${q.options.map((o,i)=>`
-            <div style="text-align:left;margin:10px 0;">
-                <label>
-                    <input type="radio" name="quiz" value="${i}">
-                    ${o}
+            <div style="text-align:left; margin:12px 0;">
+                <label style="display:flex; align-items:center; gap:12px; cursor:pointer;">
+                    <input type="radio" name="quiz" value="${i}" style="width:18px; height:18px;">
+                    <span>${o}</span>
                 </label>
             </div>
         `).join('')}
     `;
 }
 
-function nextQuestion(){
-
+function nextQuestion() {
     const sel = document.querySelector('input[name="quiz"]:checked');
-
-    if(!sel) return alert("Pilih jawaban dulu");
-
-    if(parseInt(sel.value) !== questions[currentQ].answer){
-        alert("Jawaban belum tepat 🤍");
+    if(!sel) {
+        alert("Pilih jawaban dulu ya 🤍");
         return;
     }
-
+    if(parseInt(sel.value) !== quizQuestions[currentQ].answer) {
+        alert("Jawaban belum tepat, coba lagi 🤍");
+        return;
+    }
     currentQ++;
-
-    if(currentQ >= questions.length){
-        document.getElementById('doorQuiz').classList.add('hidden');
-        document.getElementById('doorWheel').classList.remove('hidden');
+    if(currentQ >= quizQuestions.length) {
+        document.getElementById('doorQuiz')?.classList.add('hidden');
+        document.getElementById('doorWheel')?.classList.remove('hidden');
+        setTimeout(() => initWheelCanvas(), 100);
         return;
     }
-
-    renderQ();
+    renderQuiz();
 }
 
 /* SPIN */
