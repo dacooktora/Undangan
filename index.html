@@ -1819,17 +1819,18 @@
     pointer-events:none;
 }
 
-.wheel-label{
-    position:absolute;
-    top:50%;
-    left:50%;
-    transform-origin:0 0;
-    font-size:9px;
-    color:#fff;
-    width:90px;
-    text-align:center;
-    font-weight:500;
-    opacity:0.85;
+.wheel-label {
+    position: absolute;
+    top: 50%;
+    left: 50%;
+    transform-origin: 0 0;
+    font-size: 10px;
+    color: #fff;
+    width: 120px;
+    text-align: center;
+    font-weight: 500;
+    opacity: 0.85;
+    pointer-events: none;
 }
 
         .wheel-rotor{
@@ -2654,32 +2655,40 @@ function spinWheel(){
     }, 4200);
 }
 
-    function renderWheelLabels(){
-
+    
+    
+    
+    function renderWheelLabels() {
     const container = document.getElementById("wheelLabels");
-
     container.innerHTML = "";
 
+    const radius = window.innerWidth < 768 ? 95 : 120;
     const angleStep = 360 / prizes.length;
-
-    prizes.forEach((prize, i)=>{
-
+        
+    prizes.forEach((prize, i) => {
         const angle = i * angleStep;
 
         const label = document.createElement("div");
         label.className = "wheel-label";
-
         label.innerText = prize;
+
+        label.style.position = "absolute";
+        label.style.top = "50%";
+        label.style.left = "50%";
 
         label.style.transform = `
             rotate(${angle}deg)
-            translate(120px)
-            rotate(${angle * -1}deg)
+            translate(${radius}px)
+            rotate(${-angle}deg)
         `;
+
+        label.style.transformOrigin = "0 0";
+        label.style.whiteSpace = "nowrap";
+        label.style.textAlign = "center";
 
         container.appendChild(label);
     });
-}
+    }
 
 renderWheelLabels();
     /* =========================
