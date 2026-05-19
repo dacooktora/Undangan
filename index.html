@@ -6,6 +6,7 @@
     <title>Resa & Delia | Wedding Invitation</title>
     <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;500;600;700;800;900&family=Poppins:wght@200;300;400;500;600&display=swap" rel="stylesheet">
     <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css">
+    <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1"></script>
     <style>
         * {
             margin: 0;
@@ -2396,11 +2397,10 @@
 <div id="toastMsg" class="toast-msg">Tersalin</div>
 
 <script>
-            // ========================
-// DOORPRIZE - VERSI PERBAIKAN
+        // ========================
+// DOORPRIZE - CANVAS WHEEL
 // ========================
 
-// DAFTAR HADIAH (disingkat biar muat di wheel)
 const doorPrizes = [
     "Rp10k", "Rp20k", "Rp50k", "Rp100k", "Hampers",
     "SnackBox", "Souvenir", "Minyak Wangi", "Voucher Kopi",
@@ -2424,8 +2424,10 @@ let currentQ = 0;
 let hasSpun = localStorage.getItem("doorprize_done");
 let spinning = false;
 let wheelCanvas, ctx, currentAngle = 0;
+let spinBtn = null;
 
-window.onload = function() {
+// Inisialisasi setelah DOM ready
+document.addEventListener('DOMContentLoaded', function() {
     if(hasSpun){
         document.getElementById('doorIntro')?.classList.add('hidden');
         document.getElementById('doorQuiz')?.classList.add('hidden');
@@ -2433,7 +2435,13 @@ window.onload = function() {
         document.getElementById('doorDone')?.classList.remove('hidden');
     }
     initWheelCanvas();
-};
+    
+    // Pasang event listener untuk tombol SPIN
+    spinBtn = document.getElementById('spinBtn');
+    if(spinBtn) {
+        spinBtn.addEventListener('click', spinWheel);
+    }
+});
 
 function initWheelCanvas() {
     wheelCanvas = document.getElementById('wheelCanvas');
@@ -2458,29 +2466,36 @@ function drawWheel() {
         ctx.translate(size/2, size/2);
         ctx.rotate(angle + anglePer/2);
         ctx.fillStyle = "#F5F1EB";
-        ctx.font = "bold 12px 'Poppins', sans-serif";
+        ctx.font = "bold 11px 'Poppins', sans-serif";
         ctx.shadowBlur = 0;
-        const text = doorPrizes[i];
-        ctx.fillText(text, size/3.8, 6);
+        ctx.fillText(doorPrizes[i], size/3.5, 5);
         ctx.restore();
     }
-    // border
+    // border luar
     ctx.beginPath();
     ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
     ctx.strokeStyle = "#D6B98C";
     ctx.lineWidth = 3;
     ctx.stroke();
+    // lingkaran tengah
+    ctx.beginPath();
+    ctx.arc(size/2, size/2, 18, 0, Math.PI*2);
+    ctx.fillStyle = "#D6B98C";
+    ctx.fill();
     ctx.beginPath();
     ctx.arc(size/2, size/2, 12, 0, Math.PI*2);
-    ctx.fillStyle = "#D6B98C";
+    ctx.fillStyle = "#1A1A1A";
     ctx.fill();
 }
 
 function spinWheel() {
-    if(spinning || hasSpun) return;
+    if(spinning || hasSpun) {
+        if(hasSpun) alert("Kamu sudah melakukan spin sebelumnya!");
+        return;
+    }
     spinning = true;
     
-    const spinAngle = Math.random() * Math.PI * 2 + 25 * Math.PI;
+    const spinAngle = Math.random() * Math.PI * 2 + 28 * Math.PI;
     const start = performance.now();
     const duration = 3500;
     const startAngle = currentAngle;
@@ -2501,8 +2516,9 @@ function spinWheel() {
             const result = doorPrizes[index];
             document.getElementById('resultText').innerHTML = `🎉 Selamat! Kamu mendapatkan: <span style="color:#D6B98C;">${result}</span> 🎉`;
             
-            // confetti
-            canvasConfetti({ particleCount: 120, spread: 80, origin: { y: 0.7 }, colors: ['#D6B98C', '#EAE6DF', '#8C6A58'] });
+            if(typeof canvasConfetti === 'function') {
+                canvasConfetti({ particleCount: 150, spread: 90, origin: { y: 0.6 }, colors: ['#D6B98C', '#EAE6DF', '#8C6A58'] });
+            }
             
             localStorage.setItem("doorprize_done", true);
             setTimeout(() => location.reload(), 3000);
@@ -2511,7 +2527,6 @@ function spinWheel() {
     requestAnimationFrame(animate);
 }
 
-// Resize handler
 window.addEventListener('resize', () => {
     if(wheelCanvas) drawWheel();
 });
@@ -2526,6 +2541,7 @@ const quizQuestions = [
 function startQuiz() {
     document.getElementById('doorIntro')?.classList.add('hidden');
     document.getElementById('doorQuiz')?.classList.remove('hidden');
+    currentQ = 0;
     renderQuiz();
 }
 
@@ -2566,325 +2582,148 @@ function nextQuestion() {
     renderQuiz();
 }
 
-/* SPIN */
-function spinWheel(){
-
-    if(hasSpun) return;
-
-    const wheel = document.getElementById('wheelRotor');
-    
-    let index = Math.floor(Math.random() * prizes.length);
-    let deg = 3600 + (index * (360 / prizes.length));
-
-    wheel.style.transform = `rotate(${deg}deg)`;
-
-    setTimeout(()=>{
-
-        document.getElementById('resultText').innerHTML =
-            "🎉 Selamat! Kamu mendapatkan: <br><b>" + prizes[index] + "</b>";
-
-        localStorage.setItem("doorprize_done", true);
-
-        setTimeout(()=> location.reload(), 2500);
-
-    }, 4200);
-}
-
-    
-    
-    
-    function renderWheelLabels() {
-    const container = document.getElementById("wheelLabels");
-    container.innerHTML = "";
-
-    const radius = window.innerWidth < 768 ? 95 : 120;
-    const angleStep = 360 / prizes.length;
-        
-    prizes.forEach((prize, i) => {
-        const angle = i * angleStep;
-
-        const label = document.createElement("div");
-        label.className = "wheel-label";
-        label.innerText = prize;
-
-        label.style.position = "absolute";
-        label.style.top = "50%";
-        label.style.left = "50%";
-
-        label.style.transform = `
-            rotate(${angle}deg)
-            translate(${radius}px)
-            rotate(${-angle}deg)
-        `;
-
-        label.style.transformOrigin = "0 0";
-        label.style.whiteSpace = "nowrap";
-        label.style.textAlign = "center";
-
-        container.appendChild(label);
-    });
-    }
-
-renderWheelLabels();
-    /* =========================
-   FUTURISTIC GALLERY JS
-========================= */
+// ========================
+// GALLERY JS
+// ========================
 
 const galleryItems = document.querySelectorAll('.gallery-item');
-
 const galleryModal = document.getElementById('galleryModal');
-
 const galleryModalImg = document.getElementById('galleryModalImg');
-
 const closeGallery = document.getElementById('closeGallery');
 
-/* open modal */
-
 galleryItems.forEach(item => {
-
     item.addEventListener('click', () => {
-
-        const imgSrc = item.querySelector('img').src;
-
-        galleryModalImg.src = imgSrc;
-
+        galleryModalImg.src = item.querySelector('img').src;
         galleryModal.classList.add('active');
     });
-
 });
 
-/* close modal */
-
-closeGallery.addEventListener('click', () => {
-
+closeGallery?.addEventListener('click', () => {
     galleryModal.classList.remove('active');
 });
 
-galleryModal.addEventListener('click', (e) => {
-
-    if(e.target === galleryModal){
-
-        galleryModal.classList.remove('active');
-    }
+galleryModal?.addEventListener('click', (e) => {
+    if(e.target === galleryModal) galleryModal.classList.remove('active');
 });
-
-/* hover pause */
 
 const galleries = document.querySelectorAll('.gallery-3d');
-
 galleries.forEach(gallery => {
-
-    gallery.addEventListener('mouseenter', ()=>{
-
-        gallery.style.animationPlayState = 'paused';
-    });
-
-    gallery.addEventListener('mouseleave', ()=>{
-
-        gallery.style.animationPlayState = 'running';
-    });
-
+    gallery.addEventListener('mouseenter', () => gallery.style.animationPlayState = 'paused');
+    gallery.addEventListener('mouseleave', () => gallery.style.animationPlayState = 'running');
 });
 
-    (function(){
-        // countdown 12 juli 2026
-        function updateCountdown() {
-            const target = new Date(2026, 6, 12, 9, 0, 0).getTime();
-            const now = new Date().getTime();
-            const diff = target - now;
-            if(diff<=0){
-                document.getElementById('cdDays').innerText = '00';
-                document.getElementById('cdHours').innerText = '00';
-                document.getElementById('cdMinutes').innerText = '00';
-                document.getElementById('cdSeconds').innerText = '00';
-                return;
-            }
-            const days = Math.floor(diff/(1000*60*60*24));
-            const hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
-            const mins = Math.floor((diff%(1000*60*60))/(1000*60));
-            const secs = Math.floor((diff%(1000*60))/1000);
-            document.getElementById('cdDays').innerText = days.toString().padStart(2,'0');
-            document.getElementById('cdHours').innerText = hours.toString().padStart(2,'0');
-            document.getElementById('cdMinutes').innerText = mins.toString().padStart(2,'0');
-            document.getElementById('cdSeconds').innerText = secs.toString().padStart(2,'0');
+// ========================
+// MAIN FUNCTIONS
+// ========================
+
+(function(){
+    function updateCountdown() {
+        const target = new Date(2026, 6, 12, 9, 0, 0).getTime();
+        const now = new Date().getTime();
+        const diff = target - now;
+        if(diff<=0){
+            document.getElementById('cdDays').innerText = '00';
+            document.getElementById('cdHours').innerText = '00';
+            document.getElementById('cdMinutes').innerText = '00';
+            document.getElementById('cdSeconds').innerText = '00';
+            return;
         }
-        setInterval(updateCountdown,1000);
-        updateCountdown();
+        const days = Math.floor(diff/(1000*60*60*24));
+        const hours = Math.floor((diff%(1000*60*60*24))/(1000*60*60));
+        const mins = Math.floor((diff%(1000*60*60))/(1000*60));
+        const secs = Math.floor((diff%(1000*60))/1000);
+        document.getElementById('cdDays').innerText = days.toString().padStart(2,'0');
+        document.getElementById('cdHours').innerText = hours.toString().padStart(2,'0');
+        document.getElementById('cdMinutes').innerText = mins.toString().padStart(2,'0');
+        document.getElementById('cdSeconds').innerText = secs.toString().padStart(2,'0');
+    }
+    setInterval(updateCountdown,1000);
+    updateCountdown();
 
-        // music
-        const audio = document.getElementById('weddingAudio');
-        const musicDiv = document.getElementById('musicToggle');
-        let playing = false;
-        musicDiv.addEventListener('click', ()=>{
-            if(playing){
-                audio.pause();
-                musicDiv.classList.remove('playing');
-            } else {
-                audio.play().catch(e=>console.log);
-                musicDiv.classList.add('playing');
-            }
-            playing = !playing;
-        });
+    const audio = document.getElementById('weddingAudio');
+    const musicDiv = document.getElementById('musicToggle');
+    let playing = false;
+    musicDiv?.addEventListener('click', ()=>{
+        if(playing){
+            audio.pause();
+            musicDiv.classList.remove('playing');
+        } else {
+            audio.play().catch(e=>console.log);
+            musicDiv.classList.add('playing');
+        }
+        playing = !playing;
+    });
 
-        // toast
-        function showToast(msg){
-            const t = document.getElementById('toastMsg');
+    function showToast(msg){
+        const t = document.getElementById('toastMsg');
+        if(t) {
             t.innerText = msg;
             t.style.opacity = '1';
             setTimeout(()=>{ t.style.opacity = '0'; }, 2000);
         }
+    }
 
-        // map modal
-        window.openMapModal = function(){
-            document.getElementById('mapModal').style.display = 'flex';
-        };
-        window.closeMapModal = function(){
-            document.getElementById('mapModal').style.display = 'none';
-        };
-        // salin dana
-        document.getElementById('copyDanaBtn')?.addEventListener('click', ()=>{
-            navigator.clipboard.writeText('089506446413');
-            showToast('Nomor Dana tersalin ✓');
+    window.openMapModal = function(){
+        const modal = document.getElementById('mapModal');
+        if(modal) modal.style.display = 'flex';
+    };
+    window.closeMapModal = function(){
+        const modal = document.getElementById('mapModal');
+        if(modal) modal.style.display = 'none';
+    };
+
+    window.copyText = function(text){
+        navigator.clipboard.writeText(text);
+        showToast('Nomor tersalin ✓');
+    };
+
+    let wishesStore = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
+
+    function escapeHtml(str) {
+        return str.replace(/[&<>]/g, function(m) {
+            if(m === '&') return '&amp;';
+            if(m === '<') return '&lt;';
+            if(m === '>') return '&gt;';
+            return m;
         });
-        // rsvp localstorage
-        // =========================
-// WEDDING WISHES SYSTEM
-// =========================
-
-let wishesStore =
-JSON.parse(
-localStorage.getItem('wedding_wishes') || '[]'
-);
-
-function renderWishes() {
-
-    const wall =
-    document.getElementById('wishesWall');
-
-    if(!wall) return;
-
-    if(wishesStore.length === 0){
-
-        wall.innerHTML = `
-
-        <div class="wish-card">
-
-            <div class="wish-name">
-                Belum ada ucapan 🤍
-            </div>
-
-            <div class="wish-message">
-                Jadilah yang pertama memberikan doa terbaik.
-            </div>
-
-        </div>
-        `;
-
-        return;
     }
 
-    wall.innerHTML = '';
-
-    [...wishesStore]
-    .reverse()
-    .forEach(wish => {
-
-        const initial =
-        wish.name.charAt(0).toUpperCase();
-
-        wall.innerHTML += `
-
-        <div class="wish-card">
-
-            <div class="wish-avatar">
-                ${initial}
-            </div>
-
-            <div class="wish-name">
-                ${escapeHtml(wish.name)}
-            </div>
-
-            <div class="wish-attendance">
-                ${wish.status}
-                •
-                ${wish.total || 1} Tamu
-            </div>
-
-            <div class="wish-message">
-                "${escapeHtml(wish.message)}"
-            </div>
-
-        </div>
-        `;
-    });
-}
-
-document
-.getElementById('submitWish')
-?.addEventListener('click', ()=>{
-
-    const name =
-    document.getElementById('wishName')
-    .value
-    .trim();
-
-    const status =
-    document.getElementById('wishStatus')
-    .value;
-
-    const total =
-    document.getElementById('wishTotal')
-    .value;
-
-    const message =
-    document.getElementById('wishMessage')
-    .value
-    .trim();
-
-    if(!name || !status || !message){
-
-        showToast(
-            'Lengkapi data terlebih dahulu'
-        );
-
-        return;
+    function renderWishes() {
+        const wall = document.getElementById('wishesWall');
+        if(!wall) return;
+        if(wishesStore.length === 0){
+            wall.innerHTML = `<div class="wish-card"><div class="wish-name">Belum ada ucapan 🤍</div><div class="wish-message">Jadilah yang pertama memberikan doa terbaik.</div></div>`;
+            return;
+        }
+        wall.innerHTML = '';
+        [...wishesStore].reverse().forEach(wish => {
+            const initial = wish.name.charAt(0).toUpperCase();
+            wall.innerHTML += `<div class="wish-card"><div class="wish-avatar">${initial}</div><div class="wish-name">${escapeHtml(wish.name)}</div><div class="wish-attendance">${wish.status} • ${wish.total || 1} Tamu</div><div class="wish-message">"${escapeHtml(wish.message)}"</div></div>`;
+        });
     }
 
-    wishesStore.push({
-
-        name,
-        status,
-        total,
-        message,
-
-        date: Date.now()
+    document.getElementById('submitWish')?.addEventListener('click', ()=>{
+        const name = document.getElementById('wishName').value.trim();
+        const status = document.getElementById('wishStatus').value;
+        const total = document.getElementById('wishTotal').value;
+        const message = document.getElementById('wishMessage').value.trim();
+        if(!name || !status || !message){
+            showToast('Lengkapi data terlebih dahulu');
+            return;
+        }
+        wishesStore.push({ name, status, total, message, date: Date.now() });
+        localStorage.setItem('wedding_wishes', JSON.stringify(wishesStore));
+        renderWishes();
+        showToast('Ucapan berhasil dikirim 🤍');
+        document.getElementById('wishName').value = '';
+        document.getElementById('wishStatus').value = '';
+        document.getElementById('wishTotal').value = '';
+        document.getElementById('wishMessage').value = '';
     });
-
-    localStorage.setItem(
-        'wedding_wishes',
-        JSON.stringify(wishesStore)
-    );
 
     renderWishes();
-
-    showToast(
-        'Ucapan berhasil dikirim 🤍'
-    );
-
-    document.getElementById('wishName').value = '';
-    document.getElementById('wishStatus').value = '';
-    document.getElementById('wishTotal').value = '';
-    document.getElementById('wishMessage').value = '';
-});
-
-renderWishes();
-
-        // live button 
-        document.getElementById('liveStreamBtn')?.addEventListener('click', (e)=>{
-            e.preventDefault();
-            showToast('Link live streaming akan diinfokan mendekati hari H');
-        });
-    })();
+})();
+</script>
 </script>
 </body>
 </html>
