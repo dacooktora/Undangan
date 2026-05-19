@@ -2813,51 +2813,81 @@ galleries.forEach(gallery => {
         showToast('Nomor tersalin ✓');
     };
 
-    let wishesStore = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
+    // ========================
+// WEDDING WISHES SYSTEM
+// ========================
 
-    function escapeHtml(str) {
-        return str.replace(/[&<>]/g, function(m) {
-            if(m === '&') return '&amp;';
-            if(m === '<') return '&lt;';
-            if(m === '>') return '&gt;';
-            return m;
-        });
+let wishesStore = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
+
+function escapeHtml(str) {
+    if(!str) return '';
+    return str.replace(/[&<>]/g, function(m) {
+        if(m === '&') return '&amp;';
+        if(m === '<') return '&lt;';
+        if(m === '>') return '&gt;';
+        return m;
+    });
+}
+
+function renderWishes() {
+    const wall = document.getElementById('wishesWall');
+    if(!wall) return;
+    
+    if(wishesStore.length === 0) {
+        wall.innerHTML = `<div class="wish-card"><div class="wish-name">Belum ada ucapan 🤍</div><div class="wish-message">Jadilah yang pertama memberikan doa terbaik.</div></div>`;
+        return;
     }
+    
+    wall.innerHTML = '';
+    [...wishesStore].reverse().forEach(wish => {
+        const initial = wish.name.charAt(0).toUpperCase();
+        wall.innerHTML += `
+            <div class="wish-card">
+                <div class="wish-avatar">${initial}</div>
+                <div class="wish-name">${escapeHtml(wish.name)}</div>
+                <div class="wish-attendance">${wish.status} • ${wish.total || 1} Tamu</div>
+                <div class="wish-message">"${escapeHtml(wish.message)}"</div>
+            </div>
+        `;
+    });
+}
 
-    function renderWishes() {
-        const wall = document.getElementById('wishesWall');
-        if(!wall) return;
-        if(wishesStore.length === 0){
-            wall.innerHTML = `<div class="wish-card"><div class="wish-name">Belum ada ucapan 🤍</div><div class="wish-message">Jadilah yang pertama memberikan doa terbaik.</div></div>`;
-            return;
-        }
-        wall.innerHTML = '';
-        [...wishesStore].reverse().forEach(wish => {
-            const initial = wish.name.charAt(0).toUpperCase();
-            wall.innerHTML += `<div class="wish-card"><div class="wish-avatar">${initial}</div><div class="wish-name">${escapeHtml(wish.name)}</div><div class="wish-attendance">${wish.status} • ${wish.total || 1} Tamu</div><div class="wish-message">"${escapeHtml(wish.message)}"</div></div>`;
-        });
-    }
-
-    document.getElementById('submitWish')?.addEventListener('click', ()=>{
-        const name = document.getElementById('wishName').value.trim();
-        const status = document.getElementById('wishStatus').value;
-        const total = document.getElementById('wishTotal').value;
-        const message = document.getElementById('wishMessage').value.trim();
-        if(!name || !status || !message){
+// Event listener untuk tombol submit
+const submitBtn = document.getElementById('submitWish');
+if(submitBtn) {
+    submitBtn.addEventListener('click', function() {
+        const name = document.getElementById('wishName')?.value.trim() || '';
+        const status = document.getElementById('wishStatus')?.value || '';
+        const total = document.getElementById('wishTotal')?.value || '1';
+        const message = document.getElementById('wishMessage')?.value.trim() || '';
+        
+        if(!name || !status || !message) {
             showToast('Lengkapi data terlebih dahulu');
             return;
         }
-        wishesStore.push({ name, status, total, message, date: Date.now() });
+        
+        wishesStore.push({
+            name: name,
+            status: status,
+            total: total,
+            message: message,
+            date: Date.now()
+        });
+        
         localStorage.setItem('wedding_wishes', JSON.stringify(wishesStore));
         renderWishes();
         showToast('Ucapan berhasil dikirim 🤍');
+        
+        // Reset form
         document.getElementById('wishName').value = '';
         document.getElementById('wishStatus').value = '';
         document.getElementById('wishTotal').value = '';
         document.getElementById('wishMessage').value = '';
     });
+}
 
-    renderWishes();
+// Render awal
+renderWishes();
 })();
 
             
