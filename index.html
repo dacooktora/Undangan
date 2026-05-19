@@ -2397,8 +2397,9 @@
 <div id="toastMsg" class="toast-msg">Tersalin</div>
 
 <script>
+
 // ========================
-// DOORPRIZE - CANVAS WHEEL
+// DOORPRIZE - CANVAS WHEEL (DENGAN POPUP & CLAIM WA)
 // ========================
 
 const doorPrizes = [
@@ -2424,6 +2425,114 @@ let currentQ = 0;
 let hasSpun = localStorage.getItem("doorprize_done");
 let spinning = false;
 let wheelCanvas, ctx, currentAngle = 0;
+let lastSpinResult = "";
+
+// Tambahkan CSS untuk popup
+const popupStyle = document.createElement('style');
+popupStyle.textContent = `
+    .popup-overlay {
+        position: fixed;
+        top: 0;
+        left: 0;
+        width: 100%;
+        height: 100%;
+        background: rgba(0,0,0,0.8);
+        backdrop-filter: blur(8px);
+        z-index: 10000;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        visibility: hidden;
+        opacity: 0;
+        transition: 0.3s;
+    }
+    .popup-overlay.active {
+        visibility: visible;
+        opacity: 1;
+    }
+    .popup-card {
+        background: linear-gradient(145deg, #1A1A1A, #0f0f0f);
+        border: 1px solid #D6B98C;
+        border-radius: 32px;
+        padding: 32px 28px;
+        max-width: 320px;
+        width: 85%;
+        text-align: center;
+        box-shadow: 0 25px 50px rgba(0,0,0,0.5);
+        animation: popupZoom 0.3s ease;
+    }
+    @keyframes popupZoom {
+        from { transform: scale(0.8); opacity: 0; }
+        to { transform: scale(1); opacity: 1; }
+    }
+    .popup-card h3 {
+        color: #D6B98C;
+        font-family: 'Playfair Display', serif;
+        font-size: 1.5rem;
+        margin-bottom: 16px;
+    }
+    .popup-card p {
+        color: #EAE6DF;
+        margin-bottom: 24px;
+        font-size: 1.1rem;
+    }
+    .popup-card .prize-name {
+        color: #D6B98C;
+        font-weight: bold;
+        font-size: 1.3rem;
+    }
+    .popup-btn {
+        background: #D6B98C;
+        border: none;
+        padding: 12px 24px;
+        border-radius: 40px;
+        color: #111;
+        font-weight: bold;
+        cursor: pointer;
+        margin: 8px;
+        transition: 0.2s;
+    }
+    .popup-btn:hover {
+        background: #c9a46a;
+        transform: scale(1.02);
+    }
+    .popup-btn-secondary {
+        background: transparent;
+        border: 1px solid #D6B98C;
+        color: #D6B98C;
+    }
+    .popup-btn-secondary:hover {
+        background: rgba(214,185,140,0.2);
+    }
+`;
+document.head.appendChild(popupStyle);
+
+// Buat elemen popup
+const popupHTML = `
+<div id="resultPopup" class="popup-overlay">
+    <div class="popup-card">
+        <h3>🎉 Selamat! 🎉</h3>
+        <p>Kamu mendapatkan:<br><span class="prize-name" id="popupPrizeName">-</span></p>
+        <button class="popup-btn" id="claimBtn">🎁 Claim Doorprize</button>
+    </div>
+</div>
+<div id="confirmPopup" class="popup-overlay">
+    <div class="popup-card">
+        <h3>📱 Konfirmasi</h3>
+        <p>Apakah kamu sudah mengirim pesan claim ke WhatsApp?</p>
+        <button class="popup-btn" id="confirmYesBtn">✅ Udah, lanjutkan!</button>
+        <button class="popup-btn popup-btn-secondary" id="confirmNoBtn">❌ Belum, nanti dulu</button>
+    </div>
+</div>
+`;
+document.body.insertAdjacentHTML('beforeend', popupHTML);
+
+const resultPopup = document.getElementById('resultPopup');
+const confirmPopup = document.getElementById('confirmPopup');
+const popupPrizeName = document.getElementById('popupPrizeName');
+const claimBtn = document.getElementById('claimBtn');
+const confirmYesBtn = document.getElementById('confirmYesBtn');
+const confirmNoBtn = document.getElementById('confirmNoBtn');
 
 document.addEventListener('DOMContentLoaded', function() {
     if(hasSpun){
@@ -2508,25 +2617,57 @@ function spinWheel() {
             const anglePer = (Math.PI * 2) / doorPrizes.length;
             let rawAngle = (Math.PI * 2 - (currentAngle % (Math.PI * 2))) % (Math.PI * 2);
             let index = Math.floor(rawAngle / anglePer) % doorPrizes.length;
-            const result = doorPrizes[index];
-            document.getElementById('resultText').innerHTML = `🎉 Selamat! Kamu mendapatkan: <span style="color:#D6B98C;">${result}</span> 🎉`;
+            lastSpinResult = doorPrizes[index];
             
+            // Tampilkan popup hasil
+            popupPrizeName.innerText = lastSpinResult;
+            resultPopup.classList.add('active');
+            
+            // Confetti
             if(typeof canvasConfetti === 'function') {
                 canvasConfetti({ particleCount: 150, spread: 90, origin: { y: 0.6 }, colors: ['#D6B98C', '#EAE6DF', '#8C6A58'] });
             }
-            
-            localStorage.setItem("doorprize_done", true);
-            setTimeout(() => location.reload(), 3000);
         }
     }
     requestAnimationFrame(animate);
 }
 
+// Tombol Claim di popup pertama
+claimBtn.addEventListener('click', () => {
+    // Tutup popup hasil
+    resultPopup.classList.remove('active');
+    
+    // Buka WhatsApp dengan pesan otomatis
+    const waNumber = "6289506446413"; // Ganti dengan nomor WA lo
+    const message = `Halo kak, saya ingin claim doorprize pernikahan! 🎁\n\nSaya mendapatkan: ${lastSpinResult}\n\nTerima kasih! 🤍`;
+    window.open(`https://wa.me/${waNumber}?text=${encodeURIComponent(message)}`, '_blank');
+    
+    // Tampilkan popup konfirmasi
+    confirmPopup.classList.add('active');
+});
+
+// Tombol "Udah" di popup konfirmasi
+confirmYesBtn.addEventListener('click', () => {
+    confirmPopup.classList.remove('active');
+    
+    // Tandai sudah spin
+    localStorage.setItem("doorprize_done", true);
+    
+    // Refresh halaman
+    setTimeout(() => location.reload(), 500);
+});
+
+// Tombol "Belum" di popup konfirmasi
+confirmNoBtn.addEventListener('click', () => {
+    confirmPopup.classList.remove('active');
+    // Tidak melakukan apa-apa, tetap di halaman
+});
+
 window.addEventListener('resize', () => {
     if(wheelCanvas) drawWheel();
 });
 
-// QUIZ
+// QUIZ (sama seperti sebelumnya)
 const quizQuestions = [
     { q: "Bagaimana tentang Delia Asri Cahya Oktora?", options: ["Biasa aja", "Baik", "Baik, Cantik, Soleha, Rajin, Pinter, Pekerja Keras, perfect girl"], answer: 2 },
     { q: "Seberapa cocok Delia & Resa?", options: ["Cocok", "Cocok banget", "Gatau"], answer: 1 },
@@ -2718,6 +2859,8 @@ galleries.forEach(gallery => {
 
     renderWishes();
 })();
+
+            
 </script>
 </script>
 </body>
