@@ -2397,7 +2397,7 @@
 <div id="toastMsg" class="toast-msg">Tersalin</div>
 
 <script>
-        // ========================
+// ========================
 // DOORPRIZE - CANVAS WHEEL
 // ========================
 
@@ -2424,9 +2424,7 @@ let currentQ = 0;
 let hasSpun = localStorage.getItem("doorprize_done");
 let spinning = false;
 let wheelCanvas, ctx, currentAngle = 0;
-let spinBtn = null;
 
-// Inisialisasi setelah DOM ready
 document.addEventListener('DOMContentLoaded', function() {
     if(hasSpun){
         document.getElementById('doorIntro')?.classList.add('hidden');
@@ -2436,8 +2434,7 @@ document.addEventListener('DOMContentLoaded', function() {
     }
     initWheelCanvas();
     
-    // Pasang event listener untuk tombol SPIN
-    spinBtn = document.getElementById('spinBtn');
+    const spinBtn = document.getElementById('spinBtn');
     if(spinBtn) {
         spinBtn.addEventListener('click', spinWheel);
     }
@@ -2471,13 +2468,11 @@ function drawWheel() {
         ctx.fillText(doorPrizes[i], size/3.5, 5);
         ctx.restore();
     }
-    // border luar
     ctx.beginPath();
     ctx.arc(size/2, size/2, size/2, 0, Math.PI*2);
     ctx.strokeStyle = "#D6B98C";
     ctx.lineWidth = 3;
     ctx.stroke();
-    // lingkaran tengah
     ctx.beginPath();
     ctx.arc(size/2, size/2, 18, 0, Math.PI*2);
     ctx.fillStyle = "#D6B98C";
