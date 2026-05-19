@@ -1754,92 +1754,6 @@
     height: 280px;
     margin: auto;
 }
-
-.wheel{
-    width: 100%;
-    height: 100%;
-    border-radius: 50%;
-    border: 3px solid rgba(255,255,255,0.3);
-    transition: 4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    background: conic-gradient(
-        #f7e7ce 0deg 12deg,
-        #e8caa4 12deg 24deg,
-        #f3d5b5 24deg 36deg,
-        #f7e7ce 36deg 48deg,
-        #e8caa4 48deg 60deg,
-        #f3d5b5 60deg 72deg,
-        #f7e7ce 72deg 84deg,
-        #e8caa4 84deg 96deg,
-        #f3d5b5 96deg 108deg,
-        #f7e7ce 108deg 120deg,
-        #e8caa4 120deg 132deg,
-        #f3d5b5 132deg 144deg,
-        #f7e7ce 144deg 156deg,
-        #e8caa4 156deg 168deg,
-        #f3d5b5 168deg 180deg,
-        #f7e7ce 180deg 192deg,
-        #e8caa4 192deg 204deg,
-        #f3d5b5 204deg 216deg,
-        #f7e7ce 216deg 228deg,
-        #e8caa4 228deg 240deg,
-        #f3d5b5 240deg 252deg,
-        #f7e7ce 252deg 264deg,
-        #e8caa4 264deg 276deg,
-        #f3d5b5 276deg 288deg,
-        #f7e7ce 288deg 300deg,
-        #e8caa4 300deg 312deg,
-        #f3d5b5 312deg 324deg,
-        #f7e7ce 324deg 336deg,
-        #e8caa4 336deg 348deg,
-        #f3d5b5 348deg 360deg
-    );
-}
-
-.wheel-center{
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%,-50%);
-    width: 70px;
-    height: 70px;
-    background: #fff;
-    color: #000;
-    border-radius: 50%;
-    display:flex;
-    align-items:center;
-    justify-content:center;
-    font-weight: bold;
-    cursor:pointer;
-}
-
-        .wheel-labels{
-    position:absolute;
-    inset:0;
-    border-radius:50%;
-    pointer-events:none;
-}
-
-.wheel-label {
-    position: absolute;
-    top: 50%;
-    left: 50%;
-    transform-origin: 0 0;
-    font-size: 10px;
-    color: #fff;
-    width: 120px;
-    text-align: center;
-    font-weight: 500;
-    opacity: 0.85;
-    pointer-events: none;
-}
-
-        .wheel-rotor{
-    position: absolute;
-    inset: 0;
-    border-radius: 50%;
-    transition: 4s cubic-bezier(0.2, 0.8, 0.2, 1);
-    transform: rotate(0deg);
-        }
         /* amplop + live streaming */
         .simple-card {
             background: rgba(25, 23, 21, 0.7);
@@ -2427,48 +2341,47 @@
 
     </div>
 </section>
-
-<!-- ROMANTIC DOORPRIZE -->
- <!-- ROMANTIC DOORPRIZE - PERBAIKAN -->
+<!-- ROMANTIC DOORPRIZE - VERSI FINAL -->
 <section class="section doorprize-section">
-
     <div class="container">
-
         <div class="section-header">
             <div class="section-subtitle">Wedding Doorprize</div>
             <h2 class="section-title">Claim Doorprize</h2>
         </div>
 
-        <!-- STATUS DONE -->
         <div id="doorDone" class="door-card hidden">
             <h3>🎉 Claim Doorprize Success</h3>
             <p>Kamu sudah melakukan spin sebelumnya 🤍</p>
         </div>
 
-        <!-- INTRO -->
         <div id="doorIntro" class="door-card">
             <p>Jawab 3 pertanyaan sederhana, lalu putar roda keberuntungan untuk mendapatkan hadiah pernikahan 🎁</p>
             <button class="door-btn" onclick="startQuiz()">🎁 Claim Doorprize</button>
         </div>
 
-        <!-- QUIZ -->
         <div id="doorQuiz" class="door-card hidden">
             <div id="quizBox"></div>
             <button class="door-btn" onclick="nextQuestion()">Next</button>
         </div>
 
-        <!-- WHEEL - VERSI BARU RAPI -->
         <div id="doorWheel" class="door-card hidden">
-            <div class="wheel-wrapper">
-                <canvas id="wheelCanvas" width="500" height="500" style="width:100%; height:auto; background:#1A1A1A; border-radius:50%; box-shadow:0 10px 35px rgba(0,0,0,0.5);"></canvas>
-                <div id="spinBtn" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:70px; height:70px; background:#D6B98C; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-weight:bold; color:#111; font-size:1.2rem; box-shadow:0 4px 15px rgba(0,0,0,0.3); transition:0.2s;">SPIN</div>
+            <div class="wheel-wrapper" style="position: relative;">
+                <!-- PANAH PENUNJUK (di luar wheel, tetap diam) -->
+                <div style="position: absolute; top: -25px; left: 50%; transform: translateX(-50%); z-index: 10;">
+                    <div style="width: 0; height: 0; border-left: 15px solid transparent; border-right: 15px solid transparent; border-top: 30px solid #D6B98C; filter: drop-shadow(0 2px 5px rgba(0,0,0,0.3));"></div>
+                </div>
+                
+                <!-- CANVAS WHEEL -->
+                <canvas id="wheelCanvas" width="500" height="500" style="width:100%; height:auto; border-radius:50%; box-shadow:0 10px 35px rgba(0,0,0,0.5);"></canvas>
+                
+                <!-- TOMBOL SPIN -->
+                <div id="spinBtn" style="position:absolute; top:50%; left:50%; transform:translate(-50%,-50%); width:75px; height:75px; background:#D6B98C; border-radius:50%; display:flex; align-items:center; justify-content:center; cursor:pointer; font-weight:bold; color:#111; font-size:1.1rem; box-shadow:0 4px 15px rgba(0,0,0,0.3); transition:0.2s; z-index:5;">SPIN</div>
             </div>
             <div id="resultText" style="margin-top:25px; font-size:1.1rem; color:#D6B98C; font-weight:bold;"></div>
         </div>
-
     </div>
-
 </section>
+
 <footer>
     © 2026 Resa & Delia — Terima kasih atas doa restu
 </footer>
