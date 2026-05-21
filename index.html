@@ -2923,43 +2923,56 @@ function nextQuestion() {
     }
 
     function draw() {
-        if (!ctx) return;
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        if (waypoints.length < 2) return;
+    if (!ctx) return;
+    ctx.clearRect(0, 0, canvas.width, canvas.height);
+    if (waypoints.length < 2) return;
 
-        // Garis penghubung
-        ctx.beginPath();
-        ctx.moveTo(waypoints[0].x, waypoints[0].y);
-        for (let i = 1; i < waypoints.length; i++) ctx.lineTo(waypoints[i].x, waypoints[i].y);
-        ctx.strokeStyle = '#D6B98C';
-        ctx.lineWidth = 4;
-        ctx.setLineDash([10, 12]);
-        ctx.stroke();
-        ctx.setLineDash([]);
-
-        // Titik + angka
-        for (let i = 0; i < waypoints.length; i++) {
-            ctx.beginPath();
-            ctx.arc(waypoints[i].x, waypoints[i].y, 14, 0, Math.PI * 2);
-            ctx.fillStyle = '#D6B98C';
-            ctx.shadowBlur = 12;
-            ctx.shadowColor = '#D6B98C';
-            ctx.fill();
-            ctx.beginPath();
-            ctx.arc(waypoints[i].x, waypoints[i].y, 8, 0, Math.PI * 2);
-            ctx.fillStyle = '#111';
-            ctx.fill();
-            ctx.fillStyle = '#fff';
-            ctx.font = 'bold 16px Poppins';
-            ctx.shadowBlur = 0;
-            ctx.fillText(i + 1, waypoints[i].x - 7, waypoints[i].y + 6);
-        }
-
-        // Mobil 3D (paling atas)
-        if (carImage.complete && carImage.src) {
-            ctx.drawImage(carImage, carX - 20, carY - 20, 40, 40);
-        }
+    // 1. GAMBAR SEMUA GARIS (termasuk 6 ke 1)
+    ctx.beginPath();
+    
+    // Garis dari 1 ke 2 ke 3 ke 4 ke 5 ke 6
+    ctx.moveTo(waypoints[0].x, waypoints[0].y);
+    for (let i = 1; i < waypoints.length; i++) {
+        ctx.lineTo(waypoints[i].x, waypoints[i].y);
     }
+    
+    // Garis dari 6 kembali ke 1 (penutup LOVE)
+    ctx.lineTo(waypoints[0].x, waypoints[0].y);
+    
+    // Styling garis
+    ctx.strokeStyle = '#D6B98C';
+    ctx.lineWidth = 4;
+    ctx.setLineDash([]);
+    ctx.stroke();
+
+    // 2. GAMBAR TITIK + ANGKA (di atas garis)
+    for (let i = 0; i < waypoints.length; i++) {
+        // Lingkaran luar
+        ctx.beginPath();
+        ctx.arc(waypoints[i].x, waypoints[i].y, 14, 0, Math.PI * 2);
+        ctx.fillStyle = '#D6B98C';
+        ctx.shadowBlur = 12;
+        ctx.shadowColor = '#D6B98C';
+        ctx.fill();
+        
+        // Lingkaran dalam
+        ctx.beginPath();
+        ctx.arc(waypoints[i].x, waypoints[i].y, 8, 0, Math.PI * 2);
+        ctx.fillStyle = '#111';
+        ctx.fill();
+        
+        // Angka
+        ctx.fillStyle = '#fff';
+        ctx.font = 'bold 16px Poppins';
+        ctx.shadowBlur = 0;
+        ctx.fillText(i + 1, waypoints[i].x - 7, waypoints[i].y + 6);
+    }
+
+    // 3. GAMBAR MOBIL (paling atas)
+    if (carImage.complete && carImage.src) {
+        ctx.drawImage(carImage, carX - 20, carY - 20, 40, 40);
+    }
+}
 
     function startJourney(target) {
         if (isAnimating) return;
