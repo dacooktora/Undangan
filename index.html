@@ -879,24 +879,27 @@
 }
 .car-point {
     position: absolute;
-    width: 20px;
-    height: 20px;
-    background: transparent;
+    width: 32px;
+    height: 32px;
+    background: linear-gradient(135deg, #D6B98C, #8C6A58);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 0.7rem;
-    color: #D6B98C;
+    font-size: 0.9rem;
+    color: #111;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 12px rgba(214,185,140,0.5);
     transform: translate(-50%, -50%);
     z-index: 10;
-    text-shadow: 0 0 3px #000;
+    border: 1px solid rgba(255,255,255,0.2);
 }
+
 .car-point:hover {
-    transform: translate(-50%, -50%) scale(1.15);
-    box-shadow: 0 0 30px rgba(214,185,140,0.8);
+    transform: translate(-50%, -50%) scale(1.1);
+    box-shadow: 0 0 20px rgba(214,185,140,0.8);
 }
 .car-point.active {
     background: #D6B98C;
