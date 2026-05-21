@@ -2922,25 +2922,26 @@ function nextQuestion() {
         }
     }
 
-    function draw() {
+    
+        function draw() {
     if (!ctx) return;
     ctx.clearRect(0, 0, canvas.width, canvas.height);
     if (waypoints.length < 2) return;
-        
-        // 3. GAMBAR MOBIL (paling atas, ukuran lebih kecil)
-if (carImage.complete && carImage.src) {
-    // Ukuran mobil: 32x32 (lebih kecil dari sebelumnya 40x40)
-    ctx.drawImage(carImage, carX - 16, carY - 16, 32, 32);
-} else {
-    // Fallback kalau gambar belum load (opsional, bisa dihapus)
-    ctx.fillStyle = '#D6B98C';
-    ctx.font = '24px "Font Awesome 6 Free"';
-    ctx.fillText('🚗', carX - 12, carY - 8);
-}
-
     
+    // ========== 1. GAMBAR GARIS (PALING BAWAH) - SOLID ==========
+    ctx.beginPath();
+    ctx.moveTo(waypoints[0].x, waypoints[0].y);
+    for (let i = 1; i < waypoints.length; i++) {
+        ctx.lineTo(waypoints[i].x, waypoints[i].y);
+    }
+    ctx.lineTo(waypoints[0].x, waypoints[0].y); // garis 6 ke 1
+    
+    ctx.strokeStyle = '#D6B98C';
+    ctx.lineWidth = 3;
+    ctx.setLineDash([]); // ← SOLID (tanpa putus-putus)
+    ctx.stroke();
 
-    // 2. GAMBAR TITIK + ANGKA (di atas garis)
+    // ========== 2. GAMBAR TITIK + ANGKA (DI ATAS GARIS) ==========
     for (let i = 0; i < waypoints.length; i++) {
         // Lingkaran luar
         ctx.beginPath();
@@ -2962,28 +2963,18 @@ if (carImage.complete && carImage.src) {
         ctx.shadowBlur = 0;
         ctx.fillText(i + 1, waypoints[i].x - 7, waypoints[i].y + 6);
     }
-// 1. GAMBAR SEMUA GARIS (termasuk 6 ke 1) - GAYA PUTUS-PUTUS
-ctx.beginPath();
 
-// Garis dari 1 ke 2 ke 3 ke 4 ke 5 ke 6
-ctx.moveTo(waypoints[0].x, waypoints[0].y);
-for (let i = 1; i < waypoints.length; i++) {
-    ctx.lineTo(waypoints[i].x, waypoints[i].y);
+    // ========== 3. GAMBAR MOBIL (PALING ATAS) ==========
+    if (carImage.complete && carImage.src) {
+        ctx.drawImage(carImage, carX - 16, carY - 16, 32, 32);
+    } else {
+        // Fallback kalau gambar belum load
+        ctx.fillStyle = '#D6B98C';
+        ctx.font = '24px "Font Awesome 6 Free"';
+        ctx.fillText('🚗', carX - 12, carY - 8);
+    }
 }
 
-// Garis dari 6 kembali ke 1 (penutup LOVE)
-ctx.lineTo(waypoints[0].x, waypoints[0].y);
-
-// Styling garis: PUTUS-PUTUS
-ctx.strokeStyle = '#D6B98C';
-ctx.lineWidth = 3;
-ctx.setLineDash([8, 10]); // ← INI YANG BIKIN PUTUS-PUTUS
-ctx.stroke();
-
-// Kembalikan ke solid untuk gambar titik & mobil
-ctx.setLineDash([]);
-    
-}
 
     function startJourney(target) {
         if (isAnimating) return;
@@ -3021,7 +3012,7 @@ ctx.setLineDash([]);
         }
         const start = waypoints[currentSegment];
         const end = waypoints[currentSegment + 1];
-        animProgress += 0.025;
+        animProgress += 0.008;
         if (animProgress >= 1) {
             animProgress = 0;
             currentSegment++;
