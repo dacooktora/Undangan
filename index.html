@@ -3061,45 +3061,60 @@ function nextQuestion() {
     }
 
     function openDetail(idx) {
-        const d = journeyData[idx];
-        if (!d) return;
+    const d = journeyData[idx];
+    if (!d) return;
 
-        document.getElementById('modalTitle').innerText = d.title;
-        document.getElementById('modalDate').innerText = d.date;
-        document.getElementById('modalLocation').innerHTML = `📍 ${d.location}`;
-        document.getElementById('modalStory').innerText = d.story;
+    document.getElementById('modalTitle').innerText = d.title;
+    document.getElementById('modalDate').innerText = d.date;
+    document.getElementById('modalLocation').innerHTML = `📍 ${d.location}`;
+    document.getElementById('modalStory').innerText = d.story;
 
-        const video = document.getElementById('modalVideo');
+    const video = document.getElementById('modalVideo');
+    const videoContainer = document.querySelector('.modal-media'); // opsional, kalau mau sembunyiin container-nya
+    
+    // CEK VIDEO: kalau ada video, tampilkan dan load
+    if (d.video && d.video !== '' && d.video !== 'undefined') {
         video.querySelector('source').src = d.video;
         video.load();
-
-        document.getElementById('modalGallery').innerHTML = `
-            <img src="${d.img1}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo1'">
-            <img src="${d.img2}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo2'">
-            <img src="${d.img3}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo3'">
-        `;
-
-        document.getElementById('journeyDetailModal').classList.add('active');
-
+        video.style.display = 'block'; // tampilkan video
+        if (videoContainer) videoContainer.style.display = 'block';
         video.play().catch(e => console.log('auto-play error'));
+    } else {
+        // VIDEO TIDAK ADA: sembunyikan
+        video.style.display = 'none';
+        if (videoContainer) videoContainer.style.display = 'none';
     }
 
-    document.getElementById('closeModalBtn')?.addEventListener('click', () => {
+    // GALLERY: hanya tampilkan foto yang ada (tidak kosong)
+    let galleryHTML = '';
+    if (d.img1 && d.img1 !== '' && d.img1 !== 'undefined') galleryHTML += `<img src="${d.img1}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo'">`;
+    if (d.img2 && d.img2 !== '' && d.img2 !== 'undefined') galleryHTML += `<img src="${d.img2}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo'">`;
+    if (d.img3 && d.img3 !== '' && d.img3 !== 'undefined') galleryHTML += `<img src="${d.img3}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo'">`;
+    
+    document.getElementById('modalGallery').innerHTML = galleryHTML || '<p style="text-align:center; color:#aaa;">Tidak ada foto tambahan</p>';
+
+    document.getElementById('journeyDetailModal').classList.add('active');
+}
+
+document.getElementById('closeModalBtn')?.addEventListener('click', () => {
+    const vid = document.getElementById('modalVideo');
+    if (vid) vid.pause();
+    document.getElementById('journeyDetailModal').classList.remove('active');
+});
+
+document.getElementById('journeyDetailModal')?.addEventListener('click', (e) => {
+    if (
+        e.target === document.getElementById('journeyDetailModal') ||
+        e.target.classList.contains('modal-bg')
+    ) {
         const vid = document.getElementById('modalVideo');
         if (vid) vid.pause();
         document.getElementById('journeyDetailModal').classList.remove('active');
-    });
+    }
+});
+        
 
-    document.getElementById('journeyDetailModal')?.addEventListener('click', (e) => {
-        if (
-            e.target === document.getElementById('journeyDetailModal') ||
-            e.target.classList.contains('modal-bg')
-        ) {
-            const vid = document.getElementById('modalVideo');
-            if (vid) vid.pause();
-            document.getElementById('journeyDetailModal').classList.remove('active');
-        }
-    });
+    
 
     window.addEventListener('load', () => setTimeout(init, 300));
 })();
