@@ -2237,138 +2237,65 @@
 <!-- ======================================== -->
 <!-- INTERACTIVE JOURNEY MAP - SPEKTAKULER 3D -->
 <!-- ======================================== -->
+                  <!-- ======================================== -->
+<!-- JOURNEY MAP WITH CAR ANIMATION -->
+<!-- ======================================== -->
 
-<section class="journey-map-section">
-    <div class="map-ambient-glow"></div>
-    <div class="map-particles" id="mapParticles"></div>
+<section class="journey-car-section">
+    <div class="car-bg-glow"></div>
     
     <div class="container">
         <div class="section-header">
-            <div class="section-subtitle">OUR LOVE MAP</div>
+            <div class="section-subtitle">OUR LOVE JOURNEY</div>
             <h2 class="section-title">Perjalanan Cinta</h2>
-            <p class="section-desc">Setiap titik adalah kenangan yang tak terlupakan</p>
+            <p class="section-desc">Klik setiap titik untuk memulai perjalanan</p>
         </div>
 
-        <div class="map-container">
-            <!-- SVG Garis Penghubung -->
-            <svg class="map-svg" id="mapSvg" viewBox="0 0 1000 600" preserveAspectRatio="xMidYMid meet">
-                <defs>
-                    <linearGradient id="lineGrad" x1="0%" y1="0%" x2="100%" y2="100%">
-                        <stop offset="0%" stop-color="#D6B98C" stop-opacity="0.3"/>
-                        <stop offset="50%" stop-color="#D6B98C" stop-opacity="0.8"/>
-                        <stop offset="100%" stop-color="#D6B98C" stop-opacity="0.3"/>
-                    </linearGradient>
-                    <filter id="glow">
-                        <feGaussianBlur stdDeviation="3" result="coloredBlur"/>
-                        <feMerge>
-                            <feMergeNode in="coloredBlur"/>
-                            <feMergeNode in="SourceGraphic"/>
-                        </feMerge>
-                    </filter>
-                    <filter id="shadow">
-                        <feDropShadow dx="0" dy="5" stdDeviation="8" flood-color="#D6B98C" flood-opacity="0.3"/>
-                    </filter>
-                </defs>
-                
-                <!-- Garis penghubung akan digambar via JS -->
-            </svg>
-
-            <!-- Titik-titik Map -->
-            <div class="map-points">
-                <div class="map-point" data-idx="0" data-title="Pertama Komunikasi" data-date="14 September 2021" data-location="WhatsApp" data-story="Awal mula kami berkenalan melalui pesan singkat. Dari obrolan ringan hingga akhirnya saling memahami." data-video="komunikasi.mp4" data-img1="komunikasi1.jpg" data-img2="komunikasi2.jpg" data-img3="komunikasi3.jpg">
-                    <div class="point-marker pulse">
-                        <div class="point-inner">1</div>
-                    </div>
-                    <div class="point-label">
-                        <span class="point-title">Pertama Komunikasi</span>
-                        <span class="point-date">14 Sep 2021</span>
-                    </div>
-                </div>
-
-                <div class="map-point" data-idx="1" data-title="Pertemuan" data-date="28 November 2021" data-location="Kafe Senja" data-story="Pertemuan pertama secara langsung. Deg-degan, canggung, tapi terasa begitu nyaman." data-video="ketemu.mp4" data-img1="ketemu1.jpg" data-img2="ketemu2.jpg" data-img3="ketemu3.jpg">
-                    <div class="point-marker pulse">
-                        <div class="point-inner">2</div>
-                    </div>
-                    <div class="point-label">
-                        <span class="point-title">Pertemuan</span>
-                        <span class="point-date">28 Nov 2021</span>
-                    </div>
-                </div>
-
-                <div class="map-point" data-idx="2" data-title="Tunangan" data-date="13 Agustus 2023" data-location="Rumah Masing-masing" data-story="Memutuskan untuk serius dan memperkenalkan satu sama lain ke keluarga." data-video="tunangan.mp4" data-img1="tunangan1.jpg" data-img2="tunangan2.jpg" data-img3="tunangan3.jpg">
-                    <div class="point-marker pulse">
-                        <div class="point-inner">3</div>
-                    </div>
-                    <div class="point-label">
-                        <span class="point-title">Tunangan</span>
-                        <span class="point-date">13 Agu 2023</span>
-                    </div>
-                </div>
-
-                <div class="map-point" data-idx="3" data-title="Lamaran" data-date="8 Februari 2026" data-location="Pantai Indah" data-story="Momen paling membahagiakan saat 'Iya' terlontar dengan penuh haru." data-video="lamaran.mp4" data-img1="lamaran1.jpg" data-img2="lamaran2.jpg" data-img3="lamaran3.jpg">
-                    <div class="point-marker pulse">
-                        <div class="point-inner">4</div>
-                    </div>
-                    <div class="point-label">
-                        <span class="point-title">Lamaran</span>
-                        <span class="point-date">8 Feb 2026</span>
-                    </div>
-                </div>
-
-                <div class="map-point" data-idx="4" data-title="Foto Prewedding" data-date="2 Mei 2026" data-location="Studio & Outdoor" data-story="Mengabadikan momen terindah sebelum hari H." data-video="prewed.mp4" data-img1="prewed1.jpg" data-img2="prewed2.jpg" data-img3="prewed3.jpg">
-                    <div class="point-marker pulse">
-                        <div class="point-inner">5</div>
-                    </div>
-                    <div class="point-label">
-                        <span class="point-title">Foto Prewedding</span>
-                        <span class="point-date">2 Mei 2026</span>
-                    </div>
-                </div>
-
-                <div class="map-point" data-idx="5" data-title="Latar Biru" data-date="3 Mei 2026" data-location="Studio Biru" data-story="Konsep foto dengan nuansa biru yang romantis." data-video="biru.mp4" data-img1="biru1.jpg" data-img2="biru2.jpg" data-img3="biru3.jpg">
-                    <div class="point-marker pulse">
-                        <div class="point-inner">6</div>
-                    </div>
-                    <div class="point-label">
-                        <span class="point-title">Latar Biru</span>
-                        <span class="point-date">3 Mei 2026</span>
-                    </div>
-                </div>
+        <div class="car-map-container" id="carMapContainer">
+            <!-- Canvas untuk menggambar garis + mobil -->
+            <canvas id="journeyCanvas" width="1000" height="500" style="width:100%; height:auto; background: transparent;"></canvas>
+            
+            <!-- Titik-titik interaktif -->
+            <div class="car-points">
+                <div class="car-point" data-idx="0" data-title="Pertama Komunikasi" data-date="14 September 2021" data-location="WhatsApp" data-story="Awal mula kami berkenalan melalui pesan singkat. Dari obrolan ringan hingga akhirnya saling memahami." data-video="komunikasi.mp4" data-img1="komunikasi1.jpg" data-img2="komunikasi2.jpg" data-img3="komunikasi3.jpg" style="left: 5%; top: 30%;">1</div>
+                <div class="car-point" data-idx="1" data-title="Pertemuan" data-date="28 November 2021" data-location="Kafe Senja" data-story="Pertemuan pertama secara langsung. Deg-degan, canggung, tapi terasa begitu nyaman." data-video="ketemu.mp4" data-img1="ketemu1.jpg" data-img2="ketemu2.jpg" data-img3="ketemu3.jpg" style="left: 22%; top: 55%;">2</div>
+                <div class="car-point" data-idx="2" data-title="Tunangan" data-date="13 Agustus 2023" data-location="Rumah Masing-masing" data-story="Memutuskan untuk serius dan memperkenalkan satu sama lain ke keluarga." data-video="tunangan.mp4" data-img1="tunangan1.jpg" data-img2="tunangan2.jpg" data-img3="tunangan3.jpg" style="left: 42%; top: 70%;">3</div>
+                <div class="car-point" data-idx="3" data-title="Lamaran" data-date="8 Februari 2026" data-location="Pantai Indah" data-story="Momen paling membahagiakan saat 'Iya' terlontar dengan penuh haru." data-video="lamaran.mp4" data-img1="lamaran1.jpg" data-img2="lamaran2.jpg" data-img3="lamaran3.jpg" style="left: 65%; top: 60%;">4</div>
+                <div class="car-point" data-idx="4" data-title="Foto Prewedding" data-date="2 Mei 2026" data-location="Studio & Outdoor" data-story="Mengabadikan momen terindah sebelum hari H." data-video="prewed.mp4" data-img1="prewed1.jpg" data-img2="prewed2.jpg" data-img3="prewed3.jpg" style="left: 82%; top: 35%;">5</div>
+                <div class="car-point" data-idx="5" data-title="Latar Biru" data-date="3 Mei 2026" data-location="Studio Biru" data-story="Konsep foto dengan nuansa biru yang romantis." data-video="biru.mp4" data-img1="biru1.jpg" data-img2="biru2.jpg" data-img3="biru3.jpg" style="left: 92%; top: 15%;">6</div>
             </div>
+        </div>
+        
+        <!-- Loading indicator -->
+        <div class="car-loading" id="carLoading">
+            <div class="loading-text">🚗 Mobil sedang berjalan...</div>
         </div>
     </div>
 </section>
 
-<!-- MODAL JOURNEY DETAIL -->
+<!-- MODAL (sama seperti sebelumnya) -->
 <div class="journey-detail-modal" id="journeyDetailModal">
     <div class="modal-container">
         <div class="modal-bg"></div>
         <button class="modal-close" id="closeModalBtn">&times;</button>
-        
         <div class="modal-content">
             <div class="modal-header">
-                <h3 id="modalTitle">Pertama Komunikasi</h3>
-                <p id="modalDate">14 September 2021</p>
-                <p id="modalLocation">📍 WhatsApp</p>
+                <h3 id="modalTitle"></h3>
+                <p id="modalDate"></p>
+                <p id="modalLocation"></p>
             </div>
-            
             <div class="modal-story">
-                <p id="modalStory">Awal mula kami berkenalan...</p>
+                <p id="modalStory"></p>
             </div>
-            
             <div class="modal-media">
                 <video id="modalVideo" controls playsinline>
                     <source src="" type="video/mp4">
                 </video>
             </div>
-            
-            <div class="modal-gallery" id="modalGallery">
-                <!-- Gallery images will be inserted here -->
-            </div>
+            <div class="modal-gallery" id="modalGallery"></div>
         </div>
     </div>
-</div>
-
+</div>    
      
         <!-- =========================
      FUTURISTIC PREWEDDING
