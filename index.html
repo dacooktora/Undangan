@@ -824,8 +824,8 @@
 /* ======================================== */
 
 
-        /* ======================================== */
-/* JOURNEY MAP WITH CAR ANIMATION - FULL */
+    /* ======================================== */
+/* JOURNEY MAP WITH CAR ANIMATION           */
 /* ======================================== */
 
 .journey-car-section {
@@ -834,7 +834,6 @@
     overflow: hidden;
     background: linear-gradient(180deg, #0a0a0a 0%, #111111 100%);
 }
-
 .car-bg-glow {
     position: absolute;
     width: 800px;
@@ -846,28 +845,23 @@
     pointer-events: none;
     animation: glowPulse 8s ease-in-out infinite;
 }
-
 @keyframes glowPulse {
     0%, 100% { opacity: 0.3; transform: translate(-50%, -50%) scale(1); }
     50% { opacity: 0.6; transform: translate(-50%, -50%) scale(1.1); }
 }
-
 .section-desc {
     text-align: center;
-    color: rgba(255,255,255,0.5);
-    font-size: 0.85rem;
-    letter-spacing: 1px;
+    color: rgba(255,255,255,0.6);
+    font-size: 0.9rem;
     margin-top: -10px;
 }
 
-/* MAP CONTAINER */
 .car-map-container {
     position: relative;
     max-width: 1000px;
     margin: 50px auto 0;
     min-height: 500px;
 }
-
 #journeyCanvas {
     position: absolute;
     top: 0;
@@ -876,8 +870,6 @@
     height: 100%;
     z-index: 1;
 }
-
-/* POINTS */
 .car-points {
     position: relative;
     z-index: 2;
@@ -885,7 +877,6 @@
     height: 100%;
     min-height: 500px;
 }
-
 .car-point {
     position: absolute;
     width: 45px;
@@ -896,7 +887,7 @@
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 1.1rem;
+    font-size: 1.2rem;
     color: #111;
     cursor: pointer;
     transition: all 0.3s ease;
@@ -904,25 +895,21 @@
     transform: translate(-50%, -50%);
     z-index: 10;
 }
-
 .car-point:hover {
     transform: translate(-50%, -50%) scale(1.15);
     box-shadow: 0 0 30px rgba(214,185,140,0.8);
 }
-
 .car-point.active {
     background: #D6B98C;
     box-shadow: 0 0 40px rgba(214,185,140,0.9);
     animation: pointPulse 0.5s ease;
 }
-
 @keyframes pointPulse {
     0% { transform: translate(-50%, -50%) scale(1); }
     50% { transform: translate(-50%, -50%) scale(1.3); }
     100% { transform: translate(-50%, -50%) scale(1); }
 }
 
-/* LOADING INDICATOR */
 .car-loading {
     position: fixed;
     bottom: 30px;
@@ -935,40 +922,22 @@
     border: 1px solid #D6B98C;
     z-index: 1000;
     display: none;
-    align-items: center;
     gap: 12px;
     box-shadow: 0 5px 25px rgba(0,0,0,0.3);
 }
-
 .car-loading.show {
     display: flex;
     animation: fadeInUp 0.3s ease;
 }
-
 @keyframes fadeInUp {
     from { opacity: 0; transform: translateX(-50%) translateY(20px); }
     to { opacity: 1; transform: translateX(-50%) translateY(0); }
 }
-
 .loading-text {
     color: #D6B98C;
     font-size: 0.9rem;
-    letter-spacing: 1px;
 }
 
-.loading-text::after {
-    content: '';
-    animation: dotDotDot 1.5s steps(4) infinite;
-}
-
-@keyframes dotDotDot {
-    0%, 20% { content: ''; }
-    40% { content: '.'; }
-    60% { content: '..'; }
-    80%, 100% { content: '...'; }
-}
-
-/* MODAL JOURNEY DETAIL */
 .journey-detail-modal {
     position: fixed;
     top: 0;
@@ -980,12 +949,10 @@
     opacity: 0;
     transition: all 0.4s ease;
 }
-
 .journey-detail-modal.active {
     visibility: visible;
     opacity: 1;
 }
-
 .modal-container {
     position: relative;
     width: 100%;
@@ -995,7 +962,6 @@
     justify-content: center;
     padding: 20px;
 }
-
 .modal-bg {
     position: absolute;
     width: 100%;
@@ -1005,7 +971,6 @@
     top: 0;
     left: 0;
 }
-
 .modal-close {
     position: absolute;
     top: 30px;
@@ -1018,12 +983,10 @@
     z-index: 10;
     transition: 0.2s;
 }
-
 .modal-close:hover {
     color: #D6B98C;
     transform: scale(1.1);
 }
-
 .modal-content {
     position: relative;
     z-index: 2;
@@ -1037,50 +1000,38 @@
     padding: 35px;
     animation: modalZoom 0.4s ease;
 }
-
 @keyframes modalZoom {
     from { transform: scale(0.9); opacity: 0; }
     to { transform: scale(1); opacity: 1; }
 }
-
 .modal-header h3 {
     font-size: 1.8rem;
     color: #D6B98C;
     margin-bottom: 5px;
-    font-family: 'Playfair Display', serif;
 }
-
 .modal-header p {
     color: rgba(255,255,255,0.5);
     margin: 5px 0;
-    font-size: 0.9rem;
 }
-
 .modal-story {
-    margin: 25px 0;
-    padding: 20px;
+    margin: 20px 0;
+    padding: 15px;
     background: rgba(255,255,255,0.03);
     border-radius: 20px;
-    line-height: 1.7;
+    line-height: 1.6;
     color: rgba(255,255,255,0.8);
-    font-size: 0.95rem;
 }
-
 .modal-media video {
     width: 100%;
     border-radius: 20px;
     margin-bottom: 20px;
-    box-shadow: 0 10px 30px rgba(0,0,0,0.3);
 }
-
 .modal-gallery {
     display: flex;
     gap: 15px;
     overflow-x: auto;
     padding: 10px 0;
-    scrollbar-width: thin;
 }
-
 .modal-gallery img {
     width: 120px;
     height: 160px;
@@ -1090,89 +1041,18 @@
     cursor: pointer;
     border: 1px solid rgba(214,185,140,0.2);
 }
-
 .modal-gallery img:hover {
     transform: scale(1.05);
     filter: brightness(1.1);
     border-color: #D6B98C;
 }
 
-/* SCROLLBAR */
-.modal-gallery::-webkit-scrollbar {
-    height: 5px;
-}
-
-.modal-gallery::-webkit-scrollbar-track {
-    background: rgba(255,255,255,0.1);
-    border-radius: 10px;
-}
-
-.modal-gallery::-webkit-scrollbar-thumb {
-    background: #D6B98C;
-    border-radius: 10px;
-}
-
-/* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
-    .journey-car-section {
-        padding: 60px 0;
-    }
-    
-    .car-map-container {
-        min-height: 450px;
-    }
-    
-    .car-point {
-        width: 35px;
-        height: 35px;
-        font-size: 0.9rem;
-    }
-    
-    .car-loading {
-        bottom: 20px;
-        padding: 8px 20px;
-    }
-    
-    .loading-text {
-        font-size: 0.8rem;
-    }
-    
-    .modal-content {
-        padding: 25px;
-        margin: 20px;
-    }
-    
-    .modal-header h3 {
-        font-size: 1.3rem;
-    }
-    
-    .modal-story {
-        font-size: 0.85rem;
-        padding: 15px;
-    }
-    
-    .modal-gallery img {
-        width: 90px;
-        height: 120px;
-    }
-    
-    .modal-close {
-        top: 15px;
-        right: 25px;
-        font-size: 2.5rem;
-    }
-}
-
-/* TABLET */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .car-map-container {
-        max-width: 800px;
-    }
-    
-    .car-point {
-        width: 40px;
-        height: 40px;
-    }
+    .car-point { width: 35px; height: 35px; font-size: 1rem; }
+    .modal-content { padding: 25px; margin: 20px; }
+    .modal-header h3 { font-size: 1.3rem; }
+    .modal-gallery img { width: 90px; height: 120px; }
+    .modal-close { top: 15px; right: 25px; font-size: 2.5rem; }
 }
         /* =========================
    FUTURISTIC 3D GALLERY
@@ -2235,27 +2115,20 @@
 
 </section>
 <!-- ======================================== -->
-<!-- INTERACTIVE JOURNEY MAP - SPEKTAKULER 3D -->
+<!-- JOURNEY MAP WITH CAR ANIMATION           -->
 <!-- ======================================== -->
-                  <!-- ======================================== -->
-<!-- JOURNEY MAP WITH CAR ANIMATION -->
-<!-- ======================================== -->
-
 <section class="journey-car-section">
     <div class="car-bg-glow"></div>
-    
     <div class="container">
         <div class="section-header">
             <div class="section-subtitle">OUR LOVE JOURNEY</div>
             <h2 class="section-title">Perjalanan Cinta</h2>
-            <p class="section-desc">Klik setiap titik untuk memulai perjalanan</p>
+            <p class="section-desc">Klik setiap titik, mobil akan membawamu ke kenangan itu 🚗✨</p>
         </div>
 
         <div class="car-map-container" id="carMapContainer">
-            <!-- Canvas untuk menggambar garis + mobil -->
-            <canvas id="journeyCanvas" width="1000" height="500" style="width:100%; height:auto; background: transparent;"></canvas>
-            
-            <!-- Titik-titik interaktif -->
+            <canvas id="journeyCanvas" width="1000" height="500"></canvas>
+
             <div class="car-points">
                 <div class="car-point" data-idx="0" data-title="Pertama Komunikasi" data-date="14 September 2021" data-location="WhatsApp" data-story="Awal mula kami berkenalan melalui pesan singkat. Dari obrolan ringan hingga akhirnya saling memahami." data-video="komunikasi.mp4" data-img1="komunikasi1.jpg" data-img2="komunikasi2.jpg" data-img3="komunikasi3.jpg" style="left: 5%; top: 30%;">1</div>
                 <div class="car-point" data-idx="1" data-title="Pertemuan" data-date="28 November 2021" data-location="Kafe Senja" data-story="Pertemuan pertama secara langsung. Deg-degan, canggung, tapi terasa begitu nyaman." data-video="ketemu.mp4" data-img1="ketemu1.jpg" data-img2="ketemu2.jpg" data-img3="ketemu3.jpg" style="left: 22%; top: 55%;">2</div>
@@ -2265,15 +2138,14 @@
                 <div class="car-point" data-idx="5" data-title="Latar Biru" data-date="3 Mei 2026" data-location="Studio Biru" data-story="Konsep foto dengan nuansa biru yang romantis." data-video="biru.mp4" data-img1="biru1.jpg" data-img2="biru2.jpg" data-img3="biru3.jpg" style="left: 92%; top: 15%;">6</div>
             </div>
         </div>
-        
-        <!-- Loading indicator -->
+
         <div class="car-loading" id="carLoading">
-            <div class="loading-text">🚗 Mobil sedang berjalan...</div>
+            <div class="loading-text">🚗 Mobil sedang berjalan menuju kenangan...</div>
         </div>
     </div>
 </section>
 
-<!-- MODAL (sama seperti sebelumnya) -->
+<!-- MODAL JOURNEY DETAIL -->
 <div class="journey-detail-modal" id="journeyDetailModal">
     <div class="modal-container">
         <div class="modal-bg"></div>
@@ -2284,19 +2156,12 @@
                 <p id="modalDate"></p>
                 <p id="modalLocation"></p>
             </div>
-            <div class="modal-story">
-                <p id="modalStory"></p>
-            </div>
-            <div class="modal-media">
-                <video id="modalVideo" controls playsinline>
-                    <source src="" type="video/mp4">
-                </video>
-            </div>
+            <div class="modal-story"><p id="modalStory"></p></div>
+            <div class="modal-media"><video id="modalVideo" controls playsinline><source src="" type="video/mp4"></video></div>
             <div class="modal-gallery" id="modalGallery"></div>
         </div>
     </div>
-</div>    
-     
+</div>
         <!-- =========================
      FUTURISTIC PREWEDDING
 ========================= -->
@@ -2961,242 +2826,195 @@ function nextQuestion() {
     renderQuiz();
 }
 
-
 // ========================================
-// JOURNEY MAP WITH CAR ANIMATION
+// JOURNEY MAP WITH CAR ANIMATION - FULL
 // ========================================
+(function() {
+    let canvas, ctx;
+    let waypoints = [];
+    let carX = 0, carY = 0;
+    let currentTargetIndex = -1;
+    let currentSegment = 0;
+    let animProgress = 0;
+    let isAnimating = false;
+    let journeyData = [];
 
-// Koordinat titik (disesuaikan dengan posisi CSS)
-const waypoints = [
-    { x: 50, y: 150 },   // Titik 1 (5% -> 50px, 30% -> 150px)
-    { x: 220, y: 275 },  // Titik 2 (22% -> 220px, 55% -> 275px)
-    { x: 420, y: 350 },  // Titik 3 (42% -> 420px, 70% -> 350px)
-    { x: 650, y: 300 },  // Titik 4 (65% -> 650px, 60% -> 300px)
-    { x: 820, y: 175 },  // Titik 5 (82% -> 820px, 35% -> 175px)
-    { x: 920, y: 75 }    // Titik 6 (92% -> 920px, 15% -> 75px)
-];
+    function init() {
+        canvas = document.getElementById('journeyCanvas');
+        if (!canvas) return;
+        ctx = canvas.getContext('2d');
 
-let canvas, ctx;
-let carX = waypoints[0].x, carY = waypoints[0].y;
-let animationId = null;
-let currentTargetIndex = -1;
-let currentSegment = 0;
-let animProgress = 0;
-let isAnimating = false;
-let pendingClickIndex = -1;
+        const container = document.getElementById('carMapContainer');
+        const rect = container.getBoundingClientRect();
+        canvas.width = rect.width;
+        canvas.height = rect.height;
 
-// Data journey
-const journeyData = [];
-
-// Inisialisasi
-function initJourneyMap() {
-    canvas = document.getElementById('journeyCanvas');
-    if (!canvas) return;
-    
-    ctx = canvas.getContext('2d');
-    
-    // Set canvas size
-    const container = document.getElementById('carMapContainer');
-    const rect = container.getBoundingClientRect();
-    canvas.width = rect.width;
-    canvas.height = rect.height;
-    
-    // Kumpulkan data dari DOM
-    document.querySelectorAll('.car-point').forEach((point, idx) => {
-        journeyData[idx] = {
-            title: point.dataset.title,
-            date: point.dataset.date,
-            location: point.dataset.location,
-            story: point.dataset.story,
-            video: point.dataset.video,
-            img1: point.dataset.img1,
-            img2: point.dataset.img2,
-            img3: point.dataset.img3
-        };
-        
-        point.addEventListener('click', () => {
-            if (isAnimating) {
-                pendingClickIndex = idx;
-                return;
-            }
-            startCarJourney(idx);
+        const points = document.querySelectorAll('.car-point');
+        waypoints = [];
+        points.forEach((point, i) => {
+            const left = parseFloat(point.style.left);
+            const top = parseFloat(point.style.top);
+            waypoints.push({
+                x: (left / 100) * canvas.width,
+                y: (top / 100) * canvas.height
+            });
+            journeyData[i] = {
+                title: point.dataset.title,
+                date: point.dataset.date,
+                location: point.dataset.location,
+                story: point.dataset.story,
+                video: point.dataset.video,
+                img1: point.dataset.img1,
+                img2: point.dataset.img2,
+                img3: point.dataset.img3
+            };
+            point.addEventListener('click', () => {
+                if (isAnimating) return;
+                startJourney(i);
+            });
         });
-    });
-    
-    drawMap();
-    window.addEventListener('resize', () => {
-        const newRect = container.getBoundingClientRect();
-        canvas.width = newRect.width;
-        canvas.height = newRect.height;
-        drawMap();
-    });
-}
 
-// Draw garis + mobil
-function drawMap() {
-    if (!ctx) return;
-    ctx.clearRect(0, 0, canvas.width, canvas.height);
-    
-    // Draw lines
-    ctx.beginPath();
-    ctx.moveTo(waypoints[0].x, waypoints[0].y);
-    for (let i = 1; i < waypoints.length; i++) {
-        ctx.lineTo(waypoints[i].x, waypoints[i].y);
-    }
-    ctx.strokeStyle = '#D6B98C';
-    ctx.lineWidth = 3;
-    ctx.setLineDash([10, 15]);
-    ctx.stroke();
-    ctx.setLineDash([]);
-    
-    // Draw dots on waypoints
-    for (let i = 0; i < waypoints.length; i++) {
-        ctx.beginPath();
-        ctx.arc(waypoints[i].x, waypoints[i].y, 8, 0, Math.PI * 2);
-        ctx.fillStyle = '#D6B98C';
-        ctx.shadowBlur = 10;
-        ctx.shadowColor = '#D6B98C';
-        ctx.fill();
-        ctx.beginPath();
-        ctx.arc(waypoints[i].x, waypoints[i].y, 4, 0, Math.PI * 2);
-        ctx.fillStyle = '#111';
-        ctx.fill();
-    }
-    ctx.shadowBlur = 0;
-    
-    // Draw car
-    const carImg = new Image();
-    carImg.src = 'https://i.postimg.cc/your-car-image.png'; // GANTI DENGAN LINK MOBIL LO
-    // Sementara pake icon mobil
-    ctx.fillStyle = '#D6B98C';
-    ctx.font = '24px "Font Awesome 6 Free"';
-    ctx.fillText('🚗', carX - 12, carY - 12);
-}
-
-// Start animasi mobil ke target index
-function startCarJourney(targetIdx) {
-    if (targetIdx <= currentTargetIndex) return;
-    
-    isAnimating = true;
-    currentTargetIndex = targetIdx;
-    currentSegment = 0;
-    animProgress = 0;
-    
-    document.getElementById('carLoading').classList.add('show');
-    animateCar();
-}
-
-function animateCar() {
-    if (!isAnimating) return;
-    
-    if (currentSegment >= currentTargetIndex) {
-        // Sampai tujuan
-        isAnimating = false;
-        document.getElementById('carLoading').classList.remove('show');
-        
-        // Highlight point tujuan
-        document.querySelectorAll('.car-point').forEach((p, i) => {
-            if (i === currentTargetIndex) {
-                p.classList.add('active');
-            }
-        });
-        
-        // Buka modal
-        openJourneyDetail(currentTargetIndex);
-        
-        // Reset highlight after 2 seconds
-        setTimeout(() => {
-            document.querySelectorAll('.car-point').forEach(p => p.classList.remove('active'));
-        }, 2000);
-        
-        return;
-    }
-    
-    const start = waypoints[currentSegment];
-    const end = waypoints[currentSegment + 1];
-    
-    animProgress += 0.02;
-    
-    if (animProgress >= 1) {
-        // Pindah ke segmen berikutnya
-        animProgress = 0;
-        currentSegment++;
-        if (currentSegment < currentTargetIndex) {
-            requestAnimationFrame(animateCar);
-        } else {
-            // Final segment to target
-            animateCar();
+        if (waypoints.length) {
+            carX = waypoints[0].x;
+            carY = waypoints[0].y;
         }
-        return;
+        draw();
+        window.addEventListener('resize', () => {
+            const rect = container.getBoundingClientRect();
+            canvas.width = rect.width;
+            canvas.height = rect.height;
+            updateWaypoints();
+            draw();
+        });
     }
-    
-    // Interpolasi posisi
-    const ease = 1 - Math.pow(1 - animProgress, 2);
-    carX = start.x + (end.x - start.x) * ease;
-    carY = start.y + (end.y - start.y) * ease;
-    
-    drawMap();
-    requestAnimationFrame(animateCar);
-}
 
-// Open modal (sama seperti sebelumnya)
-function openJourneyDetail(idx) {
-    const data = journeyData[idx];
-    if (!data) return;
-    
-    document.getElementById('modalTitle').innerText = data.title;
-    document.getElementById('modalDate').innerText = data.date;
-    document.getElementById('modalLocation').innerHTML = `📍 ${data.location}`;
-    document.getElementById('modalStory').innerText = data.story;
-    
-    const modalVideo = document.getElementById('modalVideo');
-    modalVideo.querySelector('source').src = data.video;
-    modalVideo.load();
-    
-    const gallery = document.getElementById('modalGallery');
-    gallery.innerHTML = `
-        <img src="${data.img1}" alt="Gallery 1">
-        <img src="${data.img2}" alt="Gallery 2">
-        <img src="${data.img3}" alt="Gallery 3">
-    `;
-    
-    document.getElementById('journeyDetailModal').classList.add('active');
-    modalVideo.play().catch(e => console.log('Auto-play prevented'));
-}
-
-// Close modal
-document.getElementById('closeModalBtn')?.addEventListener('click', () => {
-    const modalVideo = document.getElementById('modalVideo');
-    modalVideo.pause();
-    document.getElementById('journeyDetailModal').classList.remove('active');
-});
-
-document.getElementById('journeyDetailModal')?.addEventListener('click', (e) => {
-    if (e.target === document.getElementById('journeyDetailModal') || e.target.classList.contains('modal-bg')) {
-        const modalVideo = document.getElementById('modalVideo');
-        modalVideo.pause();
-        document.getElementById('journeyDetailModal').classList.remove('active');
-    }
-});
-
-// Start
-window.addEventListener('load', () => {
-    initJourneyMap();
-    
-    // Update koordinat waypoints setelah layout siap
-    setTimeout(() => {
+    function updateWaypoints() {
+        const container = document.getElementById('carMapContainer');
+        const rect = container.getBoundingClientRect();
         const points = document.querySelectorAll('.car-point');
         points.forEach((point, i) => {
             const left = parseFloat(point.style.left);
             const top = parseFloat(point.style.top);
             waypoints[i] = {
-                x: (left / 100) * canvas.width,
-                y: (top / 100) * canvas.height
+                x: (left / 100) * rect.width,
+                y: (top / 100) * rect.height
             };
         });
-        drawMap();
-    }, 500);
-});
+        if (waypoints.length && carX === 0) {
+            carX = waypoints[0].x;
+            carY = waypoints[0].y;
+        }
+    }
+
+    function draw() {
+        if (!ctx) return;
+        ctx.clearRect(0, 0, canvas.width, canvas.height);
+        if (waypoints.length < 2) return;
+
+        // Garis penghubung
+        ctx.beginPath();
+        ctx.moveTo(waypoints[0].x, waypoints[0].y);
+        for (let i = 1; i < waypoints.length; i++) ctx.lineTo(waypoints[i].x, waypoints[i].y);
+        ctx.strokeStyle = '#D6B98C';
+        ctx.lineWidth = 3;
+        ctx.setLineDash([10, 12]);
+        ctx.stroke();
+        ctx.setLineDash([]);
+
+        // Titik
+        for (let i = 0; i < waypoints.length; i++) {
+            ctx.beginPath();
+            ctx.arc(waypoints[i].x, waypoints[i].y, 10, 0, Math.PI * 2);
+            ctx.fillStyle = '#D6B98C';
+            ctx.shadowBlur = 10;
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(waypoints[i].x, waypoints[i].y, 5, 0, Math.PI * 2);
+            ctx.fillStyle = '#000';
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 14px Poppins';
+            ctx.shadowBlur = 0;
+            ctx.fillText(i + 1, waypoints[i].x - 5, waypoints[i].y - 12);
+        }
+
+        // Mobil
+        ctx.fillStyle = '#D6B98C';
+        ctx.font = '26px "Font Awesome 6 Free"';
+        ctx.fillText('🚗', carX - 13, carY - 10);
+    }
+
+    function startJourney(target) {
+        if (target === 0 || target <= currentTargetIndex) {
+            openDetail(target);
+            return;
+        }
+        isAnimating = true;
+        currentTargetIndex = target;
+        currentSegment = 0;
+        animProgress = 0;
+        document.getElementById('carLoading')?.classList.add('show');
+        animate();
+    }
+
+    function animate() {
+        if (!isAnimating) return;
+        if (currentSegment >= currentTargetIndex) {
+            isAnimating = false;
+            document.getElementById('carLoading')?.classList.remove('show');
+            openDetail(currentTargetIndex);
+            return;
+        }
+        const start = waypoints[currentSegment];
+        const end = waypoints[currentSegment + 1];
+        animProgress += 0.025;
+        if (animProgress >= 1) {
+            animProgress = 0;
+            currentSegment++;
+            requestAnimationFrame(animate);
+            return;
+        }
+        const ease = 1 - Math.pow(1 - animProgress, 2);
+        carX = start.x + (end.x - start.x) * ease;
+        carY = start.y + (end.y - start.y) * ease;
+        draw();
+        requestAnimationFrame(animate);
+    }
+
+    function openDetail(idx) {
+        const d = journeyData[idx];
+        if (!d) return;
+        document.getElementById('modalTitle').innerText = d.title;
+        document.getElementById('modalDate').innerText = d.date;
+        document.getElementById('modalLocation').innerHTML = `📍 ${d.location}`;
+        document.getElementById('modalStory').innerText = d.story;
+        const video = document.getElementById('modalVideo');
+        video.querySelector('source').src = d.video;
+        video.load();
+        document.getElementById('modalGallery').innerHTML = `
+            <img src="${d.img1}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo1'">
+            <img src="${d.img2}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo2'">
+            <img src="${d.img3}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo3'">
+        `;
+        document.getElementById('journeyDetailModal').classList.add('active');
+        video.play().catch(e => console.log('auto-play error'));
+    }
+
+    document.getElementById('closeModalBtn')?.addEventListener('click', () => {
+        const vid = document.getElementById('modalVideo');
+        if (vid) vid.pause();
+        document.getElementById('journeyDetailModal').classList.remove('active');
+    });
+    document.getElementById('journeyDetailModal')?.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('journeyDetailModal') || e.target.classList.contains('modal-bg')) {
+            const vid = document.getElementById('modalVideo');
+            if (vid) vid.pause();
+            document.getElementById('journeyDetailModal').classList.remove('active');
+        }
+    });
+
+    window.addEventListener('load', () => setTimeout(init, 300));
+})();
     
 // ========================
 // GALLERY JS
