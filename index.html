@@ -882,24 +882,24 @@
     position: absolute;
     width: 28px;
     height: 28px;
-    background: linear-gradient(135deg, #D6B98C, #8C6A58);
+    background: linear-gradient(135deg, #FF6B9A, #D6336C);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
     font-size: 0.75rem;
-    color: #111;
+    color: white;
     cursor: pointer;
     transition: all 0.3s ease;
-    box-shadow: 0 0 10px rgba(214,185,140,0.5);
+    box-shadow: 0 0 12px rgba(255,107,154,0.5);
     transform: translate(-50%, -50%);
     z-index: 10;
 }
 
 .car-point:hover {
     transform: translate(-50%, -50%) scale(1.1);
-    box-shadow: 0 0 20px rgba(214,185,140,0.8);
+    box-shadow: 0 0 20px rgba(255,107,154,0.8);
 }
 .car-point.active {
     background: #D6B98C;
@@ -2125,8 +2125,7 @@
         <div class="section-header">
             <div class="section-subtitle">OUR LOVE JOURNEY</div>
             <h2 class="section-title">Perjalanan Cinta</h2>
-            <p class="section-desc">Klik setiap titik, mobil akan membawamu ke kenangan itu 🚗💖</p>
-        </div>
+     </div>
 
         <div class="car-map-container" id="carMapContainer">
             <canvas id="journeyCanvas" width="1000" height="500"></canvas>
@@ -2938,7 +2937,7 @@ function nextQuestion() {
     }
     ctx.lineTo(waypoints[0].x, waypoints[0].y); // garis 6 ke 1
     
-    ctx.strokeStyle = '#D6B98C';
+    ctx.strokeStyle = '#FF4D6D';
     ctx.lineWidth = 3;
     ctx.setLineDash([]); // ← SOLID (tanpa putus-putus)
     ctx.stroke();
