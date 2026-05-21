@@ -2115,7 +2115,7 @@
 
 </section>
 <!-- ======================================== -->
-<!-- JOURNEY MAP WITH CAR ANIMATION           -->
+<!-- JOURNEY MAP LOVE + MOBIL 3D               -->
 <!-- ======================================== -->
 <section class="journey-car-section">
     <div class="car-bg-glow"></div>
@@ -2123,19 +2123,20 @@
         <div class="section-header">
             <div class="section-subtitle">OUR LOVE JOURNEY</div>
             <h2 class="section-title">Perjalanan Cinta</h2>
-            <p class="section-desc">Klik setiap titik, mobil akan membawamu ke kenangan itu 🚗✨</p>
+            <p class="section-desc">Klik setiap titik, mobil akan membawamu ke kenangan itu 🚗💖</p>
         </div>
 
         <div class="car-map-container" id="carMapContainer">
             <canvas id="journeyCanvas" width="1000" height="500"></canvas>
 
             <div class="car-points">
-                <div class="car-point" data-idx="0" data-title="Pertama Komunikasi" data-date="14 September 2021" data-location="WhatsApp" data-story="Awal mula kami berkenalan melalui pesan singkat. Dari obrolan ringan hingga akhirnya saling memahami." data-video="komunikasi.mp4" data-img1="komunikasi1.jpg" data-img2="komunikasi2.jpg" data-img3="komunikasi3.jpg" style="left: 5%; top: 30%;">1</div>
-                <div class="car-point" data-idx="1" data-title="Pertemuan" data-date="28 November 2021" data-location="Kafe Senja" data-story="Pertemuan pertama secara langsung. Deg-degan, canggung, tapi terasa begitu nyaman." data-video="ketemu.mp4" data-img1="ketemu1.jpg" data-img2="ketemu2.jpg" data-img3="ketemu3.jpg" style="left: 22%; top: 55%;">2</div>
-                <div class="car-point" data-idx="2" data-title="Tunangan" data-date="13 Agustus 2023" data-location="Rumah Masing-masing" data-story="Memutuskan untuk serius dan memperkenalkan satu sama lain ke keluarga." data-video="tunangan.mp4" data-img1="tunangan1.jpg" data-img2="tunangan2.jpg" data-img3="tunangan3.jpg" style="left: 42%; top: 70%;">3</div>
-                <div class="car-point" data-idx="3" data-title="Lamaran" data-date="8 Februari 2026" data-location="Pantai Indah" data-story="Momen paling membahagiakan saat 'Iya' terlontar dengan penuh haru." data-video="lamaran.mp4" data-img1="lamaran1.jpg" data-img2="lamaran2.jpg" data-img3="lamaran3.jpg" style="left: 65%; top: 60%;">4</div>
-                <div class="car-point" data-idx="4" data-title="Foto Prewedding" data-date="2 Mei 2026" data-location="Studio & Outdoor" data-story="Mengabadikan momen terindah sebelum hari H." data-video="prewed.mp4" data-img1="prewed1.jpg" data-img2="prewed2.jpg" data-img3="prewed3.jpg" style="left: 82%; top: 35%;">5</div>
-                <div class="car-point" data-idx="5" data-title="Latar Biru" data-date="3 Mei 2026" data-location="Studio Biru" data-story="Konsep foto dengan nuansa biru yang romantis." data-video="biru.mp4" data-img1="biru1.jpg" data-img2="biru2.jpg" data-img3="biru3.jpg" style="left: 92%; top: 15%;">6</div>
+                <!-- LOVE POSITION: titik 1 s/d 6 membentuk LOVE -->
+                <div class="car-point" data-idx="0" data-title="Pertama Komunikasi" data-date="14 September 2021" data-location="WhatsApp" data-story="Awal mula kami berkenalan melalui pesan singkat. Dari obrolan ringan hingga akhirnya saling memahami." data-video="komunikasi.mp4" data-img1="komunikasi1.jpg" data-img2="komunikasi2.jpg" data-img3="komunikasi3.jpg" style="left: 15%; top: 20%;">1</div>
+                <div class="car-point" data-idx="1" data-title="Pertemuan" data-date="28 November 2021" data-location="Kafe Senja" data-story="Pertemuan pertama secara langsung. Deg-degan, canggung, tapi terasa begitu nyaman." data-video="ketemu.mp4" data-img1="ketemu1.jpg" data-img2="ketemu2.jpg" data-img3="ketemu3.jpg" style="left: 10%; top: 45%;">2</div>
+                <div class="car-point" data-idx="2" data-title="Tunangan" data-date="13 Agustus 2023" data-location="Rumah Masing-masing" data-story="Memutuskan untuk serius dan memperkenalkan satu sama lain ke keluarga." data-video="tunangan.mp4" data-img1="tunangan1.jpg" data-img2="tunangan2.jpg" data-img3="tunangan3.jpg" style="left: 18%; top: 70%;">3</div>
+                <div class="car-point" data-idx="3" data-title="Lamaran" data-date="8 Februari 2026" data-location="Pantai Indah" data-story="Momen paling membahagiakan saat 'Iya' terlontar dengan penuh haru." data-video="lamaran.mp4" data-img1="lamaran1.jpg" data-img2="lamaran2.jpg" data-img3="lamaran3.jpg" style="left: 45%; top: 70%;">4</div>
+                <div class="car-point" data-idx="4" data-title="Foto Prewedding" data-date="2 Mei 2026" data-location="Studio & Outdoor" data-story="Mengabadikan momen terindah sebelum hari H." data-video="prewed.mp4" data-img1="prewed1.jpg" data-img2="prewed2.jpg" data-img3="prewed3.jpg" style="left: 52%; top: 45%;">5</div>
+                <div class="car-point" data-idx="5" data-title="Latar Biru" data-date="3 Mei 2026" data-location="Studio Biru" data-story="Konsep foto dengan nuansa biru yang romantis." data-video="biru.mp4" data-img1="biru1.jpg" data-img2="biru2.jpg" data-img3="biru3.jpg" style="left: 48%; top: 20%;">6</div>
             </div>
         </div>
 
@@ -2826,8 +2827,8 @@ function nextQuestion() {
     renderQuiz();
 }
 
-// ========================================
-// JOURNEY MAP WITH CAR ANIMATION - FULL
+        // ========================================
+// JOURNEY MAP LOVE + MOBIL 3D
 // ========================================
 (function() {
     let canvas, ctx;
@@ -2838,11 +2839,16 @@ function nextQuestion() {
     let animProgress = 0;
     let isAnimating = false;
     let journeyData = [];
+    let carImage = new Image();
+    carImage.src = 'mobilwd.png'; // ← PASTIKAN FILE ADA
 
     function init() {
         canvas = document.getElementById('journeyCanvas');
         if (!canvas) return;
         ctx = canvas.getContext('2d');
+        
+        carImage.onload = () => draw();
+        carImage.onerror = () => console.log('Gambar mobil gagal load, cek file mobilwd.png');
 
         const container = document.getElementById('carMapContainer');
         const rect = container.getBoundingClientRect();
@@ -2916,44 +2922,58 @@ function nextQuestion() {
         ctx.moveTo(waypoints[0].x, waypoints[0].y);
         for (let i = 1; i < waypoints.length; i++) ctx.lineTo(waypoints[i].x, waypoints[i].y);
         ctx.strokeStyle = '#D6B98C';
-        ctx.lineWidth = 3;
+        ctx.lineWidth = 4;
         ctx.setLineDash([10, 12]);
         ctx.stroke();
         ctx.setLineDash([]);
 
-        // Titik
+        // Titik + angka
         for (let i = 0; i < waypoints.length; i++) {
             ctx.beginPath();
-            ctx.arc(waypoints[i].x, waypoints[i].y, 10, 0, Math.PI * 2);
+            ctx.arc(waypoints[i].x, waypoints[i].y, 14, 0, Math.PI * 2);
             ctx.fillStyle = '#D6B98C';
-            ctx.shadowBlur = 10;
+            ctx.shadowBlur = 12;
+            ctx.shadowColor = '#D6B98C';
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(waypoints[i].x, waypoints[i].y, 5, 0, Math.PI * 2);
-            ctx.fillStyle = '#000';
+            ctx.arc(waypoints[i].x, waypoints[i].y, 8, 0, Math.PI * 2);
+            ctx.fillStyle = '#111';
             ctx.fill();
             ctx.fillStyle = '#fff';
-            ctx.font = 'bold 14px Poppins';
+            ctx.font = 'bold 16px Poppins';
             ctx.shadowBlur = 0;
-            ctx.fillText(i + 1, waypoints[i].x - 5, waypoints[i].y - 12);
+            ctx.fillText(i + 1, waypoints[i].x - 7, waypoints[i].y + 6);
         }
 
-        // Mobil
-        ctx.fillStyle = '#D6B98C';
-        ctx.font = '26px "Font Awesome 6 Free"';
-        ctx.fillText('🚗', carX - 13, carY - 10);
+        // Mobil 3D (paling atas)
+        if (carImage.complete && carImage.src) {
+            ctx.drawImage(carImage, carX - 20, carY - 20, 40, 40);
+        }
     }
 
     function startJourney(target) {
-        if (target === 0 || target <= currentTargetIndex) {
+        if (isAnimating) return;
+        
+        // RESET: selalu mulai dari titik 1
+        carX = waypoints[0].x;
+        carY = waypoints[0].y;
+        currentSegment = 0;
+        currentTargetIndex = -1;
+        draw();
+        
+        if (target === 0) {
             openDetail(target);
             return;
         }
+        
         isAnimating = true;
         currentTargetIndex = target;
         currentSegment = 0;
         animProgress = 0;
-        document.getElementById('carLoading')?.classList.add('show');
+        
+        const loading = document.getElementById('carLoading');
+        if (loading) loading.classList.add('show');
+        
         animate();
     }
 
@@ -3015,7 +3035,7 @@ function nextQuestion() {
 
     window.addEventListener('load', () => setTimeout(init, 300));
 })();
-    
+        
 // ========================
 // GALLERY JS
 // ========================
