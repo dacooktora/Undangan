@@ -879,20 +879,21 @@
 }
 .car-point {
     position: absolute;
-    width: 40px;
-    height: 40px;
-    background: transparent;
+    width: 28px;
+    height: 28px;
+    background: linear-gradient(135deg, #D6B98C, #8C6A58);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
     font-weight: bold;
-    font-size: 0;
-    color: transparent;
+    font-size: 0.75rem;
+    color: #111;
     cursor: pointer;
+    transition: all 0.3s ease;
+    box-shadow: 0 0 10px rgba(214,185,140,0.5);
     transform: translate(-50%, -50%);
     z-index: 10;
-    /* Tidak ada background, tidak ada shadow, benar-benar transparan */
 }
 
 .car-point:hover {
