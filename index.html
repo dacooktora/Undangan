@@ -819,11 +819,9 @@
         margin: 28px auto 40px;
     }
 }
-        /* ==========================
-NETFLIX 3D JOURNEY
-========================== */
+        /* JOURNEY */
 
-.journey-netflix{
+.journey-section{
 
 position:relative;
 overflow:hidden;
@@ -834,252 +832,250 @@ padding:120px 0;
 .journey-bg{
 
 position:absolute;
-
-inset:0;
+width:1000px;
+height:1000px;
 
 background:
+radial-gradient(circle,
+rgba(214,185,140,.08),
+transparent 70%);
 
-radial-gradient(
-circle at center,
-rgba(255,255,255,.05),
-transparent 70%
-);
+left:50%;
+top:50%;
 
-pointer-events:none;
+transform:translate(-50%,-50%);
 
 }
 
-.journey-track{
+.journey-timeline{
+
+position:relative;
+margin-top:80px;
+
+}
+
+.journey-row{
 
 display:flex;
-
-gap:40px;
-
-overflow-x:auto;
-
-padding:50px;
-
-perspective:2000px;
-
-scrollbar-width:none;
+margin-bottom:120px;
+position:relative;
 
 }
 
-.journey-track::-webkit-scrollbar{
+.journey-row.left{
 
-display:none;
+justify-content:flex-start;
 
 }
 
+.journey-row.right{
+
+justify-content:flex-end;
+
+}
 
 .journey-card{
 
-min-width:320px;
-height:500px;
+width:520px;
 
-cursor:pointer;
+padding:25px;
+
+border-radius:35px;
+
+background:
+linear-gradient(
+145deg,
+rgba(255,255,255,.05),
+rgba(255,255,255,.02)
+);
+
+border:1px solid rgba(255,255,255,.08);
+
+backdrop-filter:blur(25px);
+
+box-shadow:
+0 20px 60px rgba(0,0,0,.6);
 
 transform-style:preserve-3d;
 
-transition:.7s;
+transition:.5s;
+
+position:relative;
 
 }
 
 .journey-card:hover{
 
 transform:
-
-translateY(-30px)
-
-rotateY(10deg)
-
-scale(1.05);
+translateY(-15px)
+rotateX(8deg)
+rotateY(-8deg);
 
 }
 
-
-.journey-card-inner{
-
-width:100%;
-height:100%;
-
-border-radius:35px;
-
-overflow:hidden;
-
-position:relative;
-
-background:
-
-rgba(255,255,255,.04);
-
-backdrop-filter:blur(20px);
-
-box-shadow:
-
-0 30px 90px rgba(0,0,0,.7);
-
-border:
-
-1px solid rgba(255,255,255,.1);
-
-}
-
-.journey-cover{
-
-position:relative;
-
-height:100%;
-
-}
-
-.journey-cover img{
-
-width:100%;
-height:100%;
-
-object-fit:cover;
-
-transition:1s;
-
-}
-
-.journey-card:hover img{
-
-transform:scale(1.15);
-
-}
-
-
-.journey-overlay{
+.journey-number{
 
 position:absolute;
 
-bottom:0;
+top:-18px;
+left:-18px;
 
-left:0;
+width:60px;
+height:60px;
 
-right:0;
+border-radius:50%;
 
-padding:30px;
+background:#D6B98C;
 
-background:
+display:flex;
 
-linear-gradient(
+justify-content:center;
+align-items:center;
 
-transparent,
+font-weight:bold;
 
-rgba(0,0,0,.95)
+color:#111;
 
-);
+}
+
+.journey-content{
+
+display:flex;
+gap:20px;
+
+}
+
+.journey-media video{
+
+width:140px;
+height:250px;
+
+object-fit:cover;
+
+border-radius:20px;
+
+}
+
+.journey-info{
+
+flex:1;
+
+}
+
+.journey-info h3{
+
+margin-bottom:10px;
+
+font-size:1.4rem;
 
 }
 
 .journey-date{
 
-display:inline-block;
-
-padding:8px 18px;
-
-border-radius:40px;
-
-background:
-
-rgba(214,185,140,.15);
-
-color:#D6B98C;
-
-margin-bottom:15px;
-
-font-size:.8rem;
+opacity:.6;
+margin-bottom:18px;
 
 }
 
-.journey-overlay h3{
-
-font-size:1.7rem;
-
-margin-bottom:10px;
-
-color:#fff;
-
-}
-
-.journey-overlay p{
-
-opacity:.7;
-
-line-height:1.7;
-
-}
-
-
-.journey-modal{
-
-position:fixed;
-
-inset:0;
-
-background:rgba(0,0,0,.95);
+.journey-gallery{
 
 display:flex;
-
-justify-content:center;
-
-align-items:center;
-
-visibility:hidden;
-
-opacity:0;
-
-transition:.5s;
-
-z-index:99999;
+gap:10px;
 
 }
 
-.journey-modal.active{
+.journey-gallery img{
 
-visibility:visible;
+width:80px;
+height:130px;
 
-opacity:1;
+border-radius:15px;
 
-}
+object-fit:cover;
 
-.journey-modal video{
-
-width:90%;
-max-width:1000px;
-
-border-radius:30px;
+transition:.4s;
 
 }
 
-#closeJourney{
+.journey-gallery img:hover{
+
+transform:
+translateY(-10px)
+scale(1.06);
+
+}
+
+.journey-row::after{
+
+content:"";
 
 position:absolute;
 
-top:40px;
-right:50px;
+width:160px;
+height:4px;
 
-font-size:3rem;
+background:#D6B98C;
 
-color:white;
+top:50%;
 
-cursor:pointer;
+}
+
+.journey-row.left::after{
+
+right:26%;
+
+}
+
+.journey-row.right::after{
+
+left:26%;
 
 }
 
 @media(max-width:768px){
 
+.journey-row,
+.journey-row.left,
+.journey-row.right{
+
+justify-content:center;
+
+}
+
 .journey-card{
 
-min-width:250px;
-height:400px;
+width:100%;
+
+}
+
+.journey-content{
+
+flex-direction:column;
+
+}
+
+.journey-media video{
+
+width:100%;
+height:320px;
+
+}
+
+.journey-gallery img{
+
+width:31%;
+height:120px;
+
+}
+
+.journey-row::after{
+
+display:none;
 
 }
 
 }
+
         /* =========================
    FUTURISTIC 3D GALLERY
 ========================= */
@@ -2141,17 +2137,16 @@ height:400px;
 
 </section>
 <!-- =========================
-NETFLIX 3D LOVE STORY
+OUR JOURNEY / HISTORY TIMELINE
 ========================= -->
 
-<section class="section journey-netflix">
+<section class="section journey-section">
 
 <div class="journey-bg"></div>
 
 <div class="container">
 
 <div class="section-header">
-
 <div class="section-subtitle">
 Our Journey
 </div>
@@ -2160,33 +2155,54 @@ Our Journey
 Perjalanan Kami
 </h2>
 
+<p style="opacity:.6;margin-top:15px;">
+Setiap langkah adalah bagian dari cerita kami
+</p>
+
 </div>
 
-<div class="journey-track">
+
+<div class="journey-timeline">
 
 <!-- 1 -->
 
-<div class="journey-card" data-video="komunikasi.mp4">
+<div class="journey-row left">
 
-<div class="journey-card-inner">
+<div class="journey-card">
 
-<div class="journey-cover">
-
-<img src="komunikasi.jpg">
-
-<div class="journey-overlay">
-
-<div class="journey-date">
-14 September 2021
+<div class="journey-number">
+01
 </div>
+
+<div class="journey-content">
+
+<div class="journey-media">
+
+<video muted loop playsinline poster="komunikasi1.jpg">
+
+<source src="komunikasi.mp4">
+
+</video>
+
+</div>
+
+<div class="journey-info">
 
 <h3>
 Pertama Komunikasi
 </h3>
 
-<p>
-Awal semua cerita dimulai
-</p>
+<div class="journey-date">
+14 September 2021
+</div>
+
+<div class="journey-gallery">
+
+<img src="komunikasi1.jpg">
+<img src="komunikasi2.jpg">
+<img src="komunikasi3.jpg">
+
+</div>
 
 </div>
 
@@ -2199,27 +2215,43 @@ Awal semua cerita dimulai
 
 <!-- 2 -->
 
-<div class="journey-card" data-video="pertemuan.mp4">
+<div class="journey-row right">
 
-<div class="journey-card-inner">
+<div class="journey-card">
 
-<div class="journey-cover">
-
-<img src="pertemuan.jpg">
-
-<div class="journey-overlay">
-
-<div class="journey-date">
-28 November 2021
+<div class="journey-number">
+02
 </div>
+
+<div class="journey-content">
+
+<div class="journey-media">
+
+<video muted loop playsinline poster="pertemuan1.jpg">
+
+<source src="pertemuan.mp4">
+
+</video>
+
+</div>
+
+<div class="journey-info">
 
 <h3>
 Pertemuan
 </h3>
 
-<p>
-Momen pertama bertemu
-</p>
+<div class="journey-date">
+28 November 2021
+</div>
+
+<div class="journey-gallery">
+
+<img src="pertemuan1.jpg">
+<img src="pertemuan2.jpg">
+<img src="pertemuan3.jpg">
+
+</div>
 
 </div>
 
@@ -2232,27 +2264,43 @@ Momen pertama bertemu
 
 <!-- 3 -->
 
-<div class="journey-card" data-video="tunangan.mp4">
+<div class="journey-row left">
 
-<div class="journey-card-inner">
+<div class="journey-card">
 
-<div class="journey-cover">
-
-<img src="tunangan.jpg">
-
-<div class="journey-overlay">
-
-<div class="journey-date">
-13 Agustus 2023
+<div class="journey-number">
+03
 </div>
+
+<div class="journey-content">
+
+<div class="journey-media">
+
+<video muted loop playsinline poster="tunangan1.jpg">
+
+<source src="tunangan.mp4">
+
+</video>
+
+</div>
+
+<div class="journey-info">
 
 <h3>
 Tunangan
 </h3>
 
-<p>
-Langkah menuju masa depan
-</p>
+<div class="journey-date">
+13 Agustus 2023
+</div>
+
+<div class="journey-gallery">
+
+<img src="tunangan1.jpg">
+<img src="tunangan2.jpg">
+<img src="tunangan3.jpg">
+
+</div>
 
 </div>
 
@@ -2265,27 +2313,43 @@ Langkah menuju masa depan
 
 <!-- 4 -->
 
-<div class="journey-card" data-video="lamaran.mp4">
+<div class="journey-row right">
 
-<div class="journey-card-inner">
+<div class="journey-card">
 
-<div class="journey-cover">
-
-<img src="lamaran.jpg">
-
-<div class="journey-overlay">
-
-<div class="journey-date">
-8 Februari 2026
+<div class="journey-number">
+04
 </div>
+
+<div class="journey-content">
+
+<div class="journey-media">
+
+<video muted loop playsinline poster="lamaran1.jpg">
+
+<source src="lamaran.mp4">
+
+</video>
+
+</div>
+
+<div class="journey-info">
 
 <h3>
 Lamaran
 </h3>
 
-<p>
-Satu langkah lebih dekat
-</p>
+<div class="journey-date">
+8 Februari 2026
+</div>
+
+<div class="journey-gallery">
+
+<img src="lamaran1.jpg">
+<img src="lamaran2.jpg">
+<img src="lamaran3.jpg">
+
+</div>
 
 </div>
 
@@ -2298,27 +2362,43 @@ Satu langkah lebih dekat
 
 <!-- 5 -->
 
-<div class="journey-card" data-video="prewed.mp4">
+<div class="journey-row left">
 
-<div class="journey-card-inner">
+<div class="journey-card">
 
-<div class="journey-cover">
-
-<img src="prewed.jpg">
-
-<div class="journey-overlay">
-
-<div class="journey-date">
-2 Mei 2026
+<div class="journey-number">
+05
 </div>
+
+<div class="journey-content">
+
+<div class="journey-media">
+
+<video muted loop playsinline poster="prewed1.jpg">
+
+<source src="prewed.mp4">
+
+</video>
+
+</div>
+
+<div class="journey-info">
 
 <h3>
 Foto Prewedding
 </h3>
 
-<p>
-Merekam perjalanan cinta
-</p>
+<div class="journey-date">
+2 Mei 2026
+</div>
+
+<div class="journey-gallery">
+
+<img src="prewed1.jpg">
+<img src="prewed2.jpg">
+<img src="prewed3.jpg">
+
+</div>
 
 </div>
 
@@ -2331,27 +2411,41 @@ Merekam perjalanan cinta
 
 <!-- 6 -->
 
-<div class="journey-card" data-video="biru.mp4">
+<div class="journey-row right">
 
-<div class="journey-card-inner">
+<div class="journey-card">
 
-<div class="journey-cover">
-
-<img src="biru.jpg">
-
-<div class="journey-overlay">
-
-<div class="journey-date">
-3 Mei 2026
+<div class="journey-number">
+06
 </div>
+
+<div class="journey-content">
+
+<div class="journey-media">
+
+<video muted loop playsinline poster="biru1.jpg">
+
+<source src="biru.mp4">
+
+</video>
+
+</div>
+
+<div class="journey-info">
 
 <h3>
 Latar Biru
 </h3>
 
-<p>
-Potret menuju hari bahagia
-</p>
+<div class="journey-date">
+3 Mei 2026
+</div>
+
+<div class="journey-gallery">
+
+<img src="biru1.jpg">
+<img src="biru2.jpg">
+<img src="biru3.jpg">
 
 </div>
 
@@ -2360,33 +2454,15 @@ Potret menuju hari bahagia
 </div>
 
 </div>
+
+</div>
+
 
 </div>
 
 </div>
 
 </section>
-
-
-<!-- MODAL VIDEO -->
-
-<div class="journey-modal" id="journeyModal">
-
-<span id="closeJourney">
-
-×
-
-</span>
-
-<video id="journeyVideo"
-
-controls>
-
-</video>
-
-</div>
-<!-- Galeri Foto -->
-<!-- =========================
      
         <!-- =========================
      FUTURISTIC PREWEDDING
@@ -3082,7 +3158,48 @@ galleries.forEach(gallery => {
     gallery.addEventListener('mouseleave', () => gallery.style.animationPlayState = 'running');
 });
     /* NETFLIX JOURNEY */
+// autoplay ketika card muncul
 
+const videos=document.querySelectorAll(
+'.journey-media video'
+);
+
+const observer=new IntersectionObserver(
+
+(entries)=>{
+
+entries.forEach(entry=>{
+
+const vid=entry.target;
+
+if(entry.isIntersecting){
+
+vid.play();
+
+}else{
+
+vid.pause();
+
+}
+
+});
+
+},
+
+{
+
+threshold:.5
+
+}
+
+);
+
+videos.forEach(v=>{
+
+observer.observe(v);
+
+});
+    
 const journeyCards=
 document.querySelectorAll(
 '.journey-card'
