@@ -824,288 +824,248 @@
    LOVE JOURNEY - TIMELINE WITH ARROWS
 ========================= */
 
-.journey-section {
-    overflow: hidden;
-    position: relative;
-    padding: 60px 0;
+.journey-flow{
+
+display:flex;
+flex-direction:column;
+gap:70px;
+
+position:relative;
+
 }
 
-.journey-bg {
-    position: absolute;
-    width: 1000px;
-    height: 1000px;
-    background: radial-gradient(circle, rgba(255,255,255,0.05), transparent 70%);
-    left: 50%;
-    top: 50%;
-    transform: translate(-50%, -50%);
-    pointer-events: none;
+.journey-item{
+
+display:flex;
+
+position:relative;
+
 }
 
-/* GRID 2 KOLOM */
-.journey-grid {
-    display: grid;
-    grid-template-columns: 1fr auto 1fr;
-    align-items: center;
-    gap: 20px;
-    max-width: 900px;
-    margin: 0 auto;
-    position: relative;
+.left{
+
+justify-content:flex-start;
+
 }
 
-/* CARD STYLE - KECIL (VERSION SPEKTAKULER) */
-.journey-card {
-    background: linear-gradient(145deg, rgba(255,255,255,0.08), rgba(255,255,255,0.02));
-    border: 1px solid rgba(214,185,140,0.3);
-    border-radius: 20px;
-    padding: 20px 15px;
-    cursor: pointer;
-    text-align: center;
-    backdrop-filter: blur(10px);
-    transform-style: preserve-3d;
-    will-change: transform;
-    transition: box-shadow 0.1s ease;
-    position: relative;
-    overflow: hidden;
+.right{
+
+justify-content:flex-end;
+
 }
 
-/* Animated border gradient */
-.journey-card::before {
-    content: '';
-    position: absolute;
-    inset: 0;
-    border-radius: 20px;
-    padding: 1px;
-    background: linear-gradient(135deg, rgba(214,185,140,0.4), transparent 80%);
-    -webkit-mask: linear-gradient(#fff 0 0) content-box, linear-gradient(#fff 0 0);
-    -webkit-mask-composite: xor;
-    mask-composite: exclude;
-    pointer-events: none;
-    opacity: 0;
-    transition: opacity 0.4s;
+.journey-box{
+
+width:250px;
+
+height:110px;
+
+display:flex;
+align-items:center;
+
+gap:15px;
+
+padding:15px;
+
+border-radius:25px;
+
+background:
+rgba(255,255,255,.04);
+
+border:
+1px solid rgba(255,255,255,.08);
+
+backdrop-filter:blur(25px);
+
+transition:.5s;
+
+cursor:pointer;
+
 }
 
-.journey-card:hover::before {
-    opacity: 1;
+.journey-box:hover{
+
+transform:
+translateY(-10px)
+rotateY(10deg);
+
 }
 
-.journey-card:hover {
-    transform: translateY(-8px) scale(1.02);
-    border-color: #D6B98C;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.4);
+.journey-box img{
+
+width:65px;
+height:80px;
+
+border-radius:15px;
+
+object-fit:cover;
+
 }
 
-.journey-card-inner {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    gap: 10px;
+.journey-num{
+
+position:absolute;
+
+top:-15px;
+
+width:45px;
+height:45px;
+
+border-radius:50%;
+
+background:#D6B98C;
+
+display:flex;
+justify-content:center;
+align-items:center;
+
+color:#111;
+font-weight:bold;
+
 }
 
-.journey-icon {
-    font-size: 2.2rem;
+.left .journey-num{
+
+right:-15px;
+
 }
 
-.journey-card h3 {
-    font-size: 1rem;
-    color: #D6B98C;
-    margin: 0;
+.right .journey-num{
+
+left:-15px;
+
 }
 
-.journey-card p {
-    font-size: 0.75rem;
-    color: rgba(255,255,255,0.6);
-    margin: 0;
+.journey-text h3{
+
+font-size:1rem;
+margin-bottom:5px;
+
 }
 
-.journey-click {
-    font-size: 0.7rem;
-    color: rgba(214,185,140,0.7);
-    margin-top: 8px;
-    opacity: 0;
-    transition: opacity 0.3s;
+.journey-text p{
+
+font-size:.7rem;
+opacity:.6;
+
 }
 
-.journey-card:hover .journey-click {
-    opacity: 1;
+
+/* panah */
+
+.journey-item::after{
+
+content:"➜";
+
+position:absolute;
+
+top:50%;
+
+font-size:40px;
+
+color:#D6B98C;
+
 }
 
-/* LEFT & RIGHT CARD POSITION */
-.left-card {
-    grid-column: 1;
-    justify-self: end;
-    max-width: 220px;
+.left::after{
+
+right:35%;
+
 }
 
-.right-card {
-    grid-column: 3;
-    justify-self: start;
-    max-width: 220px;
+.right::after{
+
+left:35%;
+
+transform:rotate(180deg);
+
 }
 
-/* ARROW STYLE */
-.journey-arrow {
-    grid-column: 2;
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-    justify-content: center;
+
+/* modal */
+
+#journeyModal{
+
+position:fixed;
+
+inset:0;
+
+background:
+rgba(0,0,0,.95);
+
+display:none;
+
+justify-content:center;
+align-items:center;
+
+z-index:99999;
+
 }
 
-.arrow-right {
-    flex-direction: row;
+.modal-content{
+
+width:90%;
+max-width:700px;
+
+padding:30px;
+
+background:#111;
+
+border-radius:30px;
+
 }
 
-.arrow-right .arrow-line {
-    width: 50px;
-    height: 2px;
-    background: linear-gradient(90deg, #D6B98C, rgba(214,185,140,0.3));
+.modal-content video{
+
+width:180px;
+height:320px;
+
+object-fit:cover;
+
+border-radius:20px;
+
 }
 
-.arrow-right .arrow-head {
-    font-size: 1.5rem;
-    color: #D6B98C;
-    margin-left: 5px;
+#modalGallery{
+
+display:flex;
+
+gap:10px;
+margin-top:20px;
+
 }
 
-.arrow-down {
-    flex-direction: column;
+#modalGallery img{
+
+width:30%;
+height:150px;
+
+object-fit:cover;
+
+border-radius:15px;
+
 }
 
-.arrow-down .arrow-line {
-    width: 2px;
-    height: 50px;
-    background: linear-gradient(180deg, #D6B98C, rgba(214,185,140,0.3));
+@media(max-width:768px){
+
+.journey-box{
+
+width:210px;
+
 }
 
-.arrow-down .arrow-head {
-    font-size: 1.5rem;
-    color: #D6B98C;
-    margin-top: 5px;
+.left::after{
+
+right:20%;
+
 }
 
-/* MODAL - SAMA */
-.journey-modal {
-    position: fixed;
-    inset: 0;
-    background: rgba(0,0,0,0.95);
-    backdrop-filter: blur(20px);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    visibility: hidden;
-    opacity: 0;
-    transition: 0.4s;
-    z-index: 99999;
+.right::after{
+
+left:20%;
+
 }
 
-.journey-modal.active {
-    visibility: visible;
-    opacity: 1;
-}
-
-.journey-modal-content {
-    width: 92%;
-    max-width: 1300px;
-    padding: 40px;
-    border-radius: 30px;
-    background: linear-gradient(145deg, rgba(255,255,255,0.06), rgba(255,255,255,0.02));
-    overflow: auto;
-    max-height: 90vh;
-    position: relative;
-}
-
-#closeJourney {
-    position: absolute;
-    right: 40px;
-    top: 20px;
-    font-size: 2.5rem;
-    cursor: pointer;
-    color: #D6B98C;
-}
-
-.journey-media {
-    display: flex;
-    gap: 20px;
-    overflow-x: auto;
-    margin-top: 30px;
-}
-
-.journey-media video,
-.journey-media img {
-    width: 250px;
-    height: 350px;
-    object-fit: cover;
-    border-radius: 20px;
-    flex-shrink: 0;
-    transition: 0.3s;
-}
-
-.journey-media video:hover,
-.journey-media img:hover {
-    transform: scale(1.05);
-}
-
-/* MOBILE RESPONSIVE */
-@media (max-width: 768px) {
-    .journey-grid {
-        grid-template-columns: 1fr;
-        gap: 15px;
-        max-width: 280px;
-    }
-    
-    .left-card, .right-card {
-        grid-column: 1;
-        justify-self: center;
-        max-width: 260px;
-    }
-    
-    .journey-arrow {
-        grid-column: 1;
-        margin: 5px 0;
-    }
-    
-    .arrow-right, .arrow-down {
-        flex-direction: column;
-    }
-    
-    .arrow-right .arrow-line {
-        width: 2px;
-        height: 30px;
-        background: linear-gradient(180deg, #D6B98C, rgba(214,185,140,0.3));
-    }
-    
-    .arrow-right .arrow-head {
-        transform: rotate(90deg);
-        margin: 5px 0 0 0;
-    }
-    
-    .journey-media video,
-    .journey-media img {
-        width: 160px;
-        height: 240px;
-    }
-    
-    .journey-modal-content {
-        padding: 30px 20px;
-    }
-    
-    #closeJourney {
-        right: 20px;
-        top: 10px;
-        font-size: 2rem;
-    }
-}
-
-/* TABLET */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .journey-grid {
-        max-width: 700px;
-        gap: 15px;
-    }
-    
-    .left-card, .right-card {
-        max-width: 200px;
-    }
 }
 
         /* =========================
@@ -2172,121 +2132,209 @@
 OUR JOURNEY / HISTORY TIMELINE
 ========================= -->
 
-<!-- =========================
-     LOVE JOURNEY - TIMELINE WITH ARROWS
-========================= -->
+            <section class="section journey-section">
 
-<section class="section journey-section">
-    <div class="journey-bg"></div>
-    <div class="container">
-        <div class="section-header">
-            <div class="section-subtitle">Our Story</div>
-            <h2 class="section-title">Perjalanan Cinta</h2>
-        </div>
+<div class="container">
 
-        <div class="journey-grid">
-            <!-- CARD 1 - KIRI -->
-            <div class="journey-card left-card" data-title="Pertama Komunikasi" data-date="14 September 2021" data-video="komunikasi.mp4" data-img1="komunikasi1.jpg" data-img2="komunikasi2.jpg" data-img3="komunikasi3.jpg">
-                <div class="journey-card-inner">
-                    <div class="journey-icon">💬</div>
-                    <h3>Pertama Komunikasi</h3>
-                    <p>14 September 2021</p>
-                    <div class="journey-click">Klik untuk lihat cerita →</div>
-                </div>
-            </div>
+<div class="section-header">
+<div class="section-subtitle">
+Our Journey
+</div>
 
-            <!-- PANAH 1 -->
-            <div class="journey-arrow arrow-right">
-                <div class="arrow-line"></div>
-                <div class="arrow-head">→</div>
-            </div>
+<h2 class="section-title">
+Perjalanan Kami
+</h2>
+</div>
 
-            <!-- CARD 2 - KANAN -->
-            <div class="journey-card right-card" data-title="Pertemuan" data-date="28 November 2021" data-video="ketemu.mp4" data-img1="ketemu1.jpg" data-img2="ketemu2.jpg" data-img3="ketemu3.jpg">
-                <div class="journey-card-inner">
-                    <div class="journey-icon">💑</div>
-                    <h3>Pertemuan</h3>
-                    <p>28 November 2021</p>
-                    <div class="journey-click">Klik untuk lihat cerita →</div>
-                </div>
-            </div>
 
-            <!-- PANAH 2 -->
-            <div class="journey-arrow arrow-down">
-                <div class="arrow-line"></div>
-                <div class="arrow-head">↓</div>
-            </div>
+<div class="journey-flow">
 
-            <!-- CARD 3 - KIRI -->
-            <div class="journey-card left-card" data-title="Tunangan" data-date="13 Agustus 2023" data-video="tunangan.mp4" data-img1="tunangan1.jpg" data-img2="tunangan2.jpg" data-img3="tunangan3.jpg">
-                <div class="journey-card-inner">
-                    <div class="journey-icon">💍</div>
-                    <h3>Tunangan</h3>
-                    <p>13 Agustus 2023</p>
-                    <div class="journey-click">Klik untuk lihat cerita →</div>
-                </div>
-            </div>
+<!-- 1 -->
 
-            <!-- PANAH 3 -->
-            <div class="journey-arrow arrow-right">
-                <div class="arrow-line"></div>
-                <div class="arrow-head">→</div>
-            </div>
+<div class="journey-item left"
+onclick="openJourney(
+'Pertama Komunikasi',
+'14 September 2021',
+'komunikasi.mp4',
+['komunikasi1.jpg','komunikasi2.jpg','komunikasi3.jpg']
+)">
 
-            <!-- CARD 4 - KANAN -->
-            <div class="journey-card right-card" data-title="Lamaran" data-date="8 Februari 2026" data-video="lamaran.mp4" data-img1="lamaran1.jpg" data-img2="lamaran2.jpg" data-img3="lamaran3.jpg">
-                <div class="journey-card-inner">
-                    <div class="journey-icon">💎</div>
-                    <h3>Lamaran</h3>
-                    <p>8 Februari 2026</p>
-                    <div class="journey-click">Klik untuk lihat cerita →</div>
-                </div>
-            </div>
+<div class="journey-box">
 
-            <!-- PANAH 4 -->
-            <div class="journey-arrow arrow-down">
-                <div class="arrow-line"></div>
-                <div class="arrow-head">↓</div>
-            </div>
+<div class="journey-num">
+01
+</div>
 
-            <!-- CARD 5 - KIRI -->
-            <div class="journey-card left-card" data-title="Foto Prewedding" data-date="2 Mei 2026" data-video="prewed.mp4" data-img1="prewed1.jpg" data-img2="prewed2.jpg" data-img3="prewed3.jpg">
-                <div class="journey-card-inner">
-                    <div class="journey-icon">📸</div>
-                    <h3>Foto Prewedding</h3>
-                    <p>2 Mei 2026</p>
-                    <div class="journey-click">Klik untuk lihat cerita →</div>
-                </div>
-            </div>
+<img src="komunikasi1.jpg">
 
-            <!-- PANAH 5 -->
-            <div class="journey-arrow arrow-right">
-                <div class="arrow-line"></div>
-                <div class="arrow-head">→</div>
-            </div>
+<div class="journey-text">
 
-            <!-- CARD 6 - KANAN -->
-            <div class="journey-card right-card" data-title="Latar Biru" data-date="3 Mei 2026" data-video="biru.mp4" data-img1="biru1.jpg" data-img2="biru2.jpg" data-img3="biru3.jpg">
-                <div class="journey-card-inner">
-                    <div class="journey-icon">💙</div>
-                    <h3>Latar Biru</h3>
-                    <p>3 Mei 2026</p>
-                    <div class="journey-click">Klik untuk lihat cerita →</div>
-                </div>
-            </div>
-        </div>
-    </div>
+<h3>Pertama Komunikasi</h3>
+<p>14 September 2021</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 2 -->
+
+<div class="journey-item right"
+onclick="openJourney(
+'Pertemuan',
+'28 November 2021',
+'pertemuan.mp4',
+['pertemuan1.jpg','pertemuan2.jpg','pertemuan3.jpg']
+)">
+
+<div class="journey-box">
+
+<div class="journey-num">
+02
+</div>
+
+<img src="pertemuan1.jpg">
+
+<div class="journey-text">
+
+<h3>Pertemuan</h3>
+<p>28 November 2021</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 3 -->
+
+<div class="journey-item left"
+onclick="openJourney(
+'Tunangan',
+'13 Agustus 2023',
+'tunangan.mp4',
+['tunangan1.jpg','tunangan2.jpg','tunangan3.jpg']
+)">
+
+<div class="journey-box">
+
+<div class="journey-num">
+03
+</div>
+
+<img src="tunangan1.jpg">
+
+<div class="journey-text">
+
+<h3>Tunangan</h3>
+<p>13 Agustus 2023</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 4 -->
+
+<div class="journey-item right">
+
+<div class="journey-box">
+
+<div class="journey-num">
+04
+</div>
+
+<img src="lamaran1.jpg">
+
+<div class="journey-text">
+
+<h3>Lamaran</h3>
+<p>8 Februari 2026</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 5 -->
+
+<div class="journey-item left">
+
+<div class="journey-box">
+
+<div class="journey-num">
+05
+</div>
+
+<img src="prewed1.jpg">
+
+<div class="journey-text">
+
+<h3>Foto Prewedding</h3>
+<p>2 Mei 2026</p>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 6 -->
+
+<div class="journey-item right">
+
+<div class="journey-box">
+
+<div class="journey-num">
+06
+</div>
+
+<img src="biru1.jpg">
+
+<div class="journey-text">
+
+<h3>Latar Biru</h3>
+<p>3 Mei 2026</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
 </section>
 
-<!-- MODAL (SAMA SEPERTI SEBELUMNYA) -->
-<div class="journey-modal" id="journeyModal">
-    <div class="journey-modal-content">
-        <span id="closeJourney">&times;</span>
-        <h2 id="journeyTitle"></h2>
-        <p id="journeyDate"></p>
-        <div class="journey-media" id="journeyMedia"></div>
-    </div>
+
+<div id="journeyModal">
+
+<div class="modal-content">
+
+<span onclick="closeJourney()">
+×
+</span>
+
+<h2 id="modalTitle"></h2>
+
+<video controls id="modalVideo"></video>
+
+<div id="modalGallery"></div>
+
 </div>
+
+</div>
+
      
         <!-- =========================
      FUTURISTIC PREWEDDING
@@ -2957,117 +3005,42 @@ function nextQuestion() {
 // LOVE JOURNEY - 3D SPEKTAKULER
 // ========================
 
-const journeyCards = document.querySelectorAll('.journey-card');
-const journeyModal = document.getElementById('journeyModal');
-const journeyTitle = document.getElementById('journeyTitle');
-const journeyDate = document.getElementById('journeyDate');
-const journeyMedia = document.getElementById('journeyMedia');
-const closeJourney = document.getElementById('closeJourney');
+function openJourney(title,date,video,photos){
 
-// 1. EFEK 3D TILT + GLOW YANG NGE-FOLLOW MOUSE
-journeyCards.forEach(card => {
-    // Elemen glow di dalam card
-    const glowElement = document.createElement('div');
-    glowElement.style.position = 'absolute';
-    glowElement.style.top = '0';
-    glowElement.style.left = '0';
-    glowElement.style.width = '100%';
-    glowElement.style.height = '100%';
-    glowElement.style.borderRadius = '20px';
-    glowElement.style.pointerEvents = 'none';
-    glowElement.style.transition = 'opacity 0.3s ease';
-    glowElement.style.opacity = '0';
-    glowElement.style.background = 'radial-gradient(circle at center, rgba(214,185,140,0.4), transparent 80%)';
-    card.style.position = 'relative';
-    card.style.overflow = 'hidden';
-    card.appendChild(glowElement);
-    
-    // Mouse move untuk 3D tilt + glow
-    card.addEventListener('mousemove', (e) => {
-        const rect = card.getBoundingClientRect();
-        const x = e.clientX - rect.left;
-        const y = e.clientY - rect.top;
-        
-        // Hitung rotasi (maks 15 derajat)
-        const centerX = rect.width / 2;
-        const centerY = rect.height / 2;
-        const rotateY = ((x - centerX) / centerX) * 15;
-        const rotateX = ((centerY - y) / centerY) * 15;
-        
-        // Apply transform 3D
-        card.style.transform = `perspective(1200px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateY(-12px) scale(1.03)`;
-        
-        // Glow effect ikut mouse
-        glowElement.style.opacity = '1';
-        glowElement.style.background = `radial-gradient(circle at ${x}px ${y}px, rgba(214,185,140,0.5), transparent 70%)`;
-        
-        // Shadow dinamis
-        card.style.boxShadow = `${-rotateY * 2}px ${rotateX * 2}px 30px rgba(0,0,0,0.5)`;
-    });
-    
-    // Mouse leave - kembali normal
-    card.addEventListener('mouseleave', () => {
-        card.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0px) scale(1)';
-        glowElement.style.opacity = '0';
-        card.style.boxShadow = '';
-    });
+document.getElementById(
+'journeyModal'
+).style.display='flex';
+
+document.getElementById(
+'modalTitle'
+).innerHTML=
+title+"<br><small>"+date+"</small>";
+
+document.getElementById(
+'modalVideo'
+).src=video;
+
+let html='';
+
+photos.forEach(img=>{
+
+html+=`<img src="${img}">`;
+
 });
 
-// 2. KLICK CARD -> BUKA MODAL (TETAP SAMA)
-journeyCards.forEach(card => {
-    card.addEventListener('click', (e) => {
-        // Jangan trigger modal kalau lagi hover effect (optional)
-        if(e.target === card || card.contains(e.target)) {
-            journeyTitle.innerText = card.dataset.title;
-            journeyDate.innerText = card.dataset.date;
-            
-            journeyMedia.innerHTML = `
-                <video controls playsinline>
-                    <source src="${card.dataset.video}" type="video/mp4">
-                </video>
-                <img src="${card.dataset.img1}">
-                <img src="${card.dataset.img2}">
-                <img src="${card.dataset.img3}">
-            `;
-            
-            journeyModal.classList.add('active');
-        }
-    });
-});
+document.getElementById(
+'modalGallery'
+).innerHTML=html;
 
-// 3. TUTUP MODAL
-closeJourney.onclick = () => {
-    journeyModal.classList.remove('active');
-};
+}
 
-journeyModal.onclick = (e) => {
-    if(e.target === journeyModal) {
-        journeyModal.classList.remove('active');
-    }
-};
+function closeJourney(){
 
-// 4. EFEK EXTRA: ANIMASI KETIKA CARD MASUK VIEWPORT (SCROLL REVEAL)
-const observerOptions = {
-    threshold: 0.2,
-    rootMargin: '0px 0px -50px 0px'
-};
+document.getElementById(
+'journeyModal'
+).style.display='none';
 
-const observer = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if(entry.isIntersecting) {
-            entry.target.style.opacity = '1';
-            entry.target.style.transform = 'perspective(1200px) rotateX(0deg) rotateY(0deg) translateY(0px)';
-            observer.unobserve(entry.target);
-        }
-    });
-}, observerOptions);
-
-journeyCards.forEach(card => {
-    card.style.opacity = '0';
-    card.style.transform = 'perspective(1200px) rotateX(15deg) translateY(30px)';
-    card.style.transition = 'opacity 0.6s ease, transform 0.6s ease';
-    observer.observe(card);
-});
+}
 // ========================
 // GALLERY JS
 // ========================
