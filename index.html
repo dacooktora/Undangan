@@ -878,7 +878,21 @@
     min-height: 500px;
 }
 .car-point {
-    display: none;
+    position: absolute;
+    width: 40px;
+    height: 40px;
+    background: transparent;
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-weight: bold;
+    font-size: 0;
+    color: transparent;
+    cursor: pointer;
+    transform: translate(-50%, -50%);
+    z-index: 10;
+    /* Tidak ada background, tidak ada shadow, benar-benar transparan */
 }
 
 .car-point:hover {
