@@ -819,7 +819,267 @@
         margin: 28px auto 40px;
     }
 }
-        
+        /* ==========================
+NETFLIX 3D JOURNEY
+========================== */
+
+.journey-netflix{
+
+position:relative;
+overflow:hidden;
+padding:120px 0;
+
+}
+
+.journey-bg{
+
+position:absolute;
+
+inset:0;
+
+background:
+
+radial-gradient(
+circle at center,
+rgba(255,255,255,.05),
+transparent 70%
+);
+
+pointer-events:none;
+
+}
+
+.journey-track{
+
+display:flex;
+
+gap:40px;
+
+overflow-x:auto;
+
+padding:50px;
+
+perspective:2000px;
+
+scrollbar-width:none;
+
+}
+
+.journey-track::-webkit-scrollbar{
+
+display:none;
+
+}
+
+
+.journey-card{
+
+min-width:320px;
+height:500px;
+
+cursor:pointer;
+
+transform-style:preserve-3d;
+
+transition:.7s;
+
+}
+
+.journey-card:hover{
+
+transform:
+
+translateY(-30px)
+
+rotateY(10deg)
+
+scale(1.05);
+
+}
+
+
+.journey-card-inner{
+
+width:100%;
+height:100%;
+
+border-radius:35px;
+
+overflow:hidden;
+
+position:relative;
+
+background:
+
+rgba(255,255,255,.04);
+
+backdrop-filter:blur(20px);
+
+box-shadow:
+
+0 30px 90px rgba(0,0,0,.7);
+
+border:
+
+1px solid rgba(255,255,255,.1);
+
+}
+
+.journey-cover{
+
+position:relative;
+
+height:100%;
+
+}
+
+.journey-cover img{
+
+width:100%;
+height:100%;
+
+object-fit:cover;
+
+transition:1s;
+
+}
+
+.journey-card:hover img{
+
+transform:scale(1.15);
+
+}
+
+
+.journey-overlay{
+
+position:absolute;
+
+bottom:0;
+
+left:0;
+
+right:0;
+
+padding:30px;
+
+background:
+
+linear-gradient(
+
+transparent,
+
+rgba(0,0,0,.95)
+
+);
+
+}
+
+.journey-date{
+
+display:inline-block;
+
+padding:8px 18px;
+
+border-radius:40px;
+
+background:
+
+rgba(214,185,140,.15);
+
+color:#D6B98C;
+
+margin-bottom:15px;
+
+font-size:.8rem;
+
+}
+
+.journey-overlay h3{
+
+font-size:1.7rem;
+
+margin-bottom:10px;
+
+color:#fff;
+
+}
+
+.journey-overlay p{
+
+opacity:.7;
+
+line-height:1.7;
+
+}
+
+
+.journey-modal{
+
+position:fixed;
+
+inset:0;
+
+background:rgba(0,0,0,.95);
+
+display:flex;
+
+justify-content:center;
+
+align-items:center;
+
+visibility:hidden;
+
+opacity:0;
+
+transition:.5s;
+
+z-index:99999;
+
+}
+
+.journey-modal.active{
+
+visibility:visible;
+
+opacity:1;
+
+}
+
+.journey-modal video{
+
+width:90%;
+max-width:1000px;
+
+border-radius:30px;
+
+}
+
+#closeJourney{
+
+position:absolute;
+
+top:40px;
+right:50px;
+
+font-size:3rem;
+
+color:white;
+
+cursor:pointer;
+
+}
+
+@media(max-width:768px){
+
+.journey-card{
+
+min-width:250px;
+height:400px;
+
+}
+
+}
         /* =========================
    FUTURISTIC 3D GALLERY
 ========================= */
@@ -1880,7 +2140,251 @@
     </div>
 
 </section>
+<!-- =========================
+NETFLIX 3D LOVE STORY
+========================= -->
 
+<section class="section journey-netflix">
+
+<div class="journey-bg"></div>
+
+<div class="container">
+
+<div class="section-header">
+
+<div class="section-subtitle">
+Our Journey
+</div>
+
+<h2 class="section-title">
+Perjalanan Kami
+</h2>
+
+</div>
+
+<div class="journey-track">
+
+<!-- 1 -->
+
+<div class="journey-card" data-video="komunikasi.mp4">
+
+<div class="journey-card-inner">
+
+<div class="journey-cover">
+
+<img src="komunikasi.jpg">
+
+<div class="journey-overlay">
+
+<div class="journey-date">
+14 September 2021
+</div>
+
+<h3>
+Pertama Komunikasi
+</h3>
+
+<p>
+Awal semua cerita dimulai
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 2 -->
+
+<div class="journey-card" data-video="pertemuan.mp4">
+
+<div class="journey-card-inner">
+
+<div class="journey-cover">
+
+<img src="pertemuan.jpg">
+
+<div class="journey-overlay">
+
+<div class="journey-date">
+28 November 2021
+</div>
+
+<h3>
+Pertemuan
+</h3>
+
+<p>
+Momen pertama bertemu
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 3 -->
+
+<div class="journey-card" data-video="tunangan.mp4">
+
+<div class="journey-card-inner">
+
+<div class="journey-cover">
+
+<img src="tunangan.jpg">
+
+<div class="journey-overlay">
+
+<div class="journey-date">
+13 Agustus 2023
+</div>
+
+<h3>
+Tunangan
+</h3>
+
+<p>
+Langkah menuju masa depan
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 4 -->
+
+<div class="journey-card" data-video="lamaran.mp4">
+
+<div class="journey-card-inner">
+
+<div class="journey-cover">
+
+<img src="lamaran.jpg">
+
+<div class="journey-overlay">
+
+<div class="journey-date">
+8 Februari 2026
+</div>
+
+<h3>
+Lamaran
+</h3>
+
+<p>
+Satu langkah lebih dekat
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 5 -->
+
+<div class="journey-card" data-video="prewed.mp4">
+
+<div class="journey-card-inner">
+
+<div class="journey-cover">
+
+<img src="prewed.jpg">
+
+<div class="journey-overlay">
+
+<div class="journey-date">
+2 Mei 2026
+</div>
+
+<h3>
+Foto Prewedding
+</h3>
+
+<p>
+Merekam perjalanan cinta
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+
+<!-- 6 -->
+
+<div class="journey-card" data-video="biru.mp4">
+
+<div class="journey-card-inner">
+
+<div class="journey-cover">
+
+<img src="biru.jpg">
+
+<div class="journey-overlay">
+
+<div class="journey-date">
+3 Mei 2026
+</div>
+
+<h3>
+Latar Biru
+</h3>
+
+<p>
+Potret menuju hari bahagia
+</p>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</div>
+
+</section>
+
+
+<!-- MODAL VIDEO -->
+
+<div class="journey-modal" id="journeyModal">
+
+<span id="closeJourney">
+
+×
+
+</span>
+
+<video id="journeyVideo"
+
+controls>
+
+</video>
+
+</div>
 <!-- Galeri Foto -->
 <!-- =========================
      
@@ -2577,6 +3081,79 @@ galleries.forEach(gallery => {
     gallery.addEventListener('mouseenter', () => gallery.style.animationPlayState = 'paused');
     gallery.addEventListener('mouseleave', () => gallery.style.animationPlayState = 'running');
 });
+    /* NETFLIX JOURNEY */
+
+const journeyCards=
+document.querySelectorAll(
+'.journey-card'
+);
+
+const journeyModal=
+document.getElementById(
+'journeyModal'
+);
+
+const journeyVideo=
+document.getElementById(
+'journeyVideo'
+);
+
+const closeJourney=
+document.getElementById(
+'closeJourney'
+);
+
+
+journeyCards.forEach(card=>{
+
+card.addEventListener(
+'click',
+()=>{
+
+const video=
+card.dataset.video;
+
+journeyVideo.src=video;
+
+journeyModal.classList.add(
+'active'
+);
+
+journeyVideo.play();
+
+});
+
+});
+
+
+closeJourney.onclick=()=>{
+
+journeyModal.classList.remove(
+'active'
+);
+
+journeyVideo.pause();
+
+journeyVideo.src='';
+
+};
+
+
+journeyModal.onclick=(e)=>{
+
+if(e.target===journeyModal){
+
+journeyModal.classList.remove(
+'active'
+);
+
+journeyVideo.pause();
+
+journeyVideo.src='';
+
+}
+
+};
 
 // ========================
 // MAIN FUNCTIONS
