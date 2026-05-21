@@ -868,12 +868,12 @@
     left: 0;
     width: 100%;
     height: 100%;
-    z-index: 1;   /* balik lagi */
+    z-index: 20;   /* balik lagi */
     pointer-events: none;
 }
 .car-points {
     position: relative;
-    z-index: 2;
+    z-index: 10;
     width: 100%;
     height: 100%;
     min-height: 500px;
@@ -2944,31 +2944,11 @@ function nextQuestion() {
     ctx.stroke();
 
     // ========== 2. GAMBAR TITIK + ANGKA (DI ATAS GARIS) ==========
-    for (let i = 0; i < waypoints.length; i++) {
-        // Lingkaran luar
-        ctx.beginPath();
-        ctx.arc(waypoints[i].x, waypoints[i].y, 14, 0, Math.PI * 2);
-        ctx.fillStyle = '#D6B98C';
-        ctx.shadowBlur = 12;
-        ctx.shadowColor = '#D6B98C';
-        ctx.fill();
-        
-        // Lingkaran dalam
-        ctx.beginPath();
-        ctx.arc(waypoints[i].x, waypoints[i].y, 8, 0, Math.PI * 2);
-        ctx.fillStyle = '#111';
-        ctx.fill();
-        
-        // Angka
-        ctx.fillStyle = '#fff';
-        ctx.font = 'bold 16px Poppins';
-        ctx.shadowBlur = 0;
-        ctx.fillText(i + 1, waypoints[i].x - 7, waypoints[i].y + 6);
-    }
+    
 
     // ========== 3. GAMBAR MOBIL (PALING ATAS) ==========
     if (carImage.complete && carImage.src) {
-        ctx.drawImage(carImage, carX - 16, carY - 40, 32, 32);
+        ctx.drawImage(carImage, carX - 16, carY - 16, 32, 32);
     } else {
         // Fallback kalau gambar belum load
         ctx.fillStyle = '#D6B98C';
