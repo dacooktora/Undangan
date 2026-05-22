@@ -3070,28 +3070,64 @@ function nextQuestion() {
     document.getElementById('modalStory').innerText = d.story;
 
     const video = document.getElementById('modalVideo');
-    const videoContainer = document.querySelector('.modal-media'); // opsional, kalau mau sembunyiin container-nya
+    const videoContainer = document.querySelector('.modal-media');
     
-    // CEK VIDEO: kalau ada video, tampilkan dan load
+    // CEK VIDEO
     if (d.video && d.video !== '' && d.video !== 'undefined') {
         video.querySelector('source').src = d.video;
         video.load();
-        video.style.display = 'block'; // tampilkan video
+        video.style.display = 'block';
         if (videoContainer) videoContainer.style.display = 'block';
         video.play().catch(e => console.log('auto-play error'));
     } else {
-        // VIDEO TIDAK ADA: sembunyikan
         video.style.display = 'none';
         if (videoContainer) videoContainer.style.display = 'none';
     }
 
-    // GALLERY: hanya tampilkan foto yang ada (tidak kosong)
+    // GALLERY: tampilkan foto dengan class khusus
     let galleryHTML = '';
-    if (d.img1 && d.img1 !== '' && d.img1 !== 'undefined') galleryHTML += `<img src="${d.img1}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo'">`;
-    if (d.img2 && d.img2 !== '' && d.img2 !== 'undefined') galleryHTML += `<img src="${d.img2}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo'">`;
-    if (d.img3 && d.img3 !== '' && d.img3 !== 'undefined') galleryHTML += `<img src="${d.img3}" onerror="this.src='https://placehold.co/120x160/333/D6B98C?text=Photo'">`;
+    if (d.img1 && d.img1 !== '' && d.img1 !== 'undefined') galleryHTML += `<img src="${d.img1}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
+    if (d.img2 && d.img2 !== '' && d.img2 !== 'undefined') galleryHTML += `<img src="${d.img2}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
+    if (d.img3 && d.img3 !== '' && d.img3 !== 'undefined') galleryHTML += `<img src="${d.img3}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
     
     document.getElementById('modalGallery').innerHTML = galleryHTML || '<p style="text-align:center; color:#aaa;">Tidak ada foto tambahan</p>';
+
+    // ========== FITUR POPUP FOTO (LIGHTBOX) ==========
+    const clickableImgs = document.querySelectorAll('.gallery-img-clickable');
+    clickableImgs.forEach(img => {
+        img.style.cursor = 'pointer';
+        img.addEventListener('click', (e) => {
+            e.stopPropagation();
+            
+            const lightbox = document.createElement('div');
+            lightbox.style.position = 'fixed';
+            lightbox.style.top = '0';
+            lightbox.style.left = '0';
+            lightbox.style.width = '100%';
+            lightbox.style.height = '100%';
+            lightbox.style.background = 'rgba(0,0,0,0.95)';
+            lightbox.style.backdropFilter = 'blur(15px)';
+            lightbox.style.zIndex = '20000';
+            lightbox.style.display = 'flex';
+            lightbox.style.alignItems = 'center';
+            lightbox.style.justifyContent = 'center';
+            lightbox.style.cursor = 'pointer';
+            
+            const bigImg = document.createElement('img');
+            bigImg.src = img.src;
+            bigImg.style.maxWidth = '90%';
+            bigImg.style.maxHeight = '90%';
+            bigImg.style.borderRadius = '20px';
+            bigImg.style.boxShadow = '0 25px 50px rgba(0,0,0,0.8)';
+            bigImg.style.objectFit = 'contain';
+            
+            lightbox.appendChild(bigImg);
+            document.body.appendChild(lightbox);
+            
+            lightbox.addEventListener('click', () => lightbox.remove());
+        });
+    });
+    // ========== SAMPAI SINI ==========
 
     document.getElementById('journeyDetailModal').classList.add('active');
 }
