@@ -213,14 +213,18 @@
 }
 
 /* background video */
-.hero-video {
-    position: absolute;
-    inset: 0;
+.hero-image{
+    position:absolute;
+    inset:0;
+    width:100%;
+    height:100%;
+    object-fit:cover;
 
-    width: 100%;
-    height: 100%;
+    filter:
+        brightness(.55)
+        saturate(.9);
 
-    object-fit: cover;
+    transform:scale(1.03);
 }
 
 /* overlay gelap cinematic */
@@ -2102,10 +2106,8 @@
 <!-- Hero -->
 <section class="hero" id="home">
 
-    <!-- Background Video -->
-    <video class="hero-video" autoplay muted loop playsinline>
-        <source src="wd1.mp4" type="video/mp4">
-    </video>
+    <!-- Background Image -->
+<img src="halamansatu.png" class="hero-image" alt="Resa & Delia">
 
     <!-- Overlay -->
     <div class="hero-overlay"></div>
