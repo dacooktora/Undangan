@@ -200,89 +200,50 @@
 
 }
         /* hero with overlay minimal */
-        .hero {
-    position: relative;
-    height: 100vh;
-    overflow: hidden;
+        /* HERO POSTER */
 
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    text-align: center;
-    padding: 0 24px;
-}
-
-/* background video */
-.hero-image{
-    position:absolute;
-    inset:0;
+.hero{
+    position:relative;
     width:100%;
-    height:100%;
-    object-fit:cover;
-
-    filter:
-        brightness(.55)
-        saturate(.9);
-
-    transform:scale(1.03);
+    background:#000;
+    overflow:hidden;
 }
 
-/* overlay gelap cinematic */
-.hero-overlay {
-    position: absolute;
-    inset: 0;
-
-    background: linear-gradient(
-        0deg,
-        rgba(10,9,8,0.82),
-        rgba(10,9,8,0.45)
-    );
+.hero-image{
+    width:100%;
+    height:auto;
+    display:block;
 }
 
-/* isi tulisan */
-.hero-content {
-    position: relative;
-    z-index: 2;
-}
-        .hero-badge {
-            font-size: 0.75rem;
-            letter-spacing: 4px;
-            color: #d8d3cc;
-            margin-bottom: 24px;
-            font-weight: 300;
-        }
-        .hero-title {
-            font-family: 'Playfair Display', serif;
-            font-size: clamp(3rem, 10vw, 5.5rem);
-            font-weight: 600;
-            letter-spacing: -0.5px;
-            line-height: 1.2;
-            max-width: 800px;
-            margin: 0 auto;
-        }
-        .hero-divider {
-            width: 70px;
-            height: 1px;
-            background: #d8d3cc;
-            margin: 32px auto 24px;
-        }
-        .hero-date {
-            font-size: 1rem;
-            letter-spacing: 2px;
-            font-weight: 300;
-        }
-        .scroll-down {
-            position: absolute;
-            bottom: 36px;
-            left: 0;
-            right: 0;
-            text-align: center;
-            font-size: 0.8rem;
-            cursor: pointer;
-            color: #d8d3cc;
-            transition: 0.2s;
-        }
+/* Scroll Down */
 
+.scroll-down{
+    position:absolute;
+    bottom:20px;
+    left:50%;
+    transform:translateX(-50%);
+
+    width:48px;
+    height:48px;
+
+    display:flex;
+    align-items:center;
+    justify-content:center;
+
+    border-radius:50%;
+
+    background:rgba(0,0,0,.35);
+
+    border:1px solid rgba(226,196,139,.5);
+
+    color:#E2C48B;
+
+    cursor:pointer;
+
+    backdrop-filter:blur(8px);
+
+    z-index:10;
+}
         /* container */
         .container {
             max-width: 1200px;
@@ -2104,30 +2065,17 @@
 </audio>
 
 <!-- Hero -->
+
+<!-- Hero -->
 <section class="hero" id="home">
 
-    <!-- Background Image -->
-<img src="halamansatu.png" class="hero-image" alt="Resa & Delia">
+    <img src="halamansatu.png"
+         class="hero-image"
+         alt="Resa & Delia">
 
-    <!-- Overlay -->
-    <div class="hero-overlay"></div>
-
-    <!-- Hero Content -->
-    <div class="hero-content">
-        <div class="hero-badge">The Wedding Of</div>
-
-        <h1 class="hero-title">
-            Resa <span style="font-weight:300">&</span> Delia
-        </h1>
-
-        <div class="hero-divider"></div>
-
-        <div class="hero-date">12 Juli 2026</div>
-
-        <div class="scroll-down"
-            onclick="document.getElementById('info-acara').scrollIntoView({behavior:'smooth'})">
-            <i class="fas fa-chevron-down"></i>
-        </div>
+    <div class="scroll-down"
+        onclick="document.getElementById('info-acara').scrollIntoView({behavior:'smooth'})">
+        <i class="fas fa-chevron-down"></i>
     </div>
 
 </section>
