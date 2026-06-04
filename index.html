@@ -63,7 +63,142 @@
             0% { transform: rotate(0deg); }
             100% { transform: rotate(360deg); }
         }
+/* ======================================
+   COVER OPENING
+====================================== */
 
+.cover-screen{
+    position:fixed;
+    inset:0;
+    z-index:999999;
+    overflow:hidden;
+    background:#0F0F0F;
+}
+
+.cover-bg{
+    position:absolute;
+    width:100%;
+    height:100%;
+    object-fit:cover;
+
+    filter:
+        blur(4px)
+        brightness(.28)
+        saturate(.9);
+
+    transform:scale(1.12);
+}
+
+.cover-overlay{
+    position:absolute;
+    inset:0;
+
+    background:
+    linear-gradient(
+        to bottom,
+        rgba(0,0,0,.15),
+        rgba(0,0,0,.45),
+        rgba(0,0,0,.85)
+    );
+}
+
+.cover-content{
+    position:absolute;
+    left:35px;
+    right:35px;
+    bottom:90px;
+    z-index:2;
+}
+
+.cover-photo{
+    width:145px;
+    height:145px;
+    border-radius:18px;
+    object-fit:cover;
+
+    margin-bottom:25px;
+
+    border:2px solid rgba(255,255,255,.15);
+
+    box-shadow:
+    0 10px 40px rgba(0,0,0,.35);
+}
+
+.cover-label{
+    color:#ffffff;
+    font-size:15px;
+    letter-spacing:3px;
+    margin-bottom:12px;
+    opacity:.85;
+}
+
+.cover-name{
+    font-size:56px;
+    line-height:1;
+    font-weight:700;
+    color:white;
+
+    margin-bottom:18px;
+}
+
+.cover-date{
+    color:#E2C48B;
+    font-size:20px;
+    margin-bottom:30px;
+}
+
+.cover-btn{
+    width:100%;
+
+    border:none;
+    border-radius:999px;
+
+    padding:18px;
+
+    font-size:20px;
+    font-weight:700;
+
+    cursor:pointer;
+
+    background:
+    linear-gradient(
+        135deg,
+        #8F6A35,
+        #C9A86A,
+        #E2C48B
+    );
+
+    color:#111111;
+
+    box-shadow:
+    0 10px 35px rgba(201,168,106,.35),
+    inset 0 1px 1px rgba(255,255,255,.35);
+
+    transition:.3s ease;
+}
+
+.cover-btn:active{
+    transform:scale(.98);
+}
+
+/* Mobile */
+
+@media(max-width:480px){
+
+    .cover-name{
+        font-size:42px;
+    }
+
+    .cover-photo{
+        width:120px;
+        height:120px;
+    }
+
+    .cover-date{
+        font-size:18px;
+    }
+
+}
         /* hero with overlay minimal */
         .hero {
     position: relative;
@@ -1926,7 +2061,37 @@
     </style>
 </head>
 <body>
+<!-- COVER OPENING -->
+<div id="coverScreen" class="cover-screen">
 
+    <img src="merah1.jpg" class="cover-bg" alt="Background">
+
+    <div class="cover-overlay"></div>
+
+    <div class="cover-content">
+
+        <img src="merah1.jpg" class="cover-photo" alt="Resa Delia">
+
+        <div class="cover-label">
+            UNDANGAN PERNIKAHAN
+        </div>
+
+        <h1 class="cover-name">
+            Resa & Delia
+        </h1>
+
+        <div class="cover-date">
+            ❤ Minggu, 12 Juli 2026
+        </div>
+
+        <button id="openInvitation" class="cover-btn">
+            ▶ Buka Undangan
+        </button>
+
+    </div>
+
+</div>
+    
 <div class="music-float" id="musicToggle">
     <i class="fas fa-headphones"></i>
 </div>
@@ -2538,7 +2703,31 @@
 
     
 <script>
+document
+.getElementById("openInvitation")
+.addEventListener("click", function(){
 
+    const cover =
+    document.getElementById("coverScreen");
+
+    cover.style.transition =
+    "opacity .8s ease";
+
+    cover.style.opacity = "0";
+
+    setTimeout(() => {
+        cover.remove();
+    }, 800);
+
+    // Auto Play Music
+    const music =
+    document.getElementById("bgMusic");
+
+    if(music){
+        music.play().catch(()=>{});
+    }
+
+});
 // ========================
 // DOORPRIZE - CANVAS WHEEL (DENGAN POPUP & CLAIM WA)
 // ========================
