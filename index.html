@@ -2623,6 +2623,7 @@
     
 <script>
 document
+document
 .getElementById("openInvitation")
 .addEventListener("click", function(){
 
@@ -2638,13 +2639,10 @@ document
         cover.remove();
     }, 800);
 
-    // Auto Play Music
-    const music =
-    document.getElementById("bgMusic");
-
-    if(music){
-        music.play().catch(()=>{});
-    }
+    // Nyalakan musik otomatis
+    document
+    .getElementById("musicToggle")
+    ?.click();
 
 });
 // ========================
