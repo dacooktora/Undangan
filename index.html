@@ -1640,6 +1640,7 @@
 }
 
 /* style setiap komentar di dalam scroll area */
+/* style setiap komentar di dalam scroll area */
 .wish-item {
     background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
     border-left: 3px solid #D6B98C;
@@ -1656,15 +1657,17 @@
 .wish-item-header {
     display: flex;
     flex-wrap: wrap;
-    gap: 12px;
+    align-items: center;
+    justify-content: space-between;
+    gap: 10px;
     margin-bottom: 8px;
+}
 
-
-    justify-content:space-between;
-
-    align-items:flex-start;
-
-    gap:10px;
+.wish-left {
+    display: flex;
+    align-items: center;
+    flex-wrap: wrap;
+    gap: 10px;
 }
 
 .wish-item-name {
@@ -1679,12 +1682,25 @@
     padding: 2px 10px;
     border-radius: 20px;
     color: #D6B98C;
+    display: inline-block;
+    white-space: nowrap;
 }
 
-.wish-item-attendance {
+.wish-item-total {
+    padding: 4px 10px;
+    border-radius: 20px;
+    background: rgba(201,168,106,0.15);
+    color: #c9a86a;
     font-size: 0.7rem;
-    color: rgba(255,255,255,0.5);
-    margin-left: auto;
+    font-weight: 500;
+    display: inline-block;
+    white-space: nowrap;
+}
+
+.wish-date {
+    font-size: 0.7rem;
+    color: rgba(255,255,255,0.45);
+    white-space: nowrap;
 }
 
 .wish-item-message {
@@ -1693,47 +1709,31 @@
     color: #EAE6DF;
     margin-top: 8px;
     word-break: break-word;
+    padding-left: 0;
 }
-        .wish-left{
 
-    display:flex;
-
-    align-items:center;
-
-    flex-wrap:wrap;
-
-    gap:10px;
-
-        }
-        .wish-item-total{
-
-    padding:8px 14px;
-
-    border-radius:999px;
-
-    background:rgba(201,168,106,.15);
-
-    color:#c9a86a;
-
-    font-size:14px;
-
-    font-weight:500;
-
+/* Responsive untuk layar kecil */
+@media (max-width: 550px) {
+    .wish-item-header {
+        flex-direction: column;
+        align-items: flex-start;
+    }
+    
+    .wish-date {
+        align-self: flex-end;
+        margin-top: 4px;
+    }
+    
+    .wish-left {
+        flex-wrap: wrap;
+    }
+    
+    .wish-item-status, .wish-item-total {
+        white-space: nowrap;
+    }
 }
 
 
-
-.wish-date{
-
-    font-size:11px;
-
-    color:rgba(255,255,255,.45);
-
-    white-space:nowrap;
-
-    margin-top:4px;
-
-}
 
 @media (max-width: 768px) {
     .wish-grid {
