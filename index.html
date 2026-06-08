@@ -3071,7 +3071,7 @@ function nextQuestion() {
 // JOURNEY MAP LOVE + MOBIL 3D
 // ========================================
 // ========================================
-// JOURNEY MAP – PINK + MERAH PROGRESS
+// JOURNEY MAP – GARIS MERAH (PROGRESS) + PINK DASAR
 // ========================================
 (function() {
     let canvas, ctx;
@@ -3085,13 +3085,11 @@ function nextQuestion() {
     let journeyData = [];
     let dpr = window.devicePixelRatio || 1;
     
-    let currentCheckpoint = 0; // titik terakhir yang sudah dikunjungi
-    let targetCheckpoint = 0;
+    let currentCheckpoint = 0;
     
     let carImage = new Image();
     carImage.src = 'mobilwd.png';
 
-    // ========== GENERATE LOVE CURVE ==========
     function generateLoveCurve(width, height) {
         const points = [];
         const scale = Math.min(width, height) / 36;
@@ -3100,38 +3098,26 @@ function nextQuestion() {
         for (let t = 0; t <= Math.PI * 2; t += 0.03) {
             const xRaw = 16 * Math.pow(Math.sin(t), 3);
             const yRaw = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-            points.push({
-                x: offsetX + xRaw * scale,
-                y: offsetY - yRaw * scale
-            });
+            points.push({ x: offsetX + xRaw * scale, y: offsetY - yRaw * scale });
         }
         return points;
     }
 
-    // ========== CARI INDEX LOVE CURVE TERDEKAT ==========
     function findNearestLoveIndex(x, y) {
-        let minDist = Infinity;
-        let idx = 0;
+        let minDist = Infinity, idx = 0;
         for (let i = 0; i < lovePoints.length; i++) {
             const dist = Math.hypot(lovePoints[i].x - x, lovePoints[i].y - y);
-            if (dist < minDist) {
-                minDist = dist;
-                idx = i;
-            }
+            if (dist < minDist) { minDist = dist; idx = i; }
         }
         return idx;
     }
 
-    // ========== DAPAT KOORDINAT TITIK HTML ==========
     function getPointCoordinates(point) {
         const left = parseFloat(point.style.left);
         const top = parseFloat(point.style.top);
         const container = document.getElementById('carMapContainer');
         const rect = container.getBoundingClientRect();
-        return {
-            x: (left / 100) * rect.width,
-            y: (top / 100) * rect.height
-        };
+        return { x: (left / 100) * rect.width, y: (top / 100) * rect.height };
     }
 
     function setupCanvas(container) {
@@ -3152,7 +3138,7 @@ function nextQuestion() {
         ctx.clearRect(0, 0, rect.width, rect.height);
         if (lovePoints.length < 2) return;
 
-        // ========== CARI INDEX PROGRESS ==========
+        // Cari index progress (garis yang udah dilewati)
         let progressIndex = 0;
         if (currentCheckpoint > 0) {
             const htmlPoints = document.querySelectorAll('.car-point');
@@ -3160,7 +3146,7 @@ function nextQuestion() {
             progressIndex = findNearestLoveIndex(coords.x, coords.y);
         }
         
-        // ========== GARIS MERAH (yang sudah dilewati) ==========
+        // Gambar garis MERAH untuk yang sudah dilewati
         if (progressIndex > 0) {
             ctx.beginPath();
             ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
@@ -3172,7 +3158,7 @@ function nextQuestion() {
             ctx.stroke();
         }
         
-        // ========== GARIS PINK (yang belum dilewati) ==========
+        // Gambar garis PINK untuk yang belum dilewati
         ctx.beginPath();
         ctx.moveTo(lovePoints[progressIndex].x, lovePoints[progressIndex].y);
         for (let i = progressIndex + 1; i < lovePoints.length; i++) {
@@ -3183,7 +3169,7 @@ function nextQuestion() {
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // ========== GAMBAR TITIK 1-6 ==========
+        // Gambar titik 1-6 (standar, tanpa highlight aneh)
         const htmlPoints = document.querySelectorAll('.car-point');
         const containerRect = document.getElementById('carMapContainer').getBoundingClientRect();
         htmlPoints.forEach((point, i) => {
@@ -3191,14 +3177,6 @@ function nextQuestion() {
             const top = parseFloat(point.style.top);
             const x = (left / 100) * containerRect.width;
             const y = (top / 100) * containerRect.height;
-            
-            // Titik yang sudah dilewati warnanya MERAH
-            if (i <= currentCheckpoint) {
-                ctx.beginPath();
-                ctx.arc(x, y, 16, 0, Math.PI * 2);
-                ctx.fillStyle = '#FF0000';
-                ctx.fill();
-            }
             
             ctx.beginPath();
             ctx.arc(x, y, 14, 0, Math.PI * 2);
@@ -3213,7 +3191,7 @@ function nextQuestion() {
             ctx.fillText(i + 1, x - 5, y + 5);
         });
 
-        // ========== GAMBAR MOBIL ==========
+        // Gambar mobil
         if (carImage.complete && carImage.src) {
             ctx.save();
             ctx.translate(carX, carY);
@@ -3279,7 +3257,6 @@ function nextQuestion() {
 
     function startJourney(targetIdx) {
         if (isAnimating) return;
-        targetCheckpoint = targetIdx;
         
         const htmlPoints = document.querySelectorAll('.car-point');
         const targetCoords = getPointCoordinates(htmlPoints[targetIdx]);
@@ -3424,7 +3401,6 @@ function nextQuestion() {
 
     window.addEventListener('load', () => setTimeout(init, 300));
 })();
-        
 // ========================
 // GALLERY JS
 // ========================
