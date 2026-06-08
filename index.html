@@ -1479,7 +1479,7 @@
 
 .wishes-section {
     position: relative;
-    overflow: visible;
+    overflow: hidden;
     padding: 120px 0;
 }
 
@@ -1614,14 +1614,14 @@
 
 .wishes-wall {
     margin-top: 50px;
-    height: 350px;
-
-    overflow-y: scroll;
+    max-height: 350px;
+    overflow-y: auto;
     overflow-x: hidden;
-
     padding-right: 10px;
 
-    display: block;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
 
     scrollbar-width: thin;
     scrollbar-color: #D6B98C #1A1A1A;
