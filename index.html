@@ -3070,13 +3070,12 @@ function nextQuestion() {
         // ========================================
 // JOURNEY MAP LOVE + MOBIL 3D
 // ========================================
-    // ========================================
-// JOURNEY MAP – PERFECT LOVE CURVE (PARAMETRIC)
+                                    // ========================================
+// JOURNEY MAP – PERFECT LOVE CURVE (FIXED)
 // ========================================
 (function() {
     let canvas, ctx;
-    let lovePoints = [];       // titik-titik LOVE curve (ratusan titik)
-    let waypoints = [];        // 6 titik utama untuk interaksi
+    let lovePoints = [];
     let carX = 0, carY = 0;
     let carAngle = 0;
     let currentSegment = 0;
@@ -3088,19 +3087,15 @@ function nextQuestion() {
     let carImage = new Image();
     carImage.src = 'mobilwd.png';
 
-    // ========== GENERATE LOVE CURVE PERFECT ==========
     function generateLoveCurve(width, height) {
         const points = [];
-        const scale = Math.min(width, height) / 24;
+        const scale = Math.min(width, height) / 32;
         const offsetX = width / 2;
-        const offsetY = height / 2 + 10;
+        const offsetY = height / 2 - 20;
         
-        // t dari 0 sampai 2*PI (satu putaran penuh LOVE)
         for (let t = 0; t <= Math.PI * 2; t += 0.03) {
-            // Rumus LOVE klasik
             const xRaw = 16 * Math.pow(Math.sin(t), 3);
             const yRaw = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-            
             points.push({
                 x: offsetX + xRaw * scale,
                 y: offsetY - yRaw * scale
@@ -3133,11 +3128,14 @@ function nextQuestion() {
         if (!container) return;
         setupCanvas(container);
 
-        // Generate LOVE curve sesuai ukuran canvas
         const rect = container.getBoundingClientRect();
         lovePoints = generateLoveCurve(rect.width, rect.height);
 
-        // Ambil data dari HTML (.car-point)
+        if (lovePoints.length > 0) {
+            carX = lovePoints[0].x;
+            carY = lovePoints[0].y;
+        }
+
         const htmlPoints = document.querySelectorAll('.car-point');
         htmlPoints.forEach((point, i) => {
             journeyData[i] = {
@@ -3150,7 +3148,6 @@ function nextQuestion() {
                 img2: point.dataset.img2,
                 img3: point.dataset.img3
             };
-            
             point.addEventListener('click', () => {
                 if (isAnimating) return;
                 startJourney();
@@ -3162,6 +3159,10 @@ function nextQuestion() {
             setupCanvas(container);
             const newRect = container.getBoundingClientRect();
             lovePoints = generateLoveCurve(newRect.width, newRect.height);
+            if (lovePoints.length > 0) {
+                carX = lovePoints[0].x;
+                carY = lovePoints[0].y;
+            }
             draw();
         });
     }
@@ -3172,7 +3173,7 @@ function nextQuestion() {
         ctx.clearRect(0, 0, rect.width, rect.height);
         if (lovePoints.length < 2) return;
 
-        // GAMBAR LOVE CURVE (garis mulus dari rumus)
+        // GAMBAR LOVE CURVE
         ctx.beginPath();
         ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
         for (let i = 1; i < lovePoints.length; i++) {
@@ -3183,20 +3184,18 @@ function nextQuestion() {
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // GAMBAR TITIK 1-6 (posisi dari HTML, bebas lo atur)
+        // GAMBAR TITIK 1-6 (HTML, BEBAS LO ATUR)
         const htmlPoints = document.querySelectorAll('.car-point');
+        const container = document.getElementById('carMapContainer');
+        const containerRect = container.getBoundingClientRect();
         htmlPoints.forEach((point, i) => {
             const left = parseFloat(point.style.left);
             const top = parseFloat(point.style.top);
-            const container = document.getElementById('carMapContainer');
-            const rect = container.getBoundingClientRect();
-            const x = (left / 100) * rect.width;
-            const y = (top / 100) * rect.height;
-            
+            const x = (left / 100) * containerRect.width;
+            const y = (top / 100) * containerRect.height;
             ctx.beginPath();
             ctx.arc(x, y, 14, 0, Math.PI * 2);
             ctx.fillStyle = '#D6B98C';
-            ctx.shadowBlur = 10;
             ctx.fill();
             ctx.beginPath();
             ctx.arc(x, y, 6, 0, Math.PI * 2);
@@ -3204,7 +3203,6 @@ function nextQuestion() {
             ctx.fill();
             ctx.fillStyle = '#fff';
             ctx.font = 'bold 14px Poppins';
-            ctx.shadowBlur = 0;
             ctx.fillText(i + 1, x - 5, y + 5);
         });
 
@@ -3223,10 +3221,9 @@ function nextQuestion() {
     }
 
     function startJourney() {
-        if (isAnimating) return;
+        if (isAnimating || lovePoints.length === 0) return;
         
-        // Reset mobil ke awal LOVE curve
-        if (lovePoints.length === 0) return;
+        // RESET ke titik awal LOVE curve
         carX = lovePoints[0].x;
         carY = lovePoints[0].y;
         carAngle = 0;
@@ -3242,115 +3239,31 @@ function nextQuestion() {
 
     function animate() {
         if (!isAnimating) return;
-        
         if (currentSegment >= lovePoints.length - 2) {
             isAnimating = false;
             document.getElementById('carLoading')?.classList.remove('show');
             return;
         }
-        
         const start = lovePoints[currentSegment];
         const end = lovePoints[currentSegment + 1];
-        
         animProgress += 0.02;
-        
         if (animProgress >= 1) {
             animProgress = 0;
             currentSegment++;
             requestAnimationFrame(animate);
             return;
         }
-        
         const dx = end.x - start.x;
         const dy = end.y - start.y;
         carX = start.x + dx * animProgress;
         carY = start.y + dy * animProgress;
         carAngle = Math.atan2(dy, dx);
-        
         draw();
         requestAnimationFrame(animate);
     }
 
-    function openDetail(idx) {
-        const d = journeyData[idx];
-        if (!d) return;
-        document.getElementById('modalTitle').innerText = d.title;
-        document.getElementById('modalDate').innerText = d.date;
-        document.getElementById('modalLocation').innerHTML = `📍 ${d.location}`;
-        document.getElementById('modalStory').innerText = d.story;
-
-        const video = document.getElementById('modalVideo');
-        const videoContainer = document.querySelector('.modal-media');
-        if (d.video && d.video !== '' && d.video !== 'undefined') {
-            video.querySelector('source').src = d.video;
-            video.load();
-            video.style.display = 'block';
-            if (videoContainer) videoContainer.style.display = 'block';
-            video.play().catch(e => console.log('auto-play error'));
-        } else {
-            video.style.display = 'none';
-            if (videoContainer) videoContainer.style.display = 'none';
-        }
-
-        let galleryHTML = '';
-        if (d.img1 && d.img1 !== '' && d.img1 !== 'undefined') galleryHTML += `<img src="${d.img1}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
-        if (d.img2 && d.img2 !== '' && d.img2 !== 'undefined') galleryHTML += `<img src="${d.img2}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
-        if (d.img3 && d.img3 !== '' && d.img3 !== 'undefined') galleryHTML += `<img src="${d.img3}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
-        document.getElementById('modalGallery').innerHTML = galleryHTML || '<p style="text-align:center; color:#aaa;">Tidak ada foto tambahan</p>';
-
-        const clickableImgs = document.querySelectorAll('.gallery-img-clickable');
-        clickableImgs.forEach(img => {
-            img.style.cursor = 'pointer';
-            img.addEventListener('click', (e) => {
-                e.stopPropagation();
-                const lightbox = document.createElement('div');
-                lightbox.style.position = 'fixed';
-                lightbox.style.top = '0';
-                lightbox.style.left = '0';
-                lightbox.style.width = '100%';
-                lightbox.style.height = '100%';
-                lightbox.style.background = 'rgba(0,0,0,0.95)';
-                lightbox.style.backdropFilter = 'blur(15px)';
-                lightbox.style.zIndex = '20000';
-                lightbox.style.display = 'flex';
-                lightbox.style.alignItems = 'center';
-                lightbox.style.justifyContent = 'center';
-                lightbox.style.cursor = 'pointer';
-                const bigImg = document.createElement('img');
-                bigImg.src = img.src;
-                bigImg.style.maxWidth = '90%';
-                bigImg.style.maxHeight = '90%';
-                bigImg.style.borderRadius = '20px';
-                bigImg.style.boxShadow = '0 25px 50px rgba(0,0,0,0.8)';
-                bigImg.style.objectFit = 'contain';
-                lightbox.appendChild(bigImg);
-                document.body.appendChild(lightbox);
-                lightbox.addEventListener('click', () => lightbox.remove());
-            });
-        });
-
-        document.getElementById('journeyDetailModal').classList.add('active');
-    }
-
-    document.getElementById('closeModalBtn')?.addEventListener('click', () => {
-        const vid = document.getElementById('modalVideo');
-        if (vid) vid.pause();
-        document.getElementById('journeyDetailModal').classList.remove('active');
-    });
-
-    document.getElementById('journeyDetailModal')?.addEventListener('click', (e) => {
-        if (e.target === document.getElementById('journeyDetailModal') || e.target.classList.contains('modal-bg')) {
-            const vid = document.getElementById('modalVideo');
-            if (vid) vid.pause();
-            document.getElementById('journeyDetailModal').classList.remove('active');
-        }
-    });
-
     window.addEventListener('load', () => setTimeout(init, 300));
 })();
-            
-            
-        
 // ========================
 // GALLERY JS
 // ========================
