@@ -1655,10 +1655,16 @@
 
 .wish-item-header {
     display: flex;
-    align-items: baseline;
     flex-wrap: wrap;
     gap: 12px;
     margin-bottom: 8px;
+
+
+    justify-content:space-between;
+
+    align-items:flex-start;
+
+    gap:10px;
 }
 
 .wish-item-name {
@@ -1687,6 +1693,46 @@
     color: #EAE6DF;
     margin-top: 8px;
     word-break: break-word;
+}
+        .wish-left{
+
+    display:flex;
+
+    align-items:center;
+
+    flex-wrap:wrap;
+
+    gap:10px;
+
+        }
+        .wish-item-total{
+
+    padding:8px 14px;
+
+    border-radius:999px;
+
+    background:rgba(201,168,106,.15);
+
+    color:#c9a86a;
+
+    font-size:14px;
+
+    font-weight:500;
+
+}
+
+
+
+.wish-date{
+
+    font-size:11px;
+
+    color:rgba(255,255,255,.45);
+
+    white-space:nowrap;
+
+    margin-top:4px;
+
 }
 
 @media (max-width: 768px) {
