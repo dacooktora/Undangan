@@ -1614,8 +1614,8 @@
 
 .wishes-wall {
     margin-top: 50px;
-    height: 450px;
-    overflow-y: scroll;
+    max-height: 350px; /* kira-kira 3 komentar */
+    overflow-y: auto;
     padding-right: 10px;
     display: flex;
     flex-direction: column;
@@ -1653,6 +1653,9 @@
     position: relative;
     overflow: hidden;
     transition: 0.3s ease;
+    flex-shrink: 0;
+    min-height: 70px;
+    
 }
 
 .wish-item:hover {
