@@ -3388,7 +3388,7 @@ galleries.forEach(gallery => {
 
         
 </script>
-    <script type="module">
+<script type="module">
 
 import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
 
@@ -3400,7 +3400,7 @@ import {
 } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
 
 const firebaseConfig = {
-  apiKey: "AIzaSyDmo5eGQjDEMRjQS_wyelvxuVoWmM3iigw",
+  apiKey: "YOUR_API_KEY",
   authDomain: "resa-delia-wedding.firebaseapp.com",
   databaseURL: "https://resa-delia-wedding-default-rtdb.asia-southeast1.firebasedatabase.app",
   projectId: "resa-delia-wedding",
@@ -3413,66 +3413,113 @@ const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
 const wishesRef = ref(db, "wishes");
 
-// Kirim ucapan
+console.log("Firebase Connected");
+
+// =========================
+// KIRIM UCAPAN
+// =========================
+
 document.getElementById("submitWish").addEventListener("click", async () => {
 
-    const name = document.getElementById("wishName").value.trim();
-    const status = document.getElementById("wishStatus").value;
-    const total = document.getElementById("wishTotal").value;
-    const message = document.getElementById("wishMessage").value.trim();
+  const name = document.getElementById("wishName").value.trim();
+  const status = document.getElementById("wishStatus").value;
+  const total = document.getElementById("wishTotal").value || "1";
+  const message = document.getElementById("wishMessage").value.trim();
 
-    if (!name || !message) {
-        alert("Nama dan ucapan wajib diisi");
-        return;
-    }
+  if (!name || !message) {
+    alert("Nama dan ucapan wajib diisi");
+    return;
+  }
+
+  try {
 
     await push(wishesRef, {
-        name,
-        status,
-        total,
-        message,
-        createdAt: Date.now()
+      name,
+      status,
+      total,
+      message,
+      createdAt: Date.now()
     });
 
     document.getElementById("wishName").value = "";
     document.getElementById("wishStatus").value = "";
     document.getElementById("wishTotal").value = "";
     document.getElementById("wishMessage").value = "";
+
+  } catch (error) {
+    console.error(error);
+    alert("Gagal mengirim ucapan");
+  }
+
 });
 
-// Tampilkan ucapan
+// =========================
+// TAMPILKAN UCAPAN
+// =========================
+
 onValue(wishesRef, (snapshot) => {
 
-    const wall = document.getElementById("wishesWall");
-    wall.innerHTML = "";
+  const wall = document.getElementById("wishesWall");
+  wall.innerHTML = "";
 
-    const data = snapshot.val();
+  const data = snapshot.val();
 
-    if (!data) {
-        wall.innerHTML = "<p>Belum ada ucapan.</p>";
-        return;
-    }
+  if (!data) {
+    wall.innerHTML = `
+      <div style="text-align:center;opacity:.7">
+        Belum ada ucapan
+      </div>
+    `;
+    return;
+  }
 
-    Object.values(data)
-        .reverse()
-        .forEach(item => {
+  const wishes = Object.values(data);
 
-            wall.innerHTML += `
-                <div class="wish-item">
-                    <div class="wish-item-header">
-                        <div class="wish-item-name">${item.name}</div>
-                        <div class="wish-item-status">${item.status || "-"}</div>
-                    </div>
+  wishes
+    .sort((a, b) => b.createdAt - a.createdAt)
+    .forEach(item => {
 
-                    <div class="wish-item-message">
-                        ${item.message}
-                    </div>
-                </div>
-            `;
-        });
+      const date = new Date(item.createdAt);
+
+      const waktu = date.toLocaleString("id-ID", {
+        day: "2-digit",
+        month: "short",
+        year: "numeric",
+        hour: "2-digit",
+        minute: "2-digit"
+      });
+
+      wall.innerHTML += `
+      
+        <div class="wish-item">
+
+          <div class="wish-item-header">
+
+            <div class="wish-item-name">
+              ${item.name}
+            </div>
+
+            <div class="wish-item-status">
+              ${item.status || "-"}
+            </div>
+
+          </div>
+
+          <div class="wish-item-message">
+            ${item.message}
+          </div>
+
+          <div class="wish-meta">
+            ${item.total || 1} Tamu • ${waktu} WIB
+          </div>
+
+        </div>
+
+      `;
+    });
+
 });
-console.log("Firebase Connected");
 
-    </script>
+</script>
 </body>
 </html>
