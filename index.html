@@ -3070,8 +3070,8 @@ function nextQuestion() {
         // ========================================
 // JOURNEY MAP LOVE + MOBIL 3D
 // ========================================
-                                       // ========================================
-// JOURNEY MAP – FIXED (GARIS TIDAK IKUTAN)
+    // ========================================
+// JOURNEY MAP – GARIS POLOS (NO EXTRA LINE)
 // ========================================
 (function() {
     let canvas, ctx;
@@ -3086,12 +3086,10 @@ function nextQuestion() {
     let dpr = window.devicePixelRatio || 1;
     
     let currentCheckpoint = 0;
-    let targetCheckpoint = 0;
     
     let carImage = new Image();
     carImage.src = 'mobilwd.png';
 
-    // ========== GENERATE LOVE CURVE ==========
     function generateLoveCurve(width, height) {
         const points = [];
         const scale = Math.min(width, height) / 36;
@@ -3100,10 +3098,7 @@ function nextQuestion() {
         for (let t = 0; t <= Math.PI * 2; t += 0.03) {
             const xRaw = 16 * Math.pow(Math.sin(t), 3);
             const yRaw = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-            points.push({
-                x: offsetX + xRaw * scale,
-                y: offsetY - yRaw * scale
-            });
+            points.push({ x: offsetX + xRaw * scale, y: offsetY - yRaw * scale });
         }
         return points;
     }
@@ -3137,39 +3132,24 @@ function nextQuestion() {
         ctx.imageSmoothingQuality = "high";
     }
 
-    function redrawLines() {
-        if (!ctx || lovePoints.length < 2) return;
+    function drawEverything() {
+        if (!ctx) return;
         const rect = canvas.getBoundingClientRect();
         ctx.clearRect(0, 0, rect.width, rect.height);
-        
-        // Cari index garis gold
-        let progressIndex = 0;
-        if (currentCheckpoint > 0) {
-            const htmlPoints = document.querySelectorAll('.car-point');
-            const coords = getPointCoordinates(htmlPoints[currentCheckpoint]);
-            progressIndex = findNearestLoveIndex(coords.x, coords.y);
-        }
-        
-        // Garis gold (yang sudah dilewati)
-        if (progressIndex > 0) {
-            ctx.beginPath();
-            ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
-            for (let i = 1; i <= progressIndex; i++) ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
-            ctx.strokeStyle = '#FFD700';
-            ctx.lineWidth = 4;
-            ctx.stroke();
-        }
-        
-        // Garis pink (yang belum dilewati)
+        if (lovePoints.length < 2) return;
+
+        // GARIS LOVE CURVE (cuma 1 warna)
         ctx.beginPath();
-        ctx.moveTo(lovePoints[progressIndex].x, lovePoints[progressIndex].y);
-        for (let i = progressIndex + 1; i < lovePoints.length; i++) ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
+        ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
+        for (let i = 1; i < lovePoints.length; i++) {
+            ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
+        }
         ctx.closePath();
         ctx.strokeStyle = '#FF4D6D';
         ctx.lineWidth = 3;
         ctx.stroke();
-        
-        // Gambar titik 1-6
+
+        // TITIK 1-6
         const htmlPoints = document.querySelectorAll('.car-point');
         const containerRect = document.getElementById('carMapContainer').getBoundingClientRect();
         htmlPoints.forEach((point, i) => {
@@ -3178,12 +3158,6 @@ function nextQuestion() {
             const x = (left / 100) * containerRect.width;
             const y = (top / 100) * containerRect.height;
             
-            if (i <= currentCheckpoint) {
-                ctx.beginPath();
-                ctx.arc(x, y, 16, 0, Math.PI * 2);
-                ctx.fillStyle = '#FFD700';
-                ctx.fill();
-            }
             ctx.beginPath();
             ctx.arc(x, y, 14, 0, Math.PI * 2);
             ctx.fillStyle = '#D6B98C';
@@ -3196,10 +3170,8 @@ function nextQuestion() {
             ctx.font = 'bold 14px Poppins';
             ctx.fillText(i + 1, x - 5, y + 5);
         });
-    }
 
-    function drawCarOnly() {
-        if (!ctx) return;
+        // MOBIL
         if (carImage.complete && carImage.src) {
             ctx.save();
             ctx.translate(carX, carY);
@@ -3213,17 +3185,12 @@ function nextQuestion() {
         }
     }
 
-    function fullDraw() {
-        redrawLines();
-        drawCarOnly();
-    }
-
     function init() {
         canvas = document.getElementById('journeyCanvas');
         if (!canvas) return;
         ctx = canvas.getContext('2d');
 
-        carImage.onload = () => fullDraw();
+        carImage.onload = () => drawEverything();
         carImage.onerror = () => console.log('Gambar mobil gagal load');
 
         const container = document.getElementById('carMapContainer');
@@ -3241,15 +3208,21 @@ function nextQuestion() {
         const htmlPoints = document.querySelectorAll('.car-point');
         htmlPoints.forEach((point, i) => {
             journeyData[i] = {
-                title: point.dataset.title, date: point.dataset.date,
-                location: point.dataset.location, story: point.dataset.story,
-                video: point.dataset.video, img1: point.dataset.img1,
-                img2: point.dataset.img2, img3: point.dataset.img3
+                title: point.dataset.title,
+                date: point.dataset.date,
+                location: point.dataset.location,
+                story: point.dataset.story,
+                video: point.dataset.video,
+                img1: point.dataset.img1,
+                img2: point.dataset.img2,
+                img3: point.dataset.img3
             };
-            point.addEventListener('click', () => { if (!isAnimating) startJourney(i); });
+            point.addEventListener('click', () => {
+                if (!isAnimating) startJourney(i);
+            });
         });
 
-        fullDraw();
+        drawEverything();
         window.addEventListener('resize', () => {
             setupCanvas(container);
             const newRect = container.getBoundingClientRect();
@@ -3258,26 +3231,26 @@ function nextQuestion() {
                 carX = lovePoints[0].x;
                 carY = lovePoints[0].y;
             }
-            fullDraw();
+            drawEverything();
         });
     }
 
     function startJourney(targetIdx) {
         if (isAnimating) return;
-        targetCheckpoint = targetIdx;
         
         const htmlPoints = document.querySelectorAll('.car-point');
         const targetCoords = getPointCoordinates(htmlPoints[targetIdx]);
         const targetLoveIdx = findNearestLoveIndex(targetCoords.x, targetCoords.y);
         
         let startLoveIdx;
+        
         if (targetIdx < currentCheckpoint) {
             startLoveIdx = findNearestLoveIndex(lovePoints[0].x, lovePoints[0].y);
             currentCheckpoint = 0;
             carX = lovePoints[startLoveIdx].x;
             carY = lovePoints[startLoveIdx].y;
             carAngle = 0;
-            fullDraw();
+            drawEverything();
         } else {
             startLoveIdx = findNearestLoveIndex(carX, carY);
         }
@@ -3300,18 +3273,19 @@ function nextQuestion() {
 
     function animate() {
         if (!isAnimating) return;
+        
         if (currentSegment >= currentTargetIndex) {
             isAnimating = false;
             document.getElementById('carLoading')?.classList.remove('show');
             currentCheckpoint = window._targetIdx;
-            fullDraw();  // redraw garis dengan checkpoint baru
+            drawEverything();
             openDetail(window._targetIdx);
             return;
         }
         
         const start = lovePoints[currentSegment];
         const end = lovePoints[currentSegment + 1];
-        animProgress += 0.08;
+        animProgress += 0.06;
         
         if (animProgress >= 1) {
             animProgress = 0;
@@ -3326,11 +3300,7 @@ function nextQuestion() {
         carY = start.y + dy * animProgress;
         carAngle = Math.atan2(dy, dx);
         
-        // Hanya gambar mobil, garis sudah fix dari fullDraw()
-        ctx.clearRect(0, 0, canvas.width, canvas.height);
-        redrawLines();
-        drawCarOnly();
-        
+        drawEverything();
         requestAnimationFrame(animate);
     }
 
@@ -3411,7 +3381,6 @@ function nextQuestion() {
 
     window.addEventListener('load', () => setTimeout(init, 300));
 })();
-    
           
         
 // ========================
