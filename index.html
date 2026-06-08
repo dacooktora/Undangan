@@ -1641,7 +1641,7 @@
 
 /* style setiap komentar di dalam scroll area */
 /* ========================
-   WEDDING WISHES - ICON AVATAR + FLYING ICON + 3D TILT
+   WEDDING WISHES - RAINBOW ICON RAIN
 ======================== */
 
 /* style setiap komentar di dalam scroll area */
@@ -1651,40 +1651,14 @@
     padding: 16px 18px;
     display: flex;
     gap: 14px;
-    transform-style: preserve-3d;
-    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-    will-change: transform;
     position: relative;
     overflow: hidden;
-}
-
-/* Efek glow border berputar */
-.wish-item::before {
-    content: '';
-    position: absolute;
-    inset: -2px;
-    border-radius: 22px;
-    background: linear-gradient(135deg, #D6B98C, #8F6A35, #D6B98C, #F5E6B8);
-    background-size: 300% 300%;
-    z-index: -1;
-    opacity: 0;
-    transition: opacity 0.4s ease;
-    animation: borderGlow 3s ease infinite;
-}
-
-.wish-item:hover::before {
-    opacity: 1;
-}
-
-@keyframes borderGlow {
-    0% { background-position: 0% 50%; }
-    50% { background-position: 100% 50%; }
-    100% { background-position: 0% 50%; }
+    transition: 0.3s ease;
 }
 
 .wish-item:hover {
     background: rgba(255,255,255,0.08);
-    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(214,185,140,0.3);
+    transform: translateX(4px);
 }
 
 /* Avatar pakai icon */
@@ -1699,23 +1673,20 @@
     justify-content: center;
     font-size: 1.5rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    transition: all 0.3s ease;
+    transition: 0.3s ease;
+    z-index: 2;
 }
 
 .wish-item:hover .wish-avatar {
-    transform: scale(1.05) translateZ(10px);
+    transform: scale(1.05);
     box-shadow: 0 8px 20px rgba(214,185,140,0.4);
-    animation: bounceAvatar 0.5s ease;
-}
-
-@keyframes bounceAvatar {
-    0%, 100% { transform: scale(1); }
-    50% { transform: scale(1.1); }
 }
 
 /* konten kanan */
 .wish-content {
     flex: 1;
+    position: relative;
+    z-index: 2;
 }
 
 /* header: nama + tanggal sejajar */
@@ -1748,40 +1719,61 @@
 }
 
 /* ========================
-   ICON TERBANG DI POJOK KANAN
+   HUJAN ICON (TERUS MENERUS)
 ======================== */
 
-.wish-flying-icon {
+/* Container untuk semua icon yang terbang */
+.flying-icons-container {
     position: absolute;
-    bottom: -40px;
-    right: 15px;
-    font-size: 1.5rem;
-    opacity: 0;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
     pointer-events: none;
-    z-index: 5;
-    animation: flyUp 2s ease-out forwards;
+    z-index: 1;
+    overflow: hidden;
 }
 
-@keyframes flyUp {
+/* Setiap icon terbang */
+.flying-icon {
+    position: absolute;
+    bottom: -30px;
+    font-size: 1.2rem;
+    pointer-events: none;
+    opacity: 0;
+    animation: floatUpLinear 3s linear forwards;
+    z-index: 1;
+}
+
+@keyframes floatUpLinear {
     0% {
-        bottom: -40px;
+        bottom: -30px;
         opacity: 0;
-        transform: rotate(0deg) scale(0.5);
+        transform: translateX(0) rotate(0deg);
     }
-    20% {
-        opacity: 1;
+    10% {
+        opacity: 0.8;
     }
-    80% {
-        opacity: 1;
+    90% {
+        opacity: 0.8;
     }
     100% {
         bottom: 100%;
         opacity: 0;
-        transform: rotate(20deg) scale(1.2);
+        transform: translateX(var(--drift, 20px)) rotate(360deg);
     }
 }
 
-/* Responsive layar kecil */
+/* Animasi berbeda untuk setiap icon biar variatif */
+.flying-icon:nth-child(odd) {
+    animation-duration: 2.5s;
+}
+
+.flying-icon:nth-child(even) {
+    animation-duration: 3.5s;
+}
+
+/* Responsive */
 @media (max-width: 550px) {
     .wish-item {
         padding: 12px 14px;
@@ -1805,11 +1797,11 @@
         margin-top: -20px;
     }
     
-    .wish-flying-icon {
-        font-size: 1.2rem;
-        right: 10px;
+    .flying-icon {
+        font-size: 1rem;
     }
 }
+    
 
 
 @media (max-width: 768px) {
@@ -3578,8 +3570,8 @@ document.getElementById("submitWish").addEventListener("click", async () => {
 
 });
 
-                    // ========================
-// DAFTAR ICON BERURUTAN
+       // ========================
+// DAFTAR ICON BERURUTAN UNTUK AVATAR
 // ========================
 const avatarIcons = ['🎈', '🎊', '🌹', '👩‍❤️‍👨', '💖'];
 
@@ -3589,30 +3581,58 @@ function getIconByIndex(index) {
 }
 
 // ========================
-// 3D TILT EFFECT FUNCTION
+// FUNGSI MEMBUAT HUJAN ICON (TERUS MENERUS)
 // ========================
-function applyTiltEffect() {
-    const wishItems = document.querySelectorAll('.wish-item');
+function startFlyingIcons(container, icon) {
+    // Hapus container lama jika ada
+    const oldContainer = container.querySelector('.flying-icons-container');
+    if (oldContainer) oldContainer.remove();
     
-    wishItems.forEach(item => {
-        item.addEventListener('mousemove', (e) => {
-            const rect = item.getBoundingClientRect();
-            const x = e.clientX - rect.left;
-            const y = e.clientY - rect.top;
-            
-            const centerX = rect.width / 2;
-            const centerY = rect.height / 2;
-            
-            const rotateX = ((y - centerY) / centerY) * -8;
-            const rotateY = ((x - centerX) / centerX) * 8;
-            
-            item.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(5px)`;
-        });
+    // Buat container baru
+    const iconContainer = document.createElement('div');
+    iconContainer.className = 'flying-icons-container';
+    container.appendChild(iconContainer);
+    
+    // Interval untuk menambah icon baru setiap 0.4 detik (banyak dan terus-terusan)
+    const intervalId = setInterval(() => {
+        // Cek apakah container masih ada di DOM
+        if (!document.body.contains(container)) {
+            clearInterval(intervalId);
+            return;
+        }
         
-        item.addEventListener('mouseleave', () => {
-            item.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
-        });
-    });
+        // Buat icon terbang baru
+        const flyingIcon = document.createElement('div');
+        flyingIcon.className = 'flying-icon';
+        flyingIcon.textContent = icon;
+        
+        // Posisi horizontal random (dari kiri ke kanan, tapi fokus di area kanan)
+        const randomX = 60 + Math.random() * 35; // persen dari lebar container (60% - 95%)
+        flyingIcon.style.left = randomX + '%';
+        
+        // Drift random (gerakan horizontal saat terbang)
+        const drift = (Math.random() - 0.5) * 40;
+        flyingIcon.style.setProperty('--drift', drift + 'px');
+        
+        // Ukuran random
+        const randomSize = 0.8 + Math.random() * 0.8;
+        flyingIcon.style.fontSize = (1.2 * randomSize) + 'rem';
+        
+        // Delay random
+        flyingIcon.style.animationDelay = (Math.random() * 0.3) + 's';
+        
+        // Tambahkan ke container
+        iconContainer.appendChild(flyingIcon);
+        
+        // Hapus icon setelah animasi selesai (3-4 detik)
+        setTimeout(() => {
+            if (flyingIcon && flyingIcon.remove) flyingIcon.remove();
+        }, 4000);
+        
+    }, 400); // setiap 0.4 detik muncul icon baru
+    
+    // Simpan intervalId ke container untuk bisa dihentikan jika perlu
+    container._iconInterval = intervalId;
 }
 
 // ========================
@@ -3646,12 +3666,9 @@ onValue(wishesRef, (snapshot) => {
         
         // Ambil icon berdasarkan urutan (idx)
         const icon = getIconByIndex(idx);
-        
-        // Random delay untuk animasi icon terbang biar gak serempak
-        const randomDelay = (Math.random() * 0.8).toFixed(2);
 
         wall.innerHTML += `
-            <div class="wish-item" data-icon="${icon}">
+            <div class="wish-item" data-icon="${icon}" data-idx="${idx}">
                 <div class="wish-avatar">${icon}</div>
                 <div class="wish-content">
                     <div class="wish-header">
@@ -3660,22 +3677,17 @@ onValue(wishesRef, (snapshot) => {
                     </div>
                     <div class="wish-message">${escapeHtml(item.message)}</div>
                 </div>
-                <div class="wish-flying-icon" style="animation-delay: ${randomDelay}s;">${icon}</div>
             </div>
         `;
     });
 
-    // Panggil efek 3D tilt setelah komentar selesai dirender
-    applyTiltEffect();
-    
-    // Hapus icon terbang setelah animasi selesai (biar gak numpuk)
+    // Mulai animasi hujan icon untuk setiap komentar
     setTimeout(() => {
-        document.querySelectorAll('.wish-flying-icon').forEach(el => {
-            setTimeout(() => {
-                if(el && el.remove) el.remove();
-            }, 2500);
+        document.querySelectorAll('.wish-item').forEach(item => {
+            const icon = item.getAttribute('data-icon') || '💖';
+            startFlyingIcons(item, icon);
         });
-    }, 500);
+    }, 100);
 });
 
 // Fungsi untuk menghindari XSS
@@ -3688,6 +3700,13 @@ function escapeHtml(str) {
         .replace(/"/g, '&quot;')
         .replace(/'/g, '&#39;');
 }
+
+// Hentikan semua interval saat halaman ditutup/disimpan (optional)
+window.addEventListener('beforeunload', () => {
+    document.querySelectorAll('.wish-item').forEach(item => {
+        if (item._iconInterval) clearInterval(item._iconInterval);
+    });
+});
   </script>
 </body>
 </html>
