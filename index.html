@@ -1719,10 +1719,9 @@
 }
 
 /* ========================
-   HUJAN ICON (TERUS MENERUS)
+   HUJAN ICON KONTINU (LOOP)
 ======================== */
 
-/* Container untuk semua icon yang terbang */
 .flying-icons-container {
     position: absolute;
     top: 0;
@@ -1734,28 +1733,27 @@
     overflow: hidden;
 }
 
-/* Setiap icon terbang */
 .flying-icon {
     position: absolute;
     bottom: -30px;
     font-size: 1.2rem;
     pointer-events: none;
-    opacity: 0;
-    animation: floatUpLinear 3s linear forwards;
+    opacity: 0.9;
     z-index: 1;
+    animation: floatUpContinuous 3s linear infinite;
 }
 
-@keyframes floatUpLinear {
+@keyframes floatUpContinuous {
     0% {
         bottom: -30px;
         opacity: 0;
         transform: translateX(0) rotate(0deg);
     }
     10% {
-        opacity: 0.8;
+        opacity: 0.9;
     }
     90% {
-        opacity: 0.8;
+        opacity: 0.9;
     }
     100% {
         bottom: 100%;
@@ -1764,13 +1762,17 @@
     }
 }
 
-/* Animasi berbeda untuk setiap icon biar variatif */
+/* Variasi kecepatan */
 .flying-icon:nth-child(odd) {
-    animation-duration: 2.5s;
+    animation-duration: 2.8s;
 }
 
-.flying-icon:nth-child(even) {
+.flying-icon:nth-child(3n) {
     animation-duration: 3.5s;
+}
+
+.flying-icon:nth-child(5n+2) {
+    animation-duration: 2.2s;
 }
 
 /* Responsive */
@@ -3569,8 +3571,7 @@ document.getElementById("submitWish").addEventListener("click", async () => {
     }
 
 });
-
-       // ========================
+// ========================
 // DAFTAR ICON BERURUTAN UNTUK AVATAR
 // ========================
 const avatarIcons = ['🎈', '🎊', '🌹', '👩‍❤️‍👨', '💖'];
@@ -3581,7 +3582,38 @@ function getIconByIndex(index) {
 }
 
 // ========================
-// FUNGSI MEMBUAT HUJAN ICON (TERUS MENERUS)
+// FUNGSI MEMBUAT SATU ICON TERBANG
+// ========================
+function createFlyingIcon(container, icon) {
+    const flyingIcon = document.createElement('div');
+    flyingIcon.className = 'flying-icon';
+    flyingIcon.textContent = icon;
+    
+    // Posisi horizontal random (area kanan komentar)
+    const randomX = 65 + Math.random() * 30; // 65% - 95%
+    flyingIcon.style.left = randomX + '%';
+    
+    // Drift random (geser kiri/kanan saat terbang)
+    const drift = (Math.random() - 0.5) * 50;
+    flyingIcon.style.setProperty('--drift', drift + 'px');
+    
+    // Ukuran random biar natural
+    const randomSize = 0.8 + Math.random() * 0.9;
+    flyingIcon.style.fontSize = (1.1 * randomSize) + 'rem';
+    
+    // Delay random
+    flyingIcon.style.animationDelay = (Math.random() * 0.5) + 's';
+    
+    container.appendChild(flyingIcon);
+    
+    // Hapus setelah 30 detik (biar ga numpuk terlalu banyak)
+    setTimeout(() => {
+        if (flyingIcon && flyingIcon.remove) flyingIcon.remove();
+    }, 30000);
+}
+
+// ========================
+// FUNGSI MEMBUAT HUJAN ICON KONTINU (LOOP)
 // ========================
 function startFlyingIcons(container, icon) {
     // Hapus container lama jika ada
@@ -3593,46 +3625,52 @@ function startFlyingIcons(container, icon) {
     iconContainer.className = 'flying-icons-container';
     container.appendChild(iconContainer);
     
-    // Interval untuk menambah icon baru setiap 0.4 detik (banyak dan terus-terusan)
+    // Buat 15-20 icon sekaligus, biar langsung ramai dan kontinu
+    const iconCount = 18;
+    
+    for (let i = 0; i < iconCount; i++) {
+        setTimeout(() => {
+            createFlyingIcon(iconContainer, icon);
+        }, i * 180);
+    }
+    
+    // Interval terus-terusan menambah icon baru (biar ga pernah berhenti)
     const intervalId = setInterval(() => {
-        // Cek apakah container masih ada di DOM
         if (!document.body.contains(container)) {
             clearInterval(intervalId);
             return;
         }
-        
-        // Buat icon terbang baru
-        const flyingIcon = document.createElement('div');
-        flyingIcon.className = 'flying-icon';
-        flyingIcon.textContent = icon;
-        
-        // Posisi horizontal random (dari kiri ke kanan, tapi fokus di area kanan)
-        const randomX = 60 + Math.random() * 35; // persen dari lebar container (60% - 95%)
-        flyingIcon.style.left = randomX + '%';
-        
-        // Drift random (gerakan horizontal saat terbang)
-        const drift = (Math.random() - 0.5) * 40;
-        flyingIcon.style.setProperty('--drift', drift + 'px');
-        
-        // Ukuran random
-        const randomSize = 0.8 + Math.random() * 0.8;
-        flyingIcon.style.fontSize = (1.2 * randomSize) + 'rem';
-        
-        // Delay random
-        flyingIcon.style.animationDelay = (Math.random() * 0.3) + 's';
-        
-        // Tambahkan ke container
-        iconContainer.appendChild(flyingIcon);
-        
-        // Hapus icon setelah animasi selesai (3-4 detik)
-        setTimeout(() => {
-            if (flyingIcon && flyingIcon.remove) flyingIcon.remove();
-        }, 4000);
-        
-    }, 400); // setiap 0.4 detik muncul icon baru
+        createFlyingIcon(iconContainer, icon);
+    }, 400);
     
-    // Simpan intervalId ke container untuk bisa dihentikan jika perlu
     container._iconInterval = intervalId;
+}
+
+// ========================
+// 3D TILT EFFECT FUNCTION (OPSIONAL, BISA DIHAPUS)
+// ========================
+function applyTiltEffect() {
+    const wishItems = document.querySelectorAll('.wish-item');
+    
+    wishItems.forEach(item => {
+        item.addEventListener('mousemove', (e) => {
+            const rect = item.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -8;
+            const rotateY = ((x - centerX) / centerX) * 8;
+            
+            item.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(5px)`;
+        });
+        
+        item.addEventListener('mouseleave', () => {
+            item.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        });
+    });
 }
 
 // ========================
@@ -3701,12 +3739,14 @@ function escapeHtml(str) {
         .replace(/'/g, '&#39;');
 }
 
-// Hentikan semua interval saat halaman ditutup/disimpan (optional)
+// Hentikan semua interval saat halaman ditutup
 window.addEventListener('beforeunload', () => {
     document.querySelectorAll('.wish-item').forEach(item => {
         if (item._iconInterval) clearInterval(item._iconInterval);
     });
 });
+       
+    
   </script>
 </body>
 </html>
