@@ -3411,7 +3411,66 @@ const firebaseConfig = {
 
 const app = initializeApp(firebaseConfig);
 const db = getDatabase(app);
+const wishesRef = ref(db, "wishes");
 
+// Kirim ucapan
+document.getElementById("submitWish").addEventListener("click", async () => {
+
+    const name = document.getElementById("wishName").value.trim();
+    const status = document.getElementById("wishStatus").value;
+    const total = document.getElementById("wishTotal").value;
+    const message = document.getElementById("wishMessage").value.trim();
+
+    if (!name || !message) {
+        alert("Nama dan ucapan wajib diisi");
+        return;
+    }
+
+    await push(wishesRef, {
+        name,
+        status,
+        total,
+        message,
+        createdAt: Date.now()
+    });
+
+    document.getElementById("wishName").value = "";
+    document.getElementById("wishStatus").value = "";
+    document.getElementById("wishTotal").value = "";
+    document.getElementById("wishMessage").value = "";
+});
+
+// Tampilkan ucapan
+onValue(wishesRef, (snapshot) => {
+
+    const wall = document.getElementById("wishesWall");
+    wall.innerHTML = "";
+
+    const data = snapshot.val();
+
+    if (!data) {
+        wall.innerHTML = "<p>Belum ada ucapan.</p>";
+        return;
+    }
+
+    Object.values(data)
+        .reverse()
+        .forEach(item => {
+
+            wall.innerHTML += `
+                <div class="wish-item">
+                    <div class="wish-item-header">
+                        <div class="wish-item-name">${item.name}</div>
+                        <div class="wish-item-status">${item.status || "-"}</div>
+                    </div>
+
+                    <div class="wish-item-message">
+                        ${item.message}
+                    </div>
+                </div>
+            `;
+        });
+});
 console.log("Firebase Connected");
 
     </script>
