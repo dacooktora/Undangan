@@ -3070,7 +3070,11 @@ function nextQuestion() {
         // ========================================
 // JOURNEY MAP LOVE + MOBIL 3D
 // ========================================
-    (function() {
+    
+            // ========================================
+// JOURNEY MAP – FULL LOVE CURVE (BEZIER)
+// ========================================
+(function() {
     let canvas, ctx;
     let waypoints = [];
     let carX = 0, carY = 0;
@@ -3087,24 +3091,62 @@ function nextQuestion() {
 
     function setupCanvas(container) {
         const rect = container.getBoundingClientRect();
-
         canvas.width = rect.width * dpr;
         canvas.height = rect.height * dpr;
-
         canvas.style.width = rect.width + "px";
         canvas.style.height = rect.height + "px";
-
-        ctx.setTransform(1, 0, 0, 1, 0, 0); // reset transform
+        ctx.setTransform(1, 0, 0, 1, 0, 0);
         ctx.scale(dpr, dpr);
-
         ctx.imageSmoothingEnabled = true;
         ctx.imageSmoothingQuality = "high";
+    }
+
+    // ========== MENGHITUNG TITIK KONTROL BEZIER ==========
+    function getControlPoints(p0, p1, p2, t = 0.3) {
+        const d01 = Math.hypot(p1.x - p0.x, p1.y - p0.y);
+        const d12 = Math.hypot(p2.x - p1.x, p2.y - p1.y);
+        const fa = t * d01 / (d01 + d12);
+        const fb = t * d12 / (d01 + d12);
+        return {
+            left: { x: p1.x - fa * (p2.x - p0.x), y: p1.y - fa * (p2.y - p0.y) },
+            right: { x: p1.x + fb * (p2.x - p0.x), y: p1.y + fb * (p2.y - p0.y) }
+        };
+    }
+
+    function drawLoveCurve(points) {
+        if (points.length < 2) return;
+        ctx.beginPath();
+        ctx.moveTo(points[0].x, points[0].y);
+        for (let i = 1; i < points.length - 1; i++) {
+            const cp = getControlPoints(points[i - 1], points[i], points[i + 1]);
+            ctx.bezierCurveTo(cp.left.x, cp.left.y, cp.right.x, cp.right.y, points[i + 1].x, points[i + 1].y);
+        }
+        ctx.strokeStyle = '#FF4D6D';
+        ctx.lineWidth = 3;
+        ctx.stroke();
+    }
+
+    // ========== GENERATE TITIK LOVE DARI HTML ==========
+    function updateWaypointsFromDOM() {
+        const container = document.getElementById('carMapContainer');
+        const rect = container.getBoundingClientRect();
+        const points = document.querySelectorAll('.car-point');
+        const rawPoints = [];
+        points.forEach((point, i) => {
+            const left = parseFloat(point.style.left);
+            const top = parseFloat(point.style.top);
+            rawPoints.push({
+                x: (left / 100) * rect.width,
+                y: (top / 100) * rect.height,
+                originalIndex: i
+            });
+        });
+        waypoints = rawPoints;
     }
 
     function init() {
         canvas = document.getElementById('journeyCanvas');
         if (!canvas) return;
-
         ctx = canvas.getContext('2d');
 
         carImage.onload = () => draw();
@@ -3112,24 +3154,11 @@ function nextQuestion() {
 
         const container = document.getElementById('carMapContainer');
         if (!container) return;
-
         setupCanvas(container);
+        updateWaypointsFromDOM();
 
         const points = document.querySelectorAll('.car-point');
-        waypoints = [];
-        journeyData = [];
-
-        const rect = container.getBoundingClientRect();
-
         points.forEach((point, i) => {
-            const left = parseFloat(point.style.left);
-            const top = parseFloat(point.style.top);
-
-            waypoints.push({
-                x: (left / 100) * rect.width,
-                y: (top / 100) * rect.height
-            });
-
             journeyData[i] = {
                 title: point.dataset.title,
                 date: point.dataset.date,
@@ -3140,7 +3169,6 @@ function nextQuestion() {
                 img2: point.dataset.img2,
                 img3: point.dataset.img3
             };
-
             point.addEventListener('click', () => {
                 if (isAnimating) return;
                 startJourney(i);
@@ -3153,70 +3181,50 @@ function nextQuestion() {
         }
 
         draw();
-
         window.addEventListener('resize', () => {
             setupCanvas(container);
-            updateWaypoints();
+            updateWaypointsFromDOM();
             draw();
         });
     }
 
-    function updateWaypoints() {
-        const container = document.getElementById('carMapContainer');
-        const rect = container.getBoundingClientRect();
-        const points = document.querySelectorAll('.car-point');
-
-        points.forEach((point, i) => {
-            const left = parseFloat(point.style.left);
-            const top = parseFloat(point.style.top);
-
-            waypoints[i] = {
-                x: (left / 100) * rect.width,
-                y: (top / 100) * rect.height
-            };
-        });
-
-        if (waypoints.length && carX === 0) {
-            carX = waypoints[0].x;
-            carY = waypoints[0].y;
-        }
-    }
-
     function draw() {
         if (!ctx) return;
-
         const rect = canvas.getBoundingClientRect();
-
         ctx.clearRect(0, 0, rect.width, rect.height);
-
         if (waypoints.length < 2) return;
 
-        // ===== GARIS =====
+        // GAMBAR GARIS LOVE KURVA MULUS
+        drawLoveCurve(waypoints);
+        // Tambah garis penutup LOVE dari titik terakhir ke pertama (biar LOVE utuh)
         ctx.beginPath();
-        ctx.moveTo(waypoints[0].x, waypoints[0].y);
-
-        for (let i = 1; i < waypoints.length; i++) {
-            ctx.lineTo(waypoints[i].x, waypoints[i].y);
-        }
-
+        ctx.moveTo(waypoints[waypoints.length - 1].x, waypoints[waypoints.length - 1].y);
         ctx.lineTo(waypoints[0].x, waypoints[0].y);
-
-        ctx.strokeStyle = '#FF4D6D';
-        ctx.lineWidth = 3;
-        ctx.setLineDash([]);
         ctx.stroke();
 
-        // ===== MOBIL =====
+        // GAMBAR TITIK + ANGKA
+        for (let i = 0; i < waypoints.length; i++) {
+            ctx.beginPath();
+            ctx.arc(waypoints[i].x, waypoints[i].y, 14, 0, Math.PI * 2);
+            ctx.fillStyle = '#D6B98C';
+            ctx.shadowBlur = 10;
+            ctx.fill();
+            ctx.beginPath();
+            ctx.arc(waypoints[i].x, waypoints[i].y, 6, 0, Math.PI * 2);
+            ctx.fillStyle = '#111';
+            ctx.fill();
+            ctx.fillStyle = '#fff';
+            ctx.font = 'bold 14px Poppins';
+            ctx.shadowBlur = 0;
+            ctx.fillText(i + 1, waypoints[i].x - 5, waypoints[i].y + 5);
+        }
+
+        // GAMBAR MOBIL
         if (carImage.complete && carImage.src) {
             ctx.save();
-
             ctx.translate(carX, carY);
-
-            // kalau mobil PNG default ngadep atas → pakai + Math.PI/2
             ctx.rotate(carAngle);
-
-            ctx.drawImage(carImage, -30, -30, 60, 60);
-
+            ctx.drawImage(carImage, -25, -25, 50, 50);
             ctx.restore();
         } else {
             ctx.fillStyle = '#D6B98C';
@@ -3227,8 +3235,6 @@ function nextQuestion() {
 
     function startJourney(target) {
         if (isAnimating) return;
-
-        // RESET ke titik awal
         carX = waypoints[0].x;
         carY = waypoints[0].y;
         carAngle = 0;
@@ -3240,21 +3246,17 @@ function nextQuestion() {
             openDetail(target);
             return;
         }
-
         isAnimating = true;
         currentTargetIndex = target;
         currentSegment = 0;
         animProgress = 0;
-
         const loading = document.getElementById('carLoading');
         if (loading) loading.classList.add('show');
-
         animate();
     }
 
     function animate() {
         if (!isAnimating) return;
-
         if (currentSegment >= currentTargetIndex) {
             isAnimating = false;
             document.getElementById('carLoading')?.classList.remove('show');
@@ -3264,125 +3266,99 @@ function nextQuestion() {
 
         const start = waypoints[currentSegment];
         const end = waypoints[currentSegment + 1];
-
         animProgress += 0.008;
-
         if (animProgress >= 1) {
             animProgress = 0;
             currentSegment++;
             requestAnimationFrame(animate);
             return;
         }
-
         const ease = 1 - Math.pow(1 - animProgress, 2);
-
         const dx = end.x - start.x;
         const dy = end.y - start.y;
-
         carX = start.x + dx * ease;
         carY = start.y + dy * ease;
-
-        // arah mobil ikut jalan
         carAngle = Math.atan2(dy, dx);
-
         draw();
         requestAnimationFrame(animate);
     }
 
     function openDetail(idx) {
-    const d = journeyData[idx];
-    if (!d) return;
+        const d = journeyData[idx];
+        if (!d) return;
+        document.getElementById('modalTitle').innerText = d.title;
+        document.getElementById('modalDate').innerText = d.date;
+        document.getElementById('modalLocation').innerHTML = `📍 ${d.location}`;
+        document.getElementById('modalStory').innerText = d.story;
 
-    document.getElementById('modalTitle').innerText = d.title;
-    document.getElementById('modalDate').innerText = d.date;
-    document.getElementById('modalLocation').innerHTML = `📍 ${d.location}`;
-    document.getElementById('modalStory').innerText = d.story;
+        const video = document.getElementById('modalVideo');
+        const videoContainer = document.querySelector('.modal-media');
+        if (d.video && d.video !== '' && d.video !== 'undefined') {
+            video.querySelector('source').src = d.video;
+            video.load();
+            video.style.display = 'block';
+            if (videoContainer) videoContainer.style.display = 'block';
+            video.play().catch(e => console.log('auto-play error'));
+        } else {
+            video.style.display = 'none';
+            if (videoContainer) videoContainer.style.display = 'none';
+        }
 
-    const video = document.getElementById('modalVideo');
-    const videoContainer = document.querySelector('.modal-media');
-    
-    // CEK VIDEO
-    if (d.video && d.video !== '' && d.video !== 'undefined') {
-        video.querySelector('source').src = d.video;
-        video.load();
-        video.style.display = 'block';
-        if (videoContainer) videoContainer.style.display = 'block';
-        video.play().catch(e => console.log('auto-play error'));
-    } else {
-        video.style.display = 'none';
-        if (videoContainer) videoContainer.style.display = 'none';
+        let galleryHTML = '';
+        if (d.img1 && d.img1 !== '' && d.img1 !== 'undefined') galleryHTML += `<img src="${d.img1}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
+        if (d.img2 && d.img2 !== '' && d.img2 !== 'undefined') galleryHTML += `<img src="${d.img2}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
+        if (d.img3 && d.img3 !== '' && d.img3 !== 'undefined') galleryHTML += `<img src="${d.img3}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
+        document.getElementById('modalGallery').innerHTML = galleryHTML || '<p style="text-align:center; color:#aaa;">Tidak ada foto tambahan</p>';
+
+        const clickableImgs = document.querySelectorAll('.gallery-img-clickable');
+        clickableImgs.forEach(img => {
+            img.style.cursor = 'pointer';
+            img.addEventListener('click', (e) => {
+                e.stopPropagation();
+                const lightbox = document.createElement('div');
+                lightbox.style.position = 'fixed';
+                lightbox.style.top = '0';
+                lightbox.style.left = '0';
+                lightbox.style.width = '100%';
+                lightbox.style.height = '100%';
+                lightbox.style.background = 'rgba(0,0,0,0.95)';
+                lightbox.style.backdropFilter = 'blur(15px)';
+                lightbox.style.zIndex = '20000';
+                lightbox.style.display = 'flex';
+                lightbox.style.alignItems = 'center';
+                lightbox.style.justifyContent = 'center';
+                lightbox.style.cursor = 'pointer';
+                const bigImg = document.createElement('img');
+                bigImg.src = img.src;
+                bigImg.style.maxWidth = '90%';
+                bigImg.style.maxHeight = '90%';
+                bigImg.style.borderRadius = '20px';
+                bigImg.style.boxShadow = '0 25px 50px rgba(0,0,0,0.8)';
+                bigImg.style.objectFit = 'contain';
+                lightbox.appendChild(bigImg);
+                document.body.appendChild(lightbox);
+                lightbox.addEventListener('click', () => lightbox.remove());
+            });
+        });
+        document.getElementById('journeyDetailModal').classList.add('active');
     }
 
-    // GALLERY: tampilkan foto dengan class khusus
-    let galleryHTML = '';
-    if (d.img1 && d.img1 !== '' && d.img1 !== 'undefined') galleryHTML += `<img src="${d.img1}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
-    if (d.img2 && d.img2 !== '' && d.img2 !== 'undefined') galleryHTML += `<img src="${d.img2}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
-    if (d.img3 && d.img3 !== '' && d.img3 !== 'undefined') galleryHTML += `<img src="${d.img3}" class="gallery-img-clickable" onerror="this.src='https://placehold.co/220x300/333/D6B98C?text=Photo'">`;
-    
-    document.getElementById('modalGallery').innerHTML = galleryHTML || '<p style="text-align:center; color:#aaa;">Tidak ada foto tambahan</p>';
-
-    // ========== FITUR POPUP FOTO (LIGHTBOX) ==========
-    const clickableImgs = document.querySelectorAll('.gallery-img-clickable');
-    clickableImgs.forEach(img => {
-        img.style.cursor = 'pointer';
-        img.addEventListener('click', (e) => {
-            e.stopPropagation();
-            
-            const lightbox = document.createElement('div');
-            lightbox.style.position = 'fixed';
-            lightbox.style.top = '0';
-            lightbox.style.left = '0';
-            lightbox.style.width = '100%';
-            lightbox.style.height = '100%';
-            lightbox.style.background = 'rgba(0,0,0,0.95)';
-            lightbox.style.backdropFilter = 'blur(15px)';
-            lightbox.style.zIndex = '20000';
-            lightbox.style.display = 'flex';
-            lightbox.style.alignItems = 'center';
-            lightbox.style.justifyContent = 'center';
-            lightbox.style.cursor = 'pointer';
-            
-            const bigImg = document.createElement('img');
-            bigImg.src = img.src;
-            bigImg.style.maxWidth = '90%';
-            bigImg.style.maxHeight = '90%';
-            bigImg.style.borderRadius = '20px';
-            bigImg.style.boxShadow = '0 25px 50px rgba(0,0,0,0.8)';
-            bigImg.style.objectFit = 'contain';
-            
-            lightbox.appendChild(bigImg);
-            document.body.appendChild(lightbox);
-            
-            lightbox.addEventListener('click', () => lightbox.remove());
-        });
-    });
-    // ========== SAMPAI SINI ==========
-
-    document.getElementById('journeyDetailModal').classList.add('active');
-}
-
-document.getElementById('closeModalBtn')?.addEventListener('click', () => {
-    const vid = document.getElementById('modalVideo');
-    if (vid) vid.pause();
-    document.getElementById('journeyDetailModal').classList.remove('active');
-});
-
-document.getElementById('journeyDetailModal')?.addEventListener('click', (e) => {
-    if (
-        e.target === document.getElementById('journeyDetailModal') ||
-        e.target.classList.contains('modal-bg')
-    ) {
+    document.getElementById('closeModalBtn')?.addEventListener('click', () => {
         const vid = document.getElementById('modalVideo');
         if (vid) vid.pause();
         document.getElementById('journeyDetailModal').classList.remove('active');
-    }
-});
-        
-
-    
+    });
+    document.getElementById('journeyDetailModal')?.addEventListener('click', (e) => {
+        if (e.target === document.getElementById('journeyDetailModal') || e.target.classList.contains('modal-bg')) {
+            const vid = document.getElementById('modalVideo');
+            if (vid) vid.pause();
+            document.getElementById('journeyDetailModal').classList.remove('active');
+        }
+    });
 
     window.addEventListener('load', () => setTimeout(init, 300));
 })();
+                
         
 // ========================
 // GALLERY JS
