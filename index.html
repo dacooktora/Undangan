@@ -3070,16 +3070,15 @@ function nextQuestion() {
         // ========================================
 // JOURNEY MAP LOVE + MOBIL 3D
 // ========================================
-    
-            // ========================================
-// JOURNEY MAP – FULL LOVE CURVE (BEZIER)
+    // ========================================
+// JOURNEY MAP – PERFECT LOVE CURVE (PARAMETRIC)
 // ========================================
 (function() {
     let canvas, ctx;
-    let waypoints = [];
+    let lovePoints = [];       // titik-titik LOVE curve (ratusan titik)
+    let waypoints = [];        // 6 titik utama untuk interaksi
     let carX = 0, carY = 0;
     let carAngle = 0;
-    let currentTargetIndex = -1;
     let currentSegment = 0;
     let animProgress = 0;
     let isAnimating = false;
@@ -3088,6 +3087,27 @@ function nextQuestion() {
 
     let carImage = new Image();
     carImage.src = 'mobilwd.png';
+
+    // ========== GENERATE LOVE CURVE PERFECT ==========
+    function generateLoveCurve(width, height) {
+        const points = [];
+        const scale = Math.min(width, height) / 24;
+        const offsetX = width / 2;
+        const offsetY = height / 2 + 10;
+        
+        // t dari 0 sampai 2*PI (satu putaran penuh LOVE)
+        for (let t = 0; t <= Math.PI * 2; t += 0.03) {
+            // Rumus LOVE klasik
+            const xRaw = 16 * Math.pow(Math.sin(t), 3);
+            const yRaw = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
+            
+            points.push({
+                x: offsetX + xRaw * scale,
+                y: offsetY - yRaw * scale
+            });
+        }
+        return points;
+    }
 
     function setupCanvas(container) {
         const rect = container.getBoundingClientRect();
@@ -3101,49 +3121,6 @@ function nextQuestion() {
         ctx.imageSmoothingQuality = "high";
     }
 
-    // ========== MENGHITUNG TITIK KONTROL BEZIER ==========
-    function getControlPoints(p0, p1, p2, t = 0.3) {
-        const d01 = Math.hypot(p1.x - p0.x, p1.y - p0.y);
-        const d12 = Math.hypot(p2.x - p1.x, p2.y - p1.y);
-        const fa = t * d01 / (d01 + d12);
-        const fb = t * d12 / (d01 + d12);
-        return {
-            left: { x: p1.x - fa * (p2.x - p0.x), y: p1.y - fa * (p2.y - p0.y) },
-            right: { x: p1.x + fb * (p2.x - p0.x), y: p1.y + fb * (p2.y - p0.y) }
-        };
-    }
-
-    function drawLoveCurve(points) {
-        if (points.length < 2) return;
-        ctx.beginPath();
-        ctx.moveTo(points[0].x, points[0].y);
-        for (let i = 1; i < points.length - 1; i++) {
-            const cp = getControlPoints(points[i - 1], points[i], points[i + 1]);
-            ctx.bezierCurveTo(cp.left.x, cp.left.y, cp.right.x, cp.right.y, points[i + 1].x, points[i + 1].y);
-        }
-        ctx.strokeStyle = '#FF4D6D';
-        ctx.lineWidth = 3;
-        ctx.stroke();
-    }
-
-    // ========== GENERATE TITIK LOVE DARI HTML ==========
-    function updateWaypointsFromDOM() {
-        const container = document.getElementById('carMapContainer');
-        const rect = container.getBoundingClientRect();
-        const points = document.querySelectorAll('.car-point');
-        const rawPoints = [];
-        points.forEach((point, i) => {
-            const left = parseFloat(point.style.left);
-            const top = parseFloat(point.style.top);
-            rawPoints.push({
-                x: (left / 100) * rect.width,
-                y: (top / 100) * rect.height,
-                originalIndex: i
-            });
-        });
-        waypoints = rawPoints;
-    }
-
     function init() {
         canvas = document.getElementById('journeyCanvas');
         if (!canvas) return;
@@ -3155,10 +3132,14 @@ function nextQuestion() {
         const container = document.getElementById('carMapContainer');
         if (!container) return;
         setupCanvas(container);
-        updateWaypointsFromDOM();
 
-        const points = document.querySelectorAll('.car-point');
-        points.forEach((point, i) => {
+        // Generate LOVE curve sesuai ukuran canvas
+        const rect = container.getBoundingClientRect();
+        lovePoints = generateLoveCurve(rect.width, rect.height);
+
+        // Ambil data dari HTML (.car-point)
+        const htmlPoints = document.querySelectorAll('.car-point');
+        htmlPoints.forEach((point, i) => {
             journeyData[i] = {
                 title: point.dataset.title,
                 date: point.dataset.date,
@@ -3169,21 +3150,18 @@ function nextQuestion() {
                 img2: point.dataset.img2,
                 img3: point.dataset.img3
             };
+            
             point.addEventListener('click', () => {
                 if (isAnimating) return;
-                startJourney(i);
+                startJourney();
             });
         });
-
-        if (waypoints.length) {
-            carX = waypoints[0].x;
-            carY = waypoints[0].y;
-        }
 
         draw();
         window.addEventListener('resize', () => {
             setupCanvas(container);
-            updateWaypointsFromDOM();
+            const newRect = container.getBoundingClientRect();
+            lovePoints = generateLoveCurve(newRect.width, newRect.height);
             draw();
         });
     }
@@ -3192,32 +3170,43 @@ function nextQuestion() {
         if (!ctx) return;
         const rect = canvas.getBoundingClientRect();
         ctx.clearRect(0, 0, rect.width, rect.height);
-        if (waypoints.length < 2) return;
+        if (lovePoints.length < 2) return;
 
-        // GAMBAR GARIS LOVE KURVA MULUS
-        drawLoveCurve(waypoints);
-        // Tambah garis penutup LOVE dari titik terakhir ke pertama (biar LOVE utuh)
+        // GAMBAR LOVE CURVE (garis mulus dari rumus)
         ctx.beginPath();
-        ctx.moveTo(waypoints[waypoints.length - 1].x, waypoints[waypoints.length - 1].y);
-        ctx.lineTo(waypoints[0].x, waypoints[0].y);
+        ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
+        for (let i = 1; i < lovePoints.length; i++) {
+            ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
+        }
+        ctx.closePath();
+        ctx.strokeStyle = '#FF4D6D';
+        ctx.lineWidth = 3;
         ctx.stroke();
 
-        // GAMBAR TITIK + ANGKA
-        for (let i = 0; i < waypoints.length; i++) {
+        // GAMBAR TITIK 1-6 (posisi dari HTML, bebas lo atur)
+        const htmlPoints = document.querySelectorAll('.car-point');
+        htmlPoints.forEach((point, i) => {
+            const left = parseFloat(point.style.left);
+            const top = parseFloat(point.style.top);
+            const container = document.getElementById('carMapContainer');
+            const rect = container.getBoundingClientRect();
+            const x = (left / 100) * rect.width;
+            const y = (top / 100) * rect.height;
+            
             ctx.beginPath();
-            ctx.arc(waypoints[i].x, waypoints[i].y, 14, 0, Math.PI * 2);
+            ctx.arc(x, y, 14, 0, Math.PI * 2);
             ctx.fillStyle = '#D6B98C';
             ctx.shadowBlur = 10;
             ctx.fill();
             ctx.beginPath();
-            ctx.arc(waypoints[i].x, waypoints[i].y, 6, 0, Math.PI * 2);
+            ctx.arc(x, y, 6, 0, Math.PI * 2);
             ctx.fillStyle = '#111';
             ctx.fill();
             ctx.fillStyle = '#fff';
             ctx.font = 'bold 14px Poppins';
             ctx.shadowBlur = 0;
-            ctx.fillText(i + 1, waypoints[i].x - 5, waypoints[i].y + 5);
-        }
+            ctx.fillText(i + 1, x - 5, y + 5);
+        });
 
         // GAMBAR MOBIL
         if (carImage.complete && carImage.src) {
@@ -3233,23 +3222,19 @@ function nextQuestion() {
         }
     }
 
-    function startJourney(target) {
+    function startJourney() {
         if (isAnimating) return;
-        carX = waypoints[0].x;
-        carY = waypoints[0].y;
+        
+        // Reset mobil ke awal LOVE curve
+        if (lovePoints.length === 0) return;
+        carX = lovePoints[0].x;
+        carY = lovePoints[0].y;
         carAngle = 0;
         currentSegment = 0;
-        currentTargetIndex = -1;
+        animProgress = 0;
         draw();
 
-        if (target === 0) {
-            openDetail(target);
-            return;
-        }
         isAnimating = true;
-        currentTargetIndex = target;
-        currentSegment = 0;
-        animProgress = 0;
         const loading = document.getElementById('carLoading');
         if (loading) loading.classList.add('show');
         animate();
@@ -3257,28 +3242,31 @@ function nextQuestion() {
 
     function animate() {
         if (!isAnimating) return;
-        if (currentSegment >= currentTargetIndex) {
+        
+        if (currentSegment >= lovePoints.length - 2) {
             isAnimating = false;
             document.getElementById('carLoading')?.classList.remove('show');
-            openDetail(currentTargetIndex);
             return;
         }
-
-        const start = waypoints[currentSegment];
-        const end = waypoints[currentSegment + 1];
-        animProgress += 0.008;
+        
+        const start = lovePoints[currentSegment];
+        const end = lovePoints[currentSegment + 1];
+        
+        animProgress += 0.02;
+        
         if (animProgress >= 1) {
             animProgress = 0;
             currentSegment++;
             requestAnimationFrame(animate);
             return;
         }
-        const ease = 1 - Math.pow(1 - animProgress, 2);
+        
         const dx = end.x - start.x;
         const dy = end.y - start.y;
-        carX = start.x + dx * ease;
-        carY = start.y + dy * ease;
+        carX = start.x + dx * animProgress;
+        carY = start.y + dy * animProgress;
         carAngle = Math.atan2(dy, dx);
+        
         draw();
         requestAnimationFrame(animate);
     }
@@ -3340,6 +3328,7 @@ function nextQuestion() {
                 lightbox.addEventListener('click', () => lightbox.remove());
             });
         });
+
         document.getElementById('journeyDetailModal').classList.add('active');
     }
 
@@ -3348,6 +3337,7 @@ function nextQuestion() {
         if (vid) vid.pause();
         document.getElementById('journeyDetailModal').classList.remove('active');
     });
+
     document.getElementById('journeyDetailModal')?.addEventListener('click', (e) => {
         if (e.target === document.getElementById('journeyDetailModal') || e.target.classList.contains('modal-bg')) {
             const vid = document.getElementById('modalVideo');
@@ -3358,7 +3348,8 @@ function nextQuestion() {
 
     window.addEventListener('load', () => setTimeout(init, 300));
 })();
-                
+            
+            
         
 // ========================
 // GALLERY JS
