@@ -906,6 +906,26 @@
     overflow: hidden;
     background: transparent;
 }
+
+        .journey-reset-btn {
+    background: linear-gradient(135deg, #FF4D6D, #D6336C);
+    border: none;
+    color: white;
+    padding: 12px 28px;
+    border-radius: 50px;
+    font-family: 'Poppins', sans-serif;
+    font-weight: 600;
+    font-size: 0.9rem;
+    cursor: pointer;
+    transition: 0.3s ease;
+    box-shadow: 0 5px 15px rgba(0,0,0,0.3);
+}
+
+.journey-reset-btn:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 8px 25px rgba(255,77,109,0.4);
+}
+        
 .car-bg-glow {
     position: absolute;
     width: 800px;
@@ -2315,6 +2335,10 @@
 <!-- JOURNEY MAP LOVE + MOBIL 3D               -->
 <!-- ======================================== -->
 <section class="journey-car-section">
+    <!-- Button Reset (muncul setelah LOVE penuh) -->
+<div id="resetJourneyBtn" style="text-align: center; margin-top: 30px; display: none;">
+    <button class="journey-reset-btn" id="resetJourneyButton">⟳ Jelajahi Kembali</button>
+</div>
     <div class="car-bg-glow"></div>
     <div class="container">
         <div class="section-header">
@@ -3070,8 +3094,8 @@ function nextQuestion() {
         // ========================================
 // JOURNEY MAP LOVE + MOBIL 3D
 // ========================================
-   // ========================================
-// JOURNEY MAP – FIX (NO CLOSEPATH, NO EXTRA LINE)
+  // ========================================
+// JOURNEY MAP – COMPLETE (LOVE + RESET)
 // ========================================
 (function() {
     let canvas, ctx;
@@ -3085,17 +3109,19 @@ function nextQuestion() {
     let journeyData = [];
     let dpr = window.devicePixelRatio || 1;
     
-    let currentCheckpoint = 0;
+    let currentCheckpoint = 0; // 0-6 (0=belum ke mana-mana, 6=sudah semua)
     
     let carImage = new Image();
     carImage.src = 'mobilwd.png';
+    
+    let couplePhoto = new Image();
+    couplePhoto.src = 'merah1.jpg'; // GANTI dengan foto kalian (bisa juga pakai foto prewedding kecil)
 
     function generateLoveCurve(width, height) {
         const points = [];
         const scale = Math.min(width, height) / 36;
         const offsetX = width / 2;
         const offsetY = height / 2 - 20;
-        // FIX 2: pakai < bukan <= biar gak dobel titik awal/akhir
         for (let t = 0; t < Math.PI * 2; t += 0.03) {
             const xRaw = 16 * Math.pow(Math.sin(t), 3);
             const yRaw = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
@@ -3142,18 +3168,65 @@ function nextQuestion() {
         ctx.clearRect(0, 0, rect.width, rect.height);
         if (lovePoints.length < 2) return;
 
-        // ========== 1. GAMBAR SELURUH LOVE PINK (DASAR) ==========
-        ctx.beginPath();
-        ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
-        for (let i = 1; i < lovePoints.length; i++) {
-            ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
-        }
-        // TIDAK PAKAI closePath()!
-        ctx.strokeStyle = '#FF4D6D';
-        ctx.lineWidth = 3;
-        ctx.stroke();
+        // CEK APAKAH SEMUA TITIK SUDAH DIJELAJAHI (checkpoint == 6)
+        const isComplete = (currentCheckpoint >= 6);
 
-        // ========== 2. GAMBAR LOVE MERAH (PROGRESS) DI ATASNYA ==========
+        if (isComplete) {
+            // ========== LOVE PENUH PINK (SOLID) ==========
+            ctx.beginPath();
+            ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
+            for (let i = 1; i < lovePoints.length; i++) {
+                ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
+            }
+            ctx.closePath();
+            ctx.fillStyle = '#FF4D6D';
+            ctx.fill();
+            
+            // Garis tepi LOVE
+            ctx.strokeStyle = '#D6336C';
+            ctx.lineWidth = 3;
+            ctx.stroke();
+            
+            // ========== FOTO KECIL DI TENGAH LOVE ==========
+            const centerIdx = Math.floor(lovePoints.length / 2);
+            const centerX = lovePoints[centerIdx].x;
+            const centerY = lovePoints[centerIdx].y;
+            
+            // Lingkaran putih di tengah
+            ctx.beginPath();
+            ctx.arc(centerX, centerY, 32, 0, Math.PI * 2);
+            ctx.fillStyle = '#ffffff';
+            ctx.fill();
+            ctx.strokeStyle = '#D6336C';
+            ctx.lineWidth = 2;
+            ctx.stroke();
+            
+            // Gambar foto (jika sudah load)
+            if (couplePhoto.complete && couplePhoto.src) {
+                ctx.save();
+                ctx.beginPath();
+                ctx.arc(centerX, centerY, 28, 0, Math.PI * 2);
+                ctx.clip();
+                ctx.drawImage(couplePhoto, centerX - 28, centerY - 28, 56, 56);
+                ctx.restore();
+            } else {
+                couplePhoto.onload = () => drawEverything();
+            }
+            
+            // Tampilkan tombol reset
+            const resetBtn = document.getElementById('resetJourneyBtn');
+            if (resetBtn) resetBtn.style.display = 'block';
+            
+            // Jangan gambar elemen lain
+            return;
+        }
+        
+        // ========== BELUM SELESAI (Tampilkan LOVE biasa) ==========
+        // Sembunyikan tombol reset
+        const resetBtn = document.getElementById('resetJourneyBtn');
+        if (resetBtn) resetBtn.style.display = 'none';
+        
+        // Cari index progress (garis yang udah dilewati)
         let progressIndex = 0;
         if (currentCheckpoint > 0) {
             const htmlPoints = document.querySelectorAll('.car-point');
@@ -3161,6 +3234,7 @@ function nextQuestion() {
             progressIndex = findNearestLoveIndex(coords.x, coords.y);
         }
         
+        // Gambar garis MERAH untuk yang sudah dilewati
         if (progressIndex > 0) {
             ctx.beginPath();
             ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
@@ -3171,35 +3245,42 @@ function nextQuestion() {
             ctx.lineWidth = 4;
             ctx.stroke();
         }
+        
+        // Gambar garis PINK untuk yang belum dilewati
+        ctx.beginPath();
+        ctx.moveTo(lovePoints[progressIndex].x, lovePoints[progressIndex].y);
+        for (let i = progressIndex + 1; i < lovePoints.length; i++) {
+            ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
+        }
+        ctx.strokeStyle = '#FF4D6D';
+        ctx.lineWidth = 3;
+        ctx.stroke();
 
-        // Gambar titik 1-6 (FULL PINK, tanpa hitam)
-const htmlPoints = document.querySelectorAll('.car-point');
-const containerRect = document.getElementById('carMapContainer').getBoundingClientRect();
-htmlPoints.forEach((point, i) => {
-    const left = parseFloat(point.style.left);
-    const top = parseFloat(point.style.top);
-    const x = (left / 100) * containerRect.width;
-    const y = (top / 100) * containerRect.height;
-    
-    // Lingkaran FULL PINK
-    ctx.beginPath();
-    ctx.arc(x, y, 14, 0, Math.PI * 2);
-    ctx.fillStyle = '#FF4D6D'; // PINK
-    ctx.fill();
-    
-    // Angka PUTIH di tengah
-    ctx.fillStyle = '#ffffff';
-    ctx.font = 'bold 14px Poppins';
-    ctx.textAlign = 'center';
-    ctx.textBaseline = 'middle';
-    ctx.fillText(i + 1, x, y);
-});
+        // Gambar titik 1-6 (FULL PINK + angka putih di tengah)
+        const htmlPoints = document.querySelectorAll('.car-point');
+        const containerRect = document.getElementById('carMapContainer').getBoundingClientRect();
+        htmlPoints.forEach((point, i) => {
+            const left = parseFloat(point.style.left);
+            const top = parseFloat(point.style.top);
+            const x = (left / 100) * containerRect.width;
+            const y = (top / 100) * containerRect.height;
+            
+            ctx.beginPath();
+            ctx.arc(x, y, 14, 0, Math.PI * 2);
+            ctx.fillStyle = '#FF4D6D';
+            ctx.fill();
+            
+            ctx.fillStyle = '#ffffff';
+            ctx.font = 'bold 14px Poppins';
+            ctx.textAlign = 'center';
+            ctx.textBaseline = 'middle';
+            ctx.fillText(i + 1, x, y);
+        });
+        
+        ctx.textAlign = 'left';
+        ctx.textBaseline = 'alphabetic';
 
-// Reset textAlign setelah selesai
-ctx.textAlign = 'left';
-ctx.textBaseline = 'alphabetic';
-
-        // ========== 4. GAMBAR MOBIL ==========
+        // Gambar mobil
         if (carImage.complete && carImage.src) {
             ctx.save();
             ctx.translate(carX, carY);
@@ -3220,6 +3301,7 @@ ctx.textBaseline = 'alphabetic';
 
         carImage.onload = () => drawEverything();
         carImage.onerror = () => console.log('Gambar mobil gagal load');
+        couplePhoto.onload = () => drawEverything();
 
         const container = document.getElementById('carMapContainer');
         if (!container) return;
@@ -3393,6 +3475,26 @@ ctx.textBaseline = 'alphabetic';
         document.getElementById('journeyDetailModal').classList.add('active');
     }
 
+    function resetJourney() {
+        if (isAnimating) return;
+        
+        currentCheckpoint = 0;
+        currentTargetIndex = 0;
+        currentSegment = 0;
+        animProgress = 0;
+        
+        if (lovePoints.length > 0) {
+            carX = lovePoints[0].x;
+            carY = lovePoints[0].y;
+            carAngle = 0;
+        }
+        
+        const resetBtn = document.getElementById('resetJourneyBtn');
+        if (resetBtn) resetBtn.style.display = 'none';
+        
+        drawEverything();
+    }
+
     document.getElementById('closeModalBtn')?.addEventListener('click', () => {
         const vid = document.getElementById('modalVideo');
         if (vid) vid.pause();
@@ -3407,8 +3509,10 @@ ctx.textBaseline = 'alphabetic';
         }
     });
 
+    document.getElementById('resetJourneyButton')?.addEventListener('click', resetJourney);
+
     window.addEventListener('load', () => setTimeout(init, 300));
-})();                                     
+})();                                              
 // ========================
 // GALLERY JS
 // ========================
