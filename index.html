@@ -3578,83 +3578,203 @@ document.getElementById("submitWish").addEventListener("click", async () => {
 // ========================
 const avatarIcons = ['🎈', '🎊', '🌹', '👩‍❤️‍👨', '💖'];
 
-// Fungsi ambil icon berdasarkan urutan komentar
 function getIconByIndex(index) {
     return avatarIcons[index % avatarIcons.length];
 }
 
 // ========================
-// FUNGSI MEMBUAT SATU ICON TERBANG (TEGAK, GA MUTER, GA NUTUP TANGGAL)
+// CLASS UNTUK FLYING ICON YANG SMOOTH (PAKAI REQUESTANIMATIONFRAME)
 // ========================
-function createFlyingIcon(container, icon) {
-    // Batasi maksimal 8 icon dalam 1 container
-    const currentIcons = container.querySelectorAll('.flying-icon');
-    if (currentIcons.length >= 8) {
-        return;
+class SmoothFlyingIcon {
+    constructor(container, icon) {
+        this.container = container;
+        this.icon = icon;
+        this.element = null;
+        this.y = -30; // mulai dari bawah
+        this.x = 75 + Math.random() * 20; // posisi X (persen)
+        this.drift = (Math.random() - 0.5) * 20;
+        this.speed = 0.8 + Math.random() * 0.5; // kecepatan naik
+        this.opacity = 0;
+        this.active = true;
+        this.size = 0.8 + Math.random() * 0.5;
+        
+        this.createElement();
+        this.animate();
     }
     
-    const flyingIcon = document.createElement('div');
-    flyingIcon.className = 'flying-icon';
-    flyingIcon.textContent = icon;
-    
-    // Posisi horizontal random di pojok kanan (75% - 95%)
-    // Biar ga nutupin teks tanggal
-    const randomX = 75 + Math.random() * 20;
-    flyingIcon.style.left = randomX + '%';
-    
-    // Drift kecil ke kiri/kanan (tapi ga muter)
-    const drift = (Math.random() - 0.5) * 30;
-    flyingIcon.style.setProperty('--drift', drift + 'px');
-    
-    // Ukuran kecil biar ga ganggu
-    const randomSize = 0.7 + Math.random() * 0.5;
-    flyingIcon.style.fontSize = (0.9 * randomSize) + 'rem';
-    
-    // Delay random
-    flyingIcon.style.animationDelay = (Math.random() * 0.3) + 's';
-    
-    container.appendChild(flyingIcon);
-    
-    // Hapus setelah 3 detik
-    setTimeout(() => {
-        if (flyingIcon && flyingIcon.remove) flyingIcon.remove();
-    }, 3000);
-}
-
-// ========================
-// FUNGSI MEMBUAT HUJAN ICON (TERUS-TERUSAN TAPI TERKENDALI)
-// ========================
-function startFlyingIcons(container, icon) {
-    // Hapus container lama jika ada
-    const oldContainer = container.querySelector('.flying-icons-container');
-    if (oldContainer) oldContainer.remove();
-    
-    // Buat container baru
-    const iconContainer = document.createElement('div');
-    iconContainer.className = 'flying-icons-container';
-    container.appendChild(iconContainer);
-    
-    // Buat 5 icon awal (biar langsung ada)
-    for (let i = 0; i < 5; i++) {
-        setTimeout(() => {
-            createFlyingIcon(iconContainer, icon);
-        }, i * 200);
+    createElement() {
+        this.element = document.createElement('div');
+        this.element.textContent = this.icon;
+        this.element.style.position = 'absolute';
+        this.element.style.left = this.x + '%';
+        this.element.style.fontSize = (0.8 * this.size) + 'rem';
+        this.element.style.pointerEvents = 'none';
+        this.element.style.zIndex = '0';
+        this.element.style.opacity = '0';
+        this.element.style.willChange = 'transform, opacity';
+        this.container.appendChild(this.element);
     }
     
-    // Interval setiap 1 detik
-    const intervalId = setInterval(() => {
-        if (!document.body.contains(container)) {
-            clearInterval(intervalId);
+    animate() {
+        if (!this.active || !this.element || !this.element.isConnected) return;
+        
+        // Naik ke atas
+        this.y += this.speed;
+        
+        // Geser sedikit kiri/kanan
+        const currentX = parseFloat(this.element.style.left) || this.x;
+        let newX = currentX + (this.drift * 0.05);
+        
+        // Batasi X antara 60% - 95%
+        if (newX > 95) newX = 95;
+        if (newX < 60) newX = 60;
+        
+        // Fade in di awal, fade out di akhir
+        if (this.y < 10) {
+            this.opacity = this.y / 10;
+        } else if (this.y > 85) {
+            this.opacity = (100 - this.y) / 15;
+        } else {
+            this.opacity = 0.7;
+        }
+        
+        // Terapkan gaya
+        this.element.style.transform = `translateY(${this.y}%) translateX(${(newX - this.x) * 0.5}px)`;
+        this.element.style.opacity = this.opacity;
+        this.element.style.left = newX + '%';
+        
+        // Kalau udah sampai atas (y > 100), hapus
+        if (this.y >= 100) {
+            this.destroy();
             return;
         }
-        createFlyingIcon(iconContainer, icon);
-    }, 1000);
+        
+        // Lanjut animasi
+        requestAnimationFrame(() => this.animate());
+    }
     
-    container._iconInterval = intervalId;
+    destroy() {
+        this.active = false;
+        if (this.element && this.element.remove) {
+            this.element.remove();
+        }
+    }
 }
 
 // ========================
-// RENDER WISHES KE WALL
+// MANAJER FLYING ICON PER KOMENTAR
+// ========================
+class FlyingIconManager {
+    constructor(container, icon) {
+        this.container = container;
+        this.icon = icon;
+        this.activeIcons = [];
+        this.isRunning = false;
+        this.frameId = null;
+        this.containerElement = null;
+        
+        this.init();
+    }
+    
+    init() {
+        // Buat container khusus
+        this.containerElement = document.createElement('div');
+        this.containerElement.style.position = 'absolute';
+        this.containerElement.style.top = '0';
+        this.containerElement.style.left = '0';
+        this.containerElement.style.width = '100%';
+        this.containerElement.style.height = '100%';
+        this.containerElement.style.pointerEvents = 'none';
+        this.containerElement.style.overflow = 'hidden';
+        this.containerElement.style.zIndex = '0';
+        this.container.appendChild(this.containerElement);
+        
+        this.isRunning = true;
+        this.addIconLoop();
+    }
+    
+    addIconLoop() {
+        if (!this.isRunning) return;
+        
+        // Tambah icon baru setiap 1.5 detik, tapi ga pake setInterval biar ga jedag
+        const addNewIcon = () => {
+            if (!this.isRunning) return;
+            
+            // Maksimal 5 icon aktif dalam 1 komentar
+            if (this.activeIcons.length < 8) {
+                const newIcon = new SmoothFlyingIcon(this.containerElement, this.icon);
+                this.activeIcons.push(newIcon);
+                
+                // Hapus dari array setelah icon selesai
+                const checkInterval = setInterval(() => {
+                    if (!newIcon.active) {
+                        const index = this.activeIcons.indexOf(newIcon);
+                        if (index > -1) this.activeIcons.splice(index, 1);
+                        clearInterval(checkInterval);
+                    }
+                }, 100);
+            }
+            
+            // Schedule next icon
+            this.timeoutId = setTimeout(addNewIcon, 1500);
+        };
+        
+        addNewIcon();
+        this.timeoutId = setTimeout(() => {}, 1500);
+    }
+    
+    stop() {
+        this.isRunning = false;
+        if (this.timeoutId) clearTimeout(this.timeoutId);
+        this.activeIcons.forEach(icon => icon.destroy());
+        this.activeIcons = [];
+        if (this.containerElement) this.containerElement.remove();
+    }
+}
+
+// Simpan semua manager
+const managers = new Map();
+
+function startFlyingIcons(container, icon) {
+    if (managers.has(container)) {
+        managers.get(container).stop();
+        managers.delete(container);
+    }
+    const manager = new FlyingIconManager(container, icon);
+    managers.set(container, manager);
+}
+
+function stopFlyingIcons(container) {
+    if (managers.has(container)) {
+        managers.get(container).stop();
+        managers.delete(container);
+    }
+}
+
+// ========================
+// INTERSECTION OBSERVER
+// ========================
+const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        const item = entry.target;
+        const icon = item.getAttribute('data-icon') || '💖';
+        
+        if (entry.isIntersecting) {
+            if (!item._animationStarted) {
+                item._animationStarted = true;
+                startFlyingIcons(item, icon);
+            }
+        } else {
+            if (item._animationStarted) {
+                stopFlyingIcons(item);
+                item._animationStarted = false;
+            }
+        }
+    });
+}, { threshold: 0.1 });
+
+// ========================
+// RENDER WISHES
 // ========================
 onValue(wishesRef, (snapshot) => {
 
@@ -3664,25 +3784,16 @@ onValue(wishesRef, (snapshot) => {
     const data = snapshot.val();
 
     if (!data) {
-        wall.innerHTML = `
-            <div style="text-align:center;opacity:.7">
-                Belum ada ucapan
-            </div>
-        `;
+        wall.innerHTML = `<div style="text-align:center;opacity:.7">Belum ada ucapan</div>`;
         return;
     }
 
     const wishes = Object.values(data);
-    
-    // Urutkan dari yang terbaru ke terlama
     wishes.sort((a, b) => b.createdAt - a.createdAt);
 
     wishes.forEach((item, idx) => {
-
         const date = new Date(item.createdAt);
         const waktu = date.toLocaleDateString("id-ID", { day: "2-digit", month: "short" }) + ", " + date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) + " WIB";
-        
-        // Ambil icon berdasarkan urutan (idx)
         const icon = getIconByIndex(idx);
 
         wall.innerHTML += `
@@ -3699,33 +3810,25 @@ onValue(wishesRef, (snapshot) => {
         `;
     });
 
-    // Mulai animasi hujan icon untuk setiap komentar
     setTimeout(() => {
         document.querySelectorAll('.wish-item').forEach(item => {
-            const icon = item.getAttribute('data-icon') || '💖';
-            startFlyingIcons(item, icon);
+            observer.observe(item);
         });
     }, 100);
 });
 
-// Fungsi untuk menghindari XSS
 function escapeHtml(str) {
     if (!str) return '';
-    return str
-        .replace(/&/g, '&amp;')
-        .replace(/</g, '&lt;')
-        .replace(/>/g, '&gt;')
-        .replace(/"/g, '&quot;')
-        .replace(/'/g, '&#39;');
+    return str.replace(/&/g, '&amp;').replace(/</g, '&lt;').replace(/>/g, '&gt;').replace(/"/g, '&quot;').replace(/'/g, '&#39;');
 }
 
-// Hentikan semua interval saat halaman ditutup
 window.addEventListener('beforeunload', () => {
-    document.querySelectorAll('.wish-item').forEach(item => {
-        if (item._iconInterval) clearInterval(item._iconInterval);
-    });
+    observer.disconnect();
+    managers.forEach(manager => manager.stop());
+    managers.clear();
 });
-        
+
+    
   </script>
 </body>
 </html>
