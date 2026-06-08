@@ -3070,8 +3070,8 @@ function nextQuestion() {
         // ========================================
 // JOURNEY MAP LOVE + MOBIL 3D
 // ========================================
-                      // ========================================
-// JOURNEY MAP – PERFECT LOVE CURVE (TANPA HAPUS FITUR)
+   // ========================================
+// JOURNEY MAP – LOVE CURVE WITH CHECKPOINT & PROGRESS (FIXED)
 // ========================================
 (function() {
     let canvas, ctx;
@@ -3079,11 +3079,16 @@ function nextQuestion() {
     let carX = 0, carY = 0;
     let carAngle = 0;
     let currentSegment = 0;
+    let currentTargetIndex = 0;
     let animProgress = 0;
     let isAnimating = false;
     let journeyData = [];
     let dpr = window.devicePixelRatio || 1;
-
+    
+    // Checkpoint progress
+    let currentCheckpoint = 0; // 0 = titik 1, 1 = titik 2, dst
+    let targetCheckpoint = 0;
+    
     let carImage = new Image();
     carImage.src = 'mobilwd.png';
 
@@ -3103,6 +3108,32 @@ function nextQuestion() {
             });
         }
         return points;
+    }
+
+    // ========== CARI INDEX LOVE CURVE TERDEKAT DARI TITIK ==========
+    function findNearestLoveIndex(x, y) {
+        let minDist = Infinity;
+        let idx = 0;
+        for (let i = 0; i < lovePoints.length; i++) {
+            const dist = Math.hypot(lovePoints[i].x - x, lovePoints[i].y - y);
+            if (dist < minDist) {
+                minDist = dist;
+                idx = i;
+            }
+        }
+        return idx;
+    }
+
+    // ========== DAPAT KOORDINAT TITIK HTML ==========
+    function getPointCoordinates(point) {
+        const left = parseFloat(point.style.left);
+        const top = parseFloat(point.style.top);
+        const container = document.getElementById('carMapContainer');
+        const rect = container.getBoundingClientRect();
+        return {
+            x: (left / 100) * rect.width,
+            y: (top / 100) * rect.height
+        };
     }
 
     function setupCanvas(container) {
@@ -3132,12 +3163,13 @@ function nextQuestion() {
         const rect = container.getBoundingClientRect();
         lovePoints = generateLoveCurve(rect.width, rect.height);
 
+        // Set mobil di awal LOVE curve
         if (lovePoints.length > 0) {
             carX = lovePoints[0].x;
             carY = lovePoints[0].y;
         }
 
-        // Ambil data dari HTML (.car-point) tanpa mengubah posisinya
+        // Ambil data dari HTML (.car-point)
         const htmlPoints = document.querySelectorAll('.car-point');
         htmlPoints.forEach((point, i) => {
             journeyData[i] = {
@@ -3151,10 +3183,9 @@ function nextQuestion() {
                 img3: point.dataset.img3
             };
             
-            // Event klik titik (tetap pakai startJourney yang sudah ada)
             point.addEventListener('click', () => {
                 if (isAnimating) return;
-                startJourney(i);  // ← panggil startJourney dengan index titik
+                startJourney(i);
             });
         });
 
@@ -3163,7 +3194,7 @@ function nextQuestion() {
             setupCanvas(container);
             const newRect = container.getBoundingClientRect();
             lovePoints = generateLoveCurve(newRect.width, newRect.height);
-            if (lovePoints.length > 0) {
+            if (lovePoints.length > 0 && carX === 0) {
                 carX = lovePoints[0].x;
                 carY = lovePoints[0].y;
             }
@@ -3177,10 +3208,31 @@ function nextQuestion() {
         ctx.clearRect(0, 0, rect.width, rect.height);
         if (lovePoints.length < 2) return;
 
-        // GAMBAR LOVE CURVE
+        // ========== GAMBAR LOVE CURVE (PROGRESS GOLD) ==========
+        let progressIndex = 0;
+        if (currentCheckpoint > 0) {
+            const htmlPoints = document.querySelectorAll('.car-point');
+            // FIX: pakai currentCheckpoint (bukan currentCheckpoint - 1)
+            const checkpointCoords = getPointCoordinates(htmlPoints[currentCheckpoint]);
+            progressIndex = findNearestLoveIndex(checkpointCoords.x, checkpointCoords.y);
+        }
+        
+        // Gambar garis gold untuk yang sudah dilewati (termasuk titik saat ini)
+        if (progressIndex > 0) {
+            ctx.beginPath();
+            ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
+            for (let i = 1; i <= progressIndex; i++) {
+                ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
+            }
+            ctx.strokeStyle = '#FFD700';
+            ctx.lineWidth = 4;
+            ctx.stroke();
+        }
+        
+        // Gambar garis pink untuk yang belum dilewati
         ctx.beginPath();
-        ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
-        for (let i = 1; i < lovePoints.length; i++) {
+        ctx.moveTo(lovePoints[progressIndex].x, lovePoints[progressIndex].y);
+        for (let i = progressIndex + 1; i < lovePoints.length; i++) {
             ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
         }
         ctx.closePath();
@@ -3188,7 +3240,7 @@ function nextQuestion() {
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // GAMBAR TITIK 1-6 (HTML, BEBAS LO ATUR)
+        // ========== GAMBAR TITIK 1-6 ==========
         const htmlPoints = document.querySelectorAll('.car-point');
         const container = document.getElementById('carMapContainer');
         const containerRect = container.getBoundingClientRect();
@@ -3197,6 +3249,15 @@ function nextQuestion() {
             const top = parseFloat(point.style.top);
             const x = (left / 100) * containerRect.width;
             const y = (top / 100) * containerRect.height;
+            
+            // FIX: pakai <= agar titik saat ini juga gold
+            if (i <= currentCheckpoint) {
+                ctx.beginPath();
+                ctx.arc(x, y, 16, 0, Math.PI * 2);
+                ctx.fillStyle = '#FFD700';
+                ctx.fill();
+            }
+            
             ctx.beginPath();
             ctx.arc(x, y, 14, 0, Math.PI * 2);
             ctx.fillStyle = '#D6B98C';
@@ -3210,7 +3271,7 @@ function nextQuestion() {
             ctx.fillText(i + 1, x - 5, y + 5);
         });
 
-        // GAMBAR MOBIL
+        // ========== GAMBAR MOBIL ==========
         if (carImage.complete && carImage.src) {
             ctx.save();
             ctx.translate(carX, carY);
@@ -3224,33 +3285,61 @@ function nextQuestion() {
         }
     }
 
+    // ========== START JOURNEY (CHECKPOINT LOGIC) ==========
     function startJourney(targetIdx) {
-        if (isAnimating || lovePoints.length === 0) return;
+        if (isAnimating) return;
         
-        // Reset ke titik awal LOVE curve
-        carX = lovePoints[0].x;
-        carY = lovePoints[0].y;
-        carAngle = 0;
-        currentSegment = 0;
+        targetCheckpoint = targetIdx;
+        
+        // Cari index LOVE curve untuk target
+        const htmlPoints = document.querySelectorAll('.car-point');
+        const targetCoords = getPointCoordinates(htmlPoints[targetIdx]);
+        const targetLoveIdx = findNearestLoveIndex(targetCoords.x, targetCoords.y);
+        
+        let startLoveIdx;
+        
+        // LOGIC: jika target lebih kecil dari checkpoint sekarang => reset ke awal
+        if (targetIdx < currentCheckpoint) {
+            // Reset ke titik 1
+            startLoveIdx = findNearestLoveIndex(lovePoints[0].x, lovePoints[0].y);
+            currentCheckpoint = 0;
+            carX = lovePoints[startLoveIdx].x;
+            carY = lovePoints[startLoveIdx].y;
+            carAngle = 0;
+            draw();
+        } else {
+            // Cari posisi mobil sekarang di LOVE curve
+            startLoveIdx = findNearestLoveIndex(carX, carY);
+        }
+        
+        // Kalau target sudah dicapai, buka modal langsung
+        if (targetLoveIdx <= startLoveIdx && targetIdx === currentCheckpoint) {
+            openDetail(targetIdx);
+            return;
+        }
+        
+        currentSegment = startLoveIdx;
+        currentTargetIndex = targetLoveIdx;
         animProgress = 0;
-        draw();
-
         isAnimating = true;
+        
         const loading = document.getElementById('carLoading');
         if (loading) loading.classList.add('show');
         
-        // Simpan target index untuk nanti berhenti di titik tersebut
         window._targetIdx = targetIdx;
         animate();
     }
 
+    // ========== ANIMATE (BERHENTI TEPAT DI TARGET) ==========
     function animate() {
         if (!isAnimating) return;
         
-        if (currentSegment >= lovePoints.length - 2) {
+        if (currentSegment >= currentTargetIndex) {
             isAnimating = false;
             document.getElementById('carLoading')?.classList.remove('show');
-            // Buka modal titik yang diklik
+            // FIX: setelah sampai, set checkpoint ke target (bukan target - 1)
+            currentCheckpoint = window._targetIdx;
+            draw();
             if (window._targetIdx !== undefined) {
                 openDetail(window._targetIdx);
             }
@@ -3259,13 +3348,15 @@ function nextQuestion() {
         
         const start = lovePoints[currentSegment];
         const end = lovePoints[currentSegment + 1];
-        animProgress += 0.08;
+        animProgress += 0.06;
+        
         if (animProgress >= 1) {
             animProgress = 0;
             currentSegment++;
             requestAnimationFrame(animate);
             return;
         }
+        
         const dx = end.x - start.x;
         const dy = end.y - start.y;
         carX = start.x + dx * animProgress;
@@ -3275,7 +3366,7 @@ function nextQuestion() {
         requestAnimationFrame(animate);
     }
 
-    // ========== OPEN DETAIL (MODAL) – TIDAK DIHAPUS ==========
+    // ========== OPEN DETAIL (MODAL) ==========
     function openDetail(idx) {
         const d = journeyData[idx];
         if (!d) return;
@@ -3352,7 +3443,9 @@ function nextQuestion() {
     });
 
     window.addEventListener('load', () => setTimeout(init, 300));
-})();                              
+})();                             
+    
+          
         
 // ========================
 // GALLERY JS
