@@ -3383,86 +3383,37 @@ galleries.forEach(gallery => {
 // WEDDING WISHES SYSTEM
 // ========================
 
-let wishesStore = JSON.parse(localStorage.getItem('wedding_wishes') || '[]');
 
-function escapeHtml(str) {
-    if(!str) return '';
-    return str.replace(/[&<>]/g, function(m) {
-        if(m === '&') return '&amp;';
-        if(m === '<') return '&lt;';
-        if(m === '>') return '&gt;';
-        return m;
-    });
-}
-
-function renderWishes() {
-    const wall = document.getElementById('wishesWall');
-    if(!wall) return;
-    
-    if(wishesStore.length === 0) {
-        wall.innerHTML = `<div style="text-align:center; padding: 40px; color: #aaa;">Belum ada ucapan. Jadilah yang pertama 🤍</div>`;
-        return;
-    }
-    
-    wall.innerHTML = '';
-    [...wishesStore].reverse().forEach(wish => {
-        const statusText = wish.status || 'Hadir';
-        const totalTamu = wish.total || 1;
-        
-        wall.innerHTML += `
-            <div class="wish-item">
-                <div class="wish-item-header">
-                    <span class="wish-item-name">${escapeHtml(wish.name)}</span>
-                    <span class="wish-item-status">${escapeHtml(statusText)}</span>
-                    <span class="wish-item-attendance">👥 ${totalTamu} tamu</span>
-                </div>
-                <div class="wish-item-message">
-                    💬 "${escapeHtml(wish.message)}"
-                </div>
-            </div>
-        `;
-    });
-}
-// Event listener untuk tombol submit
-const submitBtn = document.getElementById('submitWish');
-if(submitBtn) {
-    submitBtn.addEventListener('click', function() {
-        const name = document.getElementById('wishName')?.value.trim() || '';
-        const status = document.getElementById('wishStatus')?.value || '';
-        const total = document.getElementById('wishTotal')?.value || '1';
-        const message = document.getElementById('wishMessage')?.value.trim() || '';
-        
-        if(!name || !status || !message) {
-            showToast('Lengkapi data terlebih dahulu');
-            return;
-        }
-        
-        wishesStore.push({
-            name: name,
-            status: status,
-            total: total,
-            message: message,
-            date: Date.now()
-        });
-        
-        localStorage.setItem('wedding_wishes', JSON.stringify(wishesStore));
-        renderWishes();
-        showToast('Ucapan berhasil dikirim 🤍');
-        
-        // Reset form
-        document.getElementById('wishName').value = '';
-        document.getElementById('wishStatus').value = '';
-        document.getElementById('wishTotal').value = '';
-        document.getElementById('wishMessage').value = '';
-    });
-}
-
-// Render awal
-renderWishes();
 })();
 
-            
+        
 </script>
-</script>
+    <script type="module">
+
+import { initializeApp } from "https://www.gstatic.com/firebasejs/12.0.0/firebase-app.js";
+
+import {
+  getDatabase,
+  ref,
+  push,
+  onValue
+} from "https://www.gstatic.com/firebasejs/12.0.0/firebase-database.js";
+
+const firebaseConfig = {
+  apiKey: "AIzaSyDmo5eGQjDEMRjQS_wyelvxuVoWmM3iigw",
+  authDomain: "resa-delia-wedding.firebaseapp.com",
+  databaseURL: "https://resa-delia-wedding-default-rtdb.asia-southeast1.firebasedatabase.app",
+  projectId: "resa-delia-wedding",
+  storageBucket: "resa-delia-wedding.firebasestorage.app",
+  messagingSenderId: "192902314357",
+  appId: "1:192902314357:web:e51abec661d1029dc33b3c"
+};
+
+const app = initializeApp(firebaseConfig);
+const db = getDatabase(app);
+
+console.log("Firebase Connected");
+
+    </script>
 </body>
 </html>
