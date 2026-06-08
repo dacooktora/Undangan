@@ -3172,7 +3172,7 @@ function nextQuestion() {
             ctx.stroke();
         }
 
-        // Gambar titik 1-6 (PINK PENUH)
+        // Gambar titik 1-6 (FULL PINK, tanpa hitam)
 const htmlPoints = document.querySelectorAll('.car-point');
 const containerRect = document.getElementById('carMapContainer').getBoundingClientRect();
 htmlPoints.forEach((point, i) => {
@@ -3181,29 +3181,23 @@ htmlPoints.forEach((point, i) => {
     const x = (left / 100) * containerRect.width;
     const y = (top / 100) * containerRect.height;
     
-    // Lingkaran luar PINK
+    // Lingkaran FULL PINK
     ctx.beginPath();
     ctx.arc(x, y, 14, 0, Math.PI * 2);
-    ctx.fillStyle = '#FF4D6D';
+    ctx.fillStyle = '#FF4D6D'; // PINK
     ctx.fill();
     
-    // Lingkaran dalam PUTIH (biar angka keliatan)
-    ctx.beginPath();
-    ctx.arc(x, y, 8, 0, Math.PI * 2);
-    ctx.fillStyle = '#FFFFFF';
-    ctx.fill();
-    
-    // Angka (otomatis di tengah)
-    ctx.fillStyle = '#111';
+    // Angka PUTIH di tengah
+    ctx.fillStyle = '#ffffff';
     ctx.font = 'bold 14px Poppins';
-    ctx.textAlign = 'center';      // ← horizontal center
-    ctx.textBaseline = 'middle';   // ← vertical center
+    ctx.textAlign = 'center';
+    ctx.textBaseline = 'middle';
     ctx.fillText(i + 1, x, y);
-    
-    // Reset textAlign untuk elemen lain
-    ctx.textAlign = 'left';
-    ctx.textBaseline = 'alphabetic';
 });
+
+// Reset textAlign setelah selesai
+ctx.textAlign = 'left';
+ctx.textBaseline = 'alphabetic';
 
         // ========== 4. GAMBAR MOBIL ==========
         if (carImage.complete && carImage.src) {
