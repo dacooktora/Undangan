@@ -1479,7 +1479,7 @@
 
 .wishes-section {
     position: relative;
-    overflow: hidden;
+    overflow: visible;
     padding: 120px 0;
 }
 
@@ -1508,7 +1508,7 @@
     background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
     border: 1px solid rgba(255,255,255,0.08);
     backdrop-filter: blur(24px);
-    overflow: hidden;
+    overflow: visible;
     box-shadow: 0 25px 80px rgba(0,0,0,0.55), inset 0 1px 0 rgba(255,255,255,0.04);
 }
 
@@ -1614,13 +1614,15 @@
 
 .wishes-wall {
     margin-top: 50px;
-    max-height: 350px; /* kira-kira 3 komentar */
-    overflow-y: auto;
+    height: 350px;
+
+    overflow-y: scroll;
+    overflow-x: hidden;
+
     padding-right: 10px;
-    display: flex;
-    flex-direction: column;
-    gap: 12px;
-    
+
+    display: block;
+
     scrollbar-width: thin;
     scrollbar-color: #D6B98C #1A1A1A;
 }
@@ -1653,7 +1655,6 @@
     position: relative;
     overflow: hidden;
     transition: 0.3s ease;
-    flex-shrink: 0;
     min-height: 70px;
     
 }
