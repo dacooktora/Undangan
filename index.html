@@ -1640,8 +1640,8 @@
 }
 
 /* style setiap komentar di dalam scroll area */
- /* ========================
-   WEDDING WISHES - AVATAR BUBBLE + 3D TILT + GLOW
+/* ========================
+   WEDDING WISHES - ICON AVATAR + FLYING ICON + 3D TILT
 ======================== */
 
 /* style setiap komentar di dalam scroll area */
@@ -1655,6 +1655,7 @@
     transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
     will-change: transform;
     position: relative;
+    overflow: hidden;
 }
 
 /* Efek glow border berputar */
@@ -1686,7 +1687,7 @@
     box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(214,185,140,0.3);
 }
 
-/* Avatar bundar */
+/* Avatar pakai icon */
 .wish-avatar {
     flex-shrink: 0;
     width: 45px;
@@ -1696,17 +1697,20 @@
     display: flex;
     align-items: center;
     justify-content: center;
-    font-weight: 600;
-    font-size: 1.1rem;
-    color: #111;
-    text-transform: uppercase;
+    font-size: 1.5rem;
     box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease;
+    transition: all 0.3s ease;
 }
 
 .wish-item:hover .wish-avatar {
     transform: scale(1.05) translateZ(10px);
     box-shadow: 0 8px 20px rgba(214,185,140,0.4);
+    animation: bounceAvatar 0.5s ease;
+}
+
+@keyframes bounceAvatar {
+    0%, 100% { transform: scale(1); }
+    50% { transform: scale(1.1); }
 }
 
 /* konten kanan */
@@ -1743,6 +1747,40 @@
     word-break: break-word;
 }
 
+/* ========================
+   ICON TERBANG DI POJOK KANAN
+======================== */
+
+.wish-flying-icon {
+    position: absolute;
+    bottom: -40px;
+    right: 15px;
+    font-size: 1.5rem;
+    opacity: 0;
+    pointer-events: none;
+    z-index: 5;
+    animation: flyUp 2s ease-out forwards;
+}
+
+@keyframes flyUp {
+    0% {
+        bottom: -40px;
+        opacity: 0;
+        transform: rotate(0deg) scale(0.5);
+    }
+    20% {
+        opacity: 1;
+    }
+    80% {
+        opacity: 1;
+    }
+    100% {
+        bottom: 100%;
+        opacity: 0;
+        transform: rotate(20deg) scale(1.2);
+    }
+}
+
 /* Responsive layar kecil */
 @media (max-width: 550px) {
     .wish-item {
@@ -1753,7 +1791,7 @@
     .wish-avatar {
         width: 38px;
         height: 38px;
-        font-size: 0.9rem;
+        font-size: 1.2rem;
     }
     
     .wish-header {
@@ -1766,7 +1804,12 @@
         align-self: flex-end;
         margin-top: -20px;
     }
+    
+    .wish-flying-icon {
+        font-size: 1.2rem;
+        right: 10px;
     }
+}
 
 
 @media (max-width: 768px) {
@@ -3535,9 +3578,16 @@ document.getElementById("submitWish").addEventListener("click", async () => {
 
 });
 
-// ==========================
-// TAMPILKAN UCAPAN
-// ==========================
+                    // ========================
+// DAFTAR ICON BERURUTAN
+// ========================
+const avatarIcons = ['🎈', '🎊', '🌹', '👩‍❤️‍👨', '💖'];
+
+// Fungsi ambil icon berdasarkan urutan komentar
+function getIconByIndex(index) {
+    return avatarIcons[index % avatarIcons.length];
+}
+
 // ========================
 // 3D TILT EFFECT FUNCTION
 // ========================
@@ -3586,35 +3636,58 @@ onValue(wishesRef, (snapshot) => {
 
     const wishes = Object.values(data);
 
-    wishes
-        .sort((a, b) => b.createdAt - a.createdAt)
-        .forEach(item => {
+    // Urutkan dari yang terbaru ke terlama
+    wishes.sort((a, b) => b.createdAt - a.createdAt);
 
-            const date = new Date(item.createdAt);
-            const waktu = date.toLocaleDateString("id-ID", { day: "2-digit", month: "short" }) + ", " + date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) + " WIB";
-            
-            // Ambil 2 huruf awal untuk avatar
-            let avatarText = item.name.charAt(0).toUpperCase();
-            if (item.name.length > 1) avatarText += item.name.charAt(1).toUpperCase();
-            else avatarText += item.name.charAt(0).toUpperCase();
+    wishes.forEach((item, idx) => {
 
-            wall.innerHTML += `
-                <div class="wish-item">
-                    <div class="wish-avatar">${avatarText}</div>
-                    <div class="wish-content">
-                        <div class="wish-header">
-                            <span class="wish-name">${item.name}</span>
-                            <span class="wish-date">${waktu}</span>
-                        </div>
-                        <div class="wish-message">${item.message}</div>
+        const date = new Date(item.createdAt);
+        const waktu = date.toLocaleDateString("id-ID", { day: "2-digit", month: "short" }) + ", " + date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) + " WIB";
+        
+        // Ambil icon berdasarkan urutan (idx)
+        const icon = getIconByIndex(idx);
+        
+        // Random delay untuk animasi icon terbang biar gak serempak
+        const randomDelay = (Math.random() * 0.8).toFixed(2);
+
+        wall.innerHTML += `
+            <div class="wish-item" data-icon="${icon}">
+                <div class="wish-avatar">${icon}</div>
+                <div class="wish-content">
+                    <div class="wish-header">
+                        <span class="wish-name">${escapeHtml(item.name)}</span>
+                        <span class="wish-date">${waktu}</span>
                     </div>
+                    <div class="wish-message">${escapeHtml(item.message)}</div>
                 </div>
-            `;
-        });
+                <div class="wish-flying-icon" style="animation-delay: ${randomDelay}s;">${icon}</div>
+            </div>
+        `;
+    });
 
     // Panggil efek 3D tilt setelah komentar selesai dirender
     applyTiltEffect();
+    
+    // Hapus icon terbang setelah animasi selesai (biar gak numpuk)
+    setTimeout(() => {
+        document.querySelectorAll('.wish-flying-icon').forEach(el => {
+            setTimeout(() => {
+                if(el && el.remove) el.remove();
+            }, 2500);
+        });
+    }, 500);
 });
+
+// Fungsi untuk menghindari XSS
+function escapeHtml(str) {
+    if (!str) return '';
+    return str
+        .replace(/&/g, '&amp;')
+        .replace(/</g, '&lt;')
+        .replace(/>/g, '&gt;')
+        .replace(/"/g, '&quot;')
+        .replace(/'/g, '&#39;');
+}
   </script>
 </body>
 </html>
