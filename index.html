@@ -1640,99 +1640,133 @@
 }
 
 /* style setiap komentar di dalam scroll area */
+ /* ========================
+   WEDDING WISHES - AVATAR BUBBLE + 3D TILT + GLOW
+======================== */
+
 /* style setiap komentar di dalam scroll area */
 .wish-item {
     background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.01));
-    border-left: 3px solid #D6B98C;
-    border-radius: 12px;
-    padding: 14px 18px;
-    transition: 0.2s;
+    border-radius: 20px;
+    padding: 16px 18px;
+    display: flex;
+    gap: 14px;
+    transform-style: preserve-3d;
+    transition: all 0.3s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    will-change: transform;
+    position: relative;
+}
+
+/* Efek glow border berputar */
+.wish-item::before {
+    content: '';
+    position: absolute;
+    inset: -2px;
+    border-radius: 22px;
+    background: linear-gradient(135deg, #D6B98C, #8F6A35, #D6B98C, #F5E6B8);
+    background-size: 300% 300%;
+    z-index: -1;
+    opacity: 0;
+    transition: opacity 0.4s ease;
+    animation: borderGlow 3s ease infinite;
+}
+
+.wish-item:hover::before {
+    opacity: 1;
+}
+
+@keyframes borderGlow {
+    0% { background-position: 0% 50%; }
+    50% { background-position: 100% 50%; }
+    100% { background-position: 0% 50%; }
 }
 
 .wish-item:hover {
     background: rgba(255,255,255,0.08);
-    transform: translateX(4px);
+    box-shadow: 0 20px 40px rgba(0,0,0,0.4), 0 0 20px rgba(214,185,140,0.3);
 }
 
-.wish-item-header {
+/* Avatar bundar */
+.wish-avatar {
+    flex-shrink: 0;
+    width: 45px;
+    height: 45px;
+    border-radius: 50%;
+    background: linear-gradient(135deg, #D6B98C, #8F6A35);
     display: flex;
-    flex-wrap: wrap;
     align-items: center;
+    justify-content: center;
+    font-weight: 600;
+    font-size: 1.1rem;
+    color: #111;
+    text-transform: uppercase;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease;
+}
+
+.wish-item:hover .wish-avatar {
+    transform: scale(1.05) translateZ(10px);
+    box-shadow: 0 8px 20px rgba(214,185,140,0.4);
+}
+
+/* konten kanan */
+.wish-content {
+    flex: 1;
+}
+
+/* header: nama + tanggal sejajar */
+.wish-header {
+    display: flex;
+    align-items: baseline;
     justify-content: space-between;
-    gap: 10px;
-    margin-bottom: 8px;
-}
-
-.wish-left {
-    display: flex;
-    align-items: center;
     flex-wrap: wrap;
-    gap: 10px;
+    gap: 8px;
+    margin-bottom: 6px;
 }
 
-.wish-item-name {
+.wish-name {
     font-weight: 700;
     font-size: 1rem;
     color: #D6B98C;
 }
 
-.wish-item-status {
-    font-size: 0.7rem;
-    background: rgba(214,185,140,0.15);
-    padding: 2px 10px;
-    border-radius: 20px;
-    color: #D6B98C;
-    display: inline-block;
-    white-space: nowrap;
-}
-
-.wish-item-total {
-    padding: 4px 10px;
-    border-radius: 20px;
-    background: rgba(201,168,106,0.15);
-    color: #c9a86a;
-    font-size: 0.7rem;
-    font-weight: 500;
-    display: inline-block;
-    white-space: nowrap;
-}
-
 .wish-date {
-    font-size: 0.7rem;
-    color: rgba(255,255,255,0.45);
+    font-size: 0.65rem;
+    color: rgba(255,255,255,0.4);
     white-space: nowrap;
 }
 
-.wish-item-message {
+.wish-message {
     font-size: 0.85rem;
     line-height: 1.5;
     color: #EAE6DF;
-    margin-top: 8px;
     word-break: break-word;
-    padding-left: 0;
 }
 
-/* Responsive untuk layar kecil */
+/* Responsive layar kecil */
 @media (max-width: 550px) {
-    .wish-item-header {
+    .wish-item {
+        padding: 12px 14px;
+        gap: 10px;
+    }
+    
+    .wish-avatar {
+        width: 38px;
+        height: 38px;
+        font-size: 0.9rem;
+    }
+    
+    .wish-header {
         flex-direction: column;
         align-items: flex-start;
+        gap: 2px;
     }
     
     .wish-date {
         align-self: flex-end;
-        margin-top: 4px;
+        margin-top: -20px;
     }
-    
-    .wish-left {
-        flex-wrap: wrap;
     }
-    
-    .wish-item-status, .wish-item-total {
-        white-space: nowrap;
-    }
-}
-
 
 
 @media (max-width: 768px) {
@@ -3504,7 +3538,36 @@ document.getElementById("submitWish").addEventListener("click", async () => {
 // ==========================
 // TAMPILKAN UCAPAN
 // ==========================
+// ========================
+// 3D TILT EFFECT FUNCTION
+// ========================
+function applyTiltEffect() {
+    const wishItems = document.querySelectorAll('.wish-item');
+    
+    wishItems.forEach(item => {
+        item.addEventListener('mousemove', (e) => {
+            const rect = item.getBoundingClientRect();
+            const x = e.clientX - rect.left;
+            const y = e.clientY - rect.top;
+            
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
+            
+            const rotateX = ((y - centerY) / centerY) * -8;
+            const rotateY = ((x - centerX) / centerX) * 8;
+            
+            item.style.transform = `perspective(1000px) rotateX(${rotateX}deg) rotateY(${rotateY}deg) translateZ(5px)`;
+        });
+        
+        item.addEventListener('mouseleave', () => {
+            item.style.transform = 'perspective(1000px) rotateX(0deg) rotateY(0deg) translateZ(0px)';
+        });
+    });
+}
 
+// ========================
+// RENDER WISHES KE WALL
+// ========================
 onValue(wishesRef, (snapshot) => {
 
     const wall = document.getElementById("wishesWall");
@@ -3528,58 +3591,30 @@ onValue(wishesRef, (snapshot) => {
         .forEach(item => {
 
             const date = new Date(item.createdAt);
-
-            const waktu =
-                date.toLocaleDateString("id-ID", {
-                    day: "2-digit",
-                    month: "short"
-                }) +
-                ", " +
-                date.toLocaleTimeString("id-ID", {
-                    hour: "2-digit",
-                    minute: "2-digit"
-                }) +
-                " WIB";
+            const waktu = date.toLocaleDateString("id-ID", { day: "2-digit", month: "short" }) + ", " + date.toLocaleTimeString("id-ID", { hour: "2-digit", minute: "2-digit" }) + " WIB";
+            
+            // Ambil 2 huruf awal untuk avatar
+            let avatarText = item.name.charAt(0).toUpperCase();
+            if (item.name.length > 1) avatarText += item.name.charAt(1).toUpperCase();
+            else avatarText += item.name.charAt(0).toUpperCase();
 
             wall.innerHTML += `
-
                 <div class="wish-item">
-
-                    <div class="wish-item-header">
-
-                        <div class="wish-left">
-
-                            <div class="wish-item-name">
-                                ${item.name}
-                            </div>
-
-                            <div class="wish-item-status">
-                                ${item.status || "-"}
-                            </div>
-
-                            <div class="wish-item-total">
-                                ${item.total || 1} Tamu
-                            </div>
-
+                    <div class="wish-avatar">${avatarText}</div>
+                    <div class="wish-content">
+                        <div class="wish-header">
+                            <span class="wish-name">${item.name}</span>
+                            <span class="wish-date">${waktu}</span>
                         </div>
-
-                        <div class="wish-date">
-                            ${waktu}
-                        </div>
-
+                        <div class="wish-message">${item.message}</div>
                     </div>
-
-                    <div class="wish-item-message">
-                        ${item.message}
-                    </div>
-
                 </div>
-
             `;
         });
 
+    // Panggil efek 3D tilt setelah komentar selesai dirender
+    applyTiltEffect();
 });
-
   </script>
 </body>
 </html>
