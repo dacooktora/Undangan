@@ -3172,8 +3172,7 @@ function nextQuestion() {
             ctx.stroke();
         }
 
-        // ========== 3. GAMBAR TITIK 1-6 ==========
-        // Gambar titik 1-6 (PINK PENUH, tanpa gold)
+        // Gambar titik 1-6 (PINK PENUH)
 const htmlPoints = document.querySelectorAll('.car-point');
 const containerRect = document.getElementById('carMapContainer').getBoundingClientRect();
 htmlPoints.forEach((point, i) => {
@@ -3185,19 +3184,25 @@ htmlPoints.forEach((point, i) => {
     // Lingkaran luar PINK
     ctx.beginPath();
     ctx.arc(x, y, 14, 0, Math.PI * 2);
-    ctx.fillStyle = '#FF4D6D'; // PINK
+    ctx.fillStyle = '#FF4D6D';
     ctx.fill();
     
     // Lingkaran dalam PUTIH (biar angka keliatan)
     ctx.beginPath();
     ctx.arc(x, y, 8, 0, Math.PI * 2);
-    ctx.fillStyle = '#FFFFFF'; // PUTIH
+    ctx.fillStyle = '#FFFFFF';
     ctx.fill();
     
-    // Angka
+    // Angka (otomatis di tengah)
     ctx.fillStyle = '#111';
     ctx.font = 'bold 14px Poppins';
-    ctx.fillText(i + 1, x - 5, y + 5);
+    ctx.textAlign = 'center';      // ← horizontal center
+    ctx.textBaseline = 'middle';   // ← vertical center
+    ctx.fillText(i + 1, x, y);
+    
+    // Reset textAlign untuk elemen lain
+    ctx.textAlign = 'left';
+    ctx.textBaseline = 'alphabetic';
 });
 
         // ========== 4. GAMBAR MOBIL ==========
