@@ -256,7 +256,7 @@
 .event-section {
     position: relative;
     overflow: hidden;
-    padding: 120px 0;
+    padding: 100px 0;
 }
 
 /* glow background */
@@ -277,29 +277,31 @@
     z-index: 2;
     display: flex;
     flex-direction: column;
-    gap: 28px;
-    max-width: 1000px;
-    margin: 70px auto 0;
+    gap: 25px;
+    max-width: 900px;
+    margin: 50px auto 0;
 }
 
-/* card */
+/* card - FLEX DENGAN ALIGN FLEX-START */
 .event-card {
     position: relative;
     display: flex;
-    gap: 20px;
-    padding: 25px 30px;
+    gap: 18px;
+    padding: 22px 28px;
     border-radius: 28px;
     background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
     border: 1px solid rgba(255,255,255,0.08);
-    backdrop-filter: blur(24px);
+    backdrop-filter: blur(20px);
     overflow: hidden;
-    transition: transform 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
+    transition: transform 0.4s ease, border 0.4s ease, box-shadow 0.4s ease;
+    /* AGAR KONTEN RATA KIRI */
+    align-items: flex-start;
 }
 
 .event-card:hover {
-    transform: translateY(-6px) scale(1.01);
+    transform: translateY(-5px) scale(1.01);
     border: 1px solid rgba(255,255,255,0.16);
-    box-shadow: 0 25px 50px rgba(0,0,0,0.45);
+    box-shadow: 0 20px 45px rgba(0,0,0,0.4);
 }
 
 .event-card::before {
@@ -312,39 +314,40 @@
     right: -100px;
 }
 
-/* icon - ukuran 35px, di kiri atas */
+/* icon - ukuran 30px, di kiri atas */
 .event-icon {
-    width: 10px;
-    height: 10px;
+    width: 30px;
+    height: 30px;
     background: linear-gradient(135deg, #D6B98C, #8C6A58);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1rem;
+    font-size: 0.8rem;
     color: #111;
-    box-shadow: 0 0 12px rgba(214,185,140,0.4);
+    box-shadow: 0 0 10px rgba(214,185,140,0.4);
     flex-shrink: 0;
     transition: 0.3s ease;
-    margin-top: 4px;
+    margin-top: 2px;
 }
 
 .event-card:hover .event-icon {
-    transform: scale(1.08);
-    box-shadow: 0 0 20px rgba(214,185,140,0.6);
+    transform: scale(1.05);
+    box-shadow: 0 0 18px rgba(214,185,140,0.6);
 }
 
-/* content - mengambil sisa ruang */
+/* content - mengambil sisa ruang, teks rata kiri */
 .event-content {
     flex: 1;
+    text-align: left;
 }
 
-/* title - di samping icon */
+/* title */
 .event-type {
     font-family: 'Playfair Display', serif;
-    font-size: 1.4rem;
+    font-size: 1.3rem;
     color: #D6B98C;
-    margin-bottom: 12px;
+    margin-bottom: 10px;
     line-height: 1.3;
 }
 
@@ -356,14 +359,15 @@
     margin-bottom: 12px;
 }
 
-/* setiap baris detail - rata kiri */
+/* setiap baris detail - RATA KIRI */
 .event-detail-item {
     display: flex;
     align-items: center;
     gap: 8px;
-    font-size: 0.8rem;
+    font-size: 0.78rem;
     color: rgba(255,255,255,0.7);
     text-align: left;
+    justify-content: flex-start;
 }
 
 .event-detail-item i {
@@ -375,7 +379,7 @@
 
 /* map button */
 .event-map-btn {
-    padding: 5px 16px;
+    padding: 5px 14px;
     border-radius: 50px;
     border: 1px solid rgba(214,185,140,0.5);
     background: transparent;
@@ -397,23 +401,23 @@
 /* ========== MOBILE (HP) ========== */
 @media (max-width: 768px) {
     .event-section {
-        padding: 80px 0;
+        padding: 70px 0;
     }
     
     .event-card {
-        padding: 18px 22px;
-        gap: 15px;
+        padding: 18px 20px;
+        gap: 14px;
     }
     
     .event-icon {
-        width: 30px;
-        height: 30px;
-        font-size: 0.85rem;
-        margin-top: 2px;
+        width: 26px;
+        height: 26px;
+        font-size: 0.7rem;
+        margin-top: 1px;
     }
     
     .event-type {
-        font-size: 1.2rem;
+        font-size: 1.1rem;
         margin-bottom: 8px;
     }
     
@@ -423,7 +427,7 @@
     }
     
     .event-detail-item {
-        font-size: 0.7rem;
+        font-size: 0.68rem;
         gap: 6px;
     }
     
@@ -434,25 +438,25 @@
     
     .event-map-btn {
         padding: 4px 12px;
-        font-size: 0.65rem;
+        font-size: 0.6rem;
     }
 }
 
 /* ========== TABLET ========== */
 @media (min-width: 769px) and (max-width: 1024px) {
     .event-card {
-        padding: 22px 28px;
-        gap: 18px;
+        padding: 20px 25px;
+        gap: 16px;
     }
     
     .event-icon {
-        width: 32px;
-        height: 32px;
-        font-size: 0.9rem;
+        width: 28px;
+        height: 28px;
+        font-size: 0.75rem;
     }
     
     .event-type {
-        font-size: 1.3rem;
+        font-size: 1.2rem;
     }
 }
     
