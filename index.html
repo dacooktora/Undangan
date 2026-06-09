@@ -252,7 +252,32 @@
         /* =========================
    WEDDING EVENT SECTION
 ========================= */
+/* Wedding Event - Stagger cards (muncul satu per satu) */
+.event-section {
+    opacity: 0;
+    transition: opacity 0.8s ease;
+}
+.event-section.revealed {
+    opacity: 1;
+}
 
+/* Setiap card disembunyikan dulu */
+.event-card {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.6s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+/* Saat section muncul, card muncul satu per satu */
+.event-section.revealed .event-card {
+    opacity: 1;
+    transform: translateX(0);
+}
+
+/* Delay bertahap */
+.event-section.revealed .event-card:nth-child(1) { transition-delay: 0.2s; }
+.event-section.revealed .event-card:nth-child(2) { transition-delay: 0.5s; }
+.event-section.revealed .event-card:nth-child(3) { transition-delay: 0.8s; }
 .event-section {
     position: relative;
     overflow: hidden;
@@ -2171,14 +2196,14 @@
                 min-width: 65px;
             }
         }
-/* ========================= */
+
+        /* ========================= */
 /* SCROLL REVEAL ANIMATIONS */
 /* ========================= */
 
 /* Default semua section disembunyikan dulu */
 .section,
 .hero,
-.event-section,
 .countdown-section,
 .journey-car-section,
 .futuristic-gallery-section,
@@ -2192,7 +2217,6 @@
 /* Saat muncul (saat discroll) */
 .section.revealed,
 .hero.revealed,
-.event-section.revealed,
 .countdown-section.revealed,
 .journey-car-section.revealed,
 .futuristic-gallery-section.revealed,
@@ -2202,7 +2226,7 @@
     opacity: 1;
 }
 
-/* Hero */
+/* Hero - Scale */
 .hero {
     transform: scale(0.97);
 }
@@ -2210,15 +2234,31 @@
     transform: scale(1);
 }
 
-/* Wedding Event */
+/* ========== WEDDING EVENT - STAGGER CARDS ========== */
 .event-section {
-    transform: translateX(-40px);
+    opacity: 0;
+    transition: opacity 0.8s ease;
 }
 .event-section.revealed {
+    opacity: 1;
+}
+
+.event-card {
+    opacity: 0;
+    transform: translateX(-50px);
+    transition: all 0.6s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.event-section.revealed .event-card {
+    opacity: 1;
     transform: translateX(0);
 }
 
-/* Countdown */
+.event-section.revealed .event-card:nth-child(1) { transition-delay: 0.1s; }
+.event-section.revealed .event-card:nth-child(2) { transition-delay: 0.3s; }
+.event-section.revealed .event-card:nth-child(3) { transition-delay: 0.5s; }
+
+/* Countdown - Slide from right */
 .countdown-section {
     transform: translateX(40px);
 }
@@ -2226,7 +2266,7 @@
     transform: translateX(0);
 }
 
-/* Journey Map */
+/* Journey Map - Scale */
 .journey-car-section {
     transform: scale(0.97);
 }
@@ -2234,7 +2274,7 @@
     transform: scale(1);
 }
 
-/* Prewedding Gallery */
+/* Prewedding Gallery - Fade in */
 .futuristic-gallery-section {
     opacity: 0;
     transition: opacity 2s ease;
@@ -2243,7 +2283,7 @@
     opacity: 1;
 }
 
-/* Wedding Wishes */
+/* Wedding Wishes - Slide from bottom */
 .wishes-section {
     transform: translateY(40px);
 }
@@ -2251,22 +2291,21 @@
     transform: translateY(0);
 }
 
-/* Amplop Digital */
+/* Amplop Digital - Slide from top */
 .gift-section {
-    transform: scale(0.97);
+    transform: translateY(-40px);
 }
 .gift-section.revealed {
-    transform: scale(1);
+    transform: translateY(0);
 }
 
-/* Doorprize */
+/* Doorprize - Slide from bottom */
 .doorprize-section {
-    transform: scale(0.97);
+    transform: translateY(40px);
 }
 .doorprize-section.revealed {
-    transform: scale(1);
+    transform: translateY(0);
 }
-
     
     </style>
 </head>
