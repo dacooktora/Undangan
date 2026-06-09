@@ -3168,89 +3168,80 @@ function nextQuestion() {
 
         // FIX 1: index terakhir adalah 5 (karena total 6 titik, index 0-5)
         const isComplete = (currentCheckpoint >= totalPoints - 1);
-
-        if (isComplete) {
+if (isComplete) {
     // SEMBUNYIKAN ANGKA HTML
     document.querySelectorAll('.car-point').forEach(p => {
         p.style.display = 'none';
     });
     
-    // ===== LOVE PENUH PINK SOLID (DIPERBESAR) =====
+    // ===== HITUNG BOUNDING BOX LOVE =====
+    const xs = lovePoints.map(p => p.x);
+    const ys = lovePoints.map(p => p.y);
+    const minX = Math.min(...xs);
+    const maxX = Math.max(...xs);
+    const minY = Math.min(...ys);
+    const maxY = Math.max(...ys);
+    const heartWidth = maxX - minX;
+    const heartHeight = maxY - minY;
+    const centerX = (minX + maxX) / 2;
+    const centerY = (minY + maxY) / 2;
+    
+    // ===== 1. LOVE PINK + BORDER (scale 1.2) =====
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.scale(1.2, 1.2);
+    ctx.translate(-centerX, -centerY);
+    
     ctx.beginPath();
     ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
     for (let i = 1; i < lovePoints.length; i++) {
         ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
     }
     ctx.closePath();
-    
-    // Perbesar LOVE dengan scale 1.15 (15% lebih besar)
-    const centerX = rect.width / 2;
-    const centerY = rect.height / 2;
-    ctx.translate(centerX, centerY);
-    ctx.scale(1.15, 1.15);
-    ctx.translate(-centerX, -centerY);
-    
     ctx.fillStyle = '#FF4D6D';
     ctx.fill();
     ctx.strokeStyle = '#D6336C';
-    ctx.lineWidth = 3;
+    ctx.lineWidth = 4;  // border tebal 4px
     ctx.stroke();
-    
-    // Reset transform setelah LOVE digambar
-    ctx.setTransform(1, 0, 0, 1, 0, 0);
-    ctx.scale(dpr, dpr);
-    
-    // ===== FOTO BENTUK LOVE (90% dari ukuran LOVE) =====
-    // Simpan state canvas
-    ctx.save();
-    
-    // Buat clipping path berbentuk LOVE (lebih kecil 10% dari LOVE utama)
-    ctx.beginPath();
-    ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
-    for (let i = 1; i < lovePoints.length; i++) {
-        ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
-    }
-    ctx.closePath();
-    
-    // Perkecil 10% (jadi 90% dari ukuran LOVE)
-    ctx.translate(centerX, centerY);
-    ctx.scale(0.9, 0.9);
-    ctx.translate(-centerX, -centerY);
-    
-    ctx.clip(); // Gunakan LOVE path sebagai clipping mask
-    
-    // Gambar foto di dalam clipping mask LOVE
-    if (couplePhoto.complete && couplePhoto.src) {
-        // Hitung ukuran foto agar menutupi area LOVE
-        const imgWidth = lovePoints[lovePoints.length-1].x - lovePoints[0].x;
-        const imgHeight = lovePoints[lovePoints.length-1].y - lovePoints[0].y;
-        ctx.drawImage(couplePhoto, 
-            centerX - imgWidth/2, 
-            centerY - imgHeight/2, 
-            imgWidth, 
-            imgHeight
-        );
-    }
-    
-    // Restore canvas (hapus clipping)
     ctx.restore();
     
-    // Garis tepi LOVE (supaya keliatan setelah foto)
+    // ===== 2. FOTO BERBENTUK LOVE (scale 1.1 = 91.6% dari heart besar) =====
+    ctx.save();
+    ctx.translate(centerX, centerY);
+    ctx.scale(1.1, 1.1);
+    ctx.translate(-centerX, -centerY);
+    
     ctx.beginPath();
     ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
     for (let i = 1; i < lovePoints.length; i++) {
         ctx.lineTo(lovePoints[i].x, lovePoints[i].y);
     }
     ctx.closePath();
-    ctx.strokeStyle = '#D6336C';
-    ctx.lineWidth = 3;
-    ctx.stroke();
+    ctx.clip();
     
-    // Tampilkan tombol reset
-    const resetWrapper = document.getElementById('resetJourneyBtn');
+    if (couplePhoto.complete && couplePhoto.src) {
+        ctx.drawImage(couplePhoto, minX, minY, heartWidth, heartHeight);
+    } else {
+        couplePhoto.onload = () => drawEverything();
+    }
+    ctx.restore();
+    
+    // ===== 3. SEMBUNYIKAN MOBIL =====
+    carX = -9999;
+    carY = -9999;
+    
+    // ===== 4. TAMPILKAN TOMBOL RESET =====
+    const resetWrapper = document.getElementById('resetJourneyWrapper');
     if (resetWrapper) resetWrapper.style.display = 'block';
+    
     return;
-        }
+}
+        
+    
+
+    
+    
+        
         
         // BELUM SELESAI
         const resetWrapper = document.getElementById('resetJourneyWrapper');
