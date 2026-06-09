@@ -286,18 +286,18 @@
 .event-card {
     position: relative;
     display: flex;
-    align-items: center;
-    gap: 40px;
-    padding: 40px;
+    align-items: flex-start;
+    gap: 25px;
+    padding: 30px 35px;
     border-radius: 38px;
     background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
     border: 1px solid rgba(255,255,255,0.08);
     backdrop-filter: blur(24px);
     overflow: hidden;
-    transition: transform .5s ease, border .5s ease, box-shadow .5s ease;
+    transition: transform 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
 }
 
-/* hover */
+/* hover card */
 .event-card:hover {
     transform: translateY(-8px) scale(1.01);
     border: 1px solid rgba(255,255,255,0.16);
@@ -315,89 +315,97 @@
     right: -120px;
 }
 
-/* ========== ICON (TAMBAHAN BARU) ========== */
+/* icon - lebih kecil */
 .event-icon {
-    width: 70px;
-    height: 70px;
+    width: 55px;
+    height: 55px;
     background: linear-gradient(135deg, #D6B98C, #8C6A58);
     border-radius: 50%;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 1.8rem;
+    font-size: 1.4rem;
     color: #111;
-    box-shadow: 0 0 20px rgba(214,185,140,0.4);
+    box-shadow: 0 0 15px rgba(214,185,140,0.4);
     flex-shrink: 0;
     transition: 0.3s ease;
 }
 
 .event-card:hover .event-icon {
-    transform: scale(1.1);
-    box-shadow: 0 0 30px rgba(214,185,140,0.6);
+    transform: scale(1.08);
+    box-shadow: 0 0 25px rgba(214,185,140,0.6);
 }
 
 /* content */
 .event-content {
-    position: relative;
-    z-index: 2;
     flex: 1;
 }
 
-/* type */
+/* title di samping icon */
 .event-type {
     font-family: 'Playfair Display', serif;
-    font-size: 2rem;
-    color: #f5f1eb;
-    margin-bottom: 12px;
+    font-size: 1.6rem;
+    color: #D6B98C;
+    margin-bottom: 15px;
 }
 
-/* date */
-.event-time {
-    letter-spacing: 3px;
-    text-transform: uppercase;
-    font-size: .75rem;
-    color: rgba(255,255,255,0.45);
+/* detail wrapper - jarak rapat */
+.event-details {
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
     margin-bottom: 18px;
 }
 
-/* clock */
-.event-clock {
-    font-size: 1.1rem;
-    color: #f5f1eb;
-    margin-bottom: 12px;
+/* setiap baris detail */
+.event-detail-item {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    font-size: 0.9rem;
+    color: rgba(255,255,255,0.7);
 }
 
-/* location */
-.event-location {
-    color: rgba(255,255,255,0.65);
-    line-height: 1.7;
+.event-detail-item i {
+    width: 22px;
+    color: #D6B98C;
+    font-size: 0.9rem;
+    text-align: center;
 }
 
 /* map button */
 .event-map-btn {
-    margin-top: 24px;
-    padding: 14px 28px;
+    padding: 8px 20px;
     border-radius: 50px;
-    border: 1px solid rgba(255,255,255,0.12);
-    background: rgba(255,255,255,0.04);
-    color: #f5f1eb;
+    border: 1px solid rgba(214,185,140,0.5);
+    background: transparent;
+    color: #D6B98C;
     cursor: pointer;
-    transition: .3s ease;
-    backdrop-filter: blur(10px);
+    transition: 0.3s;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    font-size: 0.8rem;
 }
 
 .event-map-btn:hover {
-    background: rgba(255,255,255,0.08);
-    transform: translateY(-3px);
+    background: rgba(214,185,140,0.15);
+    transform: translateY(-2px);
+    border-color: #D6B98C;
 }
 
-/* MOBILE */
+/* MOBILE RESPONSIVE */
 @media (max-width: 768px) {
+    .event-section {
+        padding: 90px 0;
+    }
+    
     .event-card {
         flex-direction: column;
-        align-items: flex-start;
-        gap: 20px;
-        padding: 30px;
+        align-items: center;
+        text-align: center;
+        padding: 25px 20px;
+        gap: 15px;
     }
     
     .event-icon {
@@ -407,13 +415,38 @@
     }
     
     .event-type {
-        font-size: 1.7rem;
+        font-size: 1.4rem;
+        text-align: center;
     }
     
-    .event-section {
-        padding: 90px 0;
+    .event-detail-item {
+        justify-content: center;
+    }
+    
+    .event-details {
+        align-items: center;
     }
 }
+
+/* TABLET */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .event-card {
+        padding: 30px;
+        gap: 20px;
+    }
+    
+    .event-icon {
+        width: 50px;
+        height: 50px;
+        font-size: 1.3rem;
+    }
+    
+    .event-type {
+        font-size: 1.4rem;
+    }
+}
+
+
 
     
         /* countdown minimal */
@@ -2101,55 +2134,83 @@
 
         <div class="event-wrapper">
 
-            <!-- AKAD -->
-            <div class="event-card">
-                <div class="event-icon">
-                    <i class="fas fa-ring"></i>
+    <!-- AKAD -->
+    <div class="event-card">
+        <div class="event-icon">
+            <i class="fas fa-ring"></i>
+        </div>
+        <div class="event-content">
+            <div class="event-type">Akad Nikah</div>
+            <div class="event-details">
+                <div class="event-detail-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Minggu, 12 Juli 2026</span>
                 </div>
-                <div class="event-content">
-                    <div class="event-type">Akad Nikah</div>
-                    <div class="event-time">Minggu, 12 Juli 2026</div>
-                    <div class="event-clock">09.00 WIB</div>
-                    <div class="event-location">Bumi Kitri — Bandung</div>
-                    <button class="event-map-btn" onclick="openMapModal()">
-                        <i class="fas fa-location-dot"></i> Open Maps
-                    </button>
+                <div class="event-detail-item">
+                    <i class="fas fa-clock"></i>
+                    <span>09.00 WIB</span>
+                </div>
+                <div class="event-detail-item">
+                    <i class="fas fa-location-dot"></i>
+                    <span>Bumi Kitri — Bandung</span>
                 </div>
             </div>
+            
+        </div>
+    </div>
 
-            <!-- RESEPSI -->
-            <div class="event-card">
-                <div class="event-icon">
-                    <i class="fas fa-champagne-glasses"></i>
+    <!-- RESEPSI -->
+    <div class="event-card">
+        <div class="event-icon">
+            <i class="fas fa-champagne-glasses"></i>
+        </div>
+        <div class="event-content">
+            <div class="event-type">Resepsi</div>
+            <div class="event-details">
+                <div class="event-detail-item">
+                    <i class="fas fa-calendar-alt"></i>
+                    <span>Minggu, 12 Juli 2026</span>
                 </div>
-                <div class="event-content">
-                    <div class="event-type">Resepsi</div>
-                    <div class="event-time">Minggu, 12 Juli 2026</div>
-                    <div class="event-clock">11.00 WIB</div>
-                    <div class="event-location">Bumi Kitri — Bandung</div>
-                    <button class="event-map-btn" onclick="openMapModal()">
-                        <i class="fas fa-location-dot"></i> Open Maps
-                    </button>
+                <div class="event-detail-item">
+                    <i class="fas fa-clock"></i>
+                    <span>11.00 WIB</span>
+                </div>
+                <div class="event-detail-item">
+                    <i class="fas fa-location-dot"></i>
+                    <span>Bumi Kitri — Bandung</span>
                 </div>
             </div>
+            
+        </div>
+    </div>
 
-            <!-- LOKASI -->
-            <div class="event-card">
-                <div class="event-icon">
-                    <i class="fas fa-map-marker-alt"></i>
+    <!-- LOKASI -->
+    <div class="event-card">
+        <div class="event-icon">
+            <i class="fas fa-map-marker-alt"></i>
+        </div>
+        <div class="event-content">
+            <div class="event-type">Lokasi Acara</div>
+            <div class="event-details">
+                <div class="event-detail-item">
+                    <i class="fas fa-location-dot"></i>
+                    <span>Bandung, Indonesia</span>
                 </div>
-                <div class="event-content">
-                    <div class="event-type">Lokasi Acara</div>
-                    <div class="event-time">Bandung, Indonesia</div>
-                    <div class="event-location">Jl. Cikutra No.276A, Neglasari, Kec. Cibeunying Kaler, Kota Bandung.</div>
-                    <button class="event-map-btn" onclick="openMapModal()">
-                        <i class="fas fa-location-dot"></i> Open Maps
-                    </button>
+                <div class="event-detail-item">
+                    <i class="fas fa-address-card"></i>
+                    <span>Jl. Cikutra No.276A, Neglasari, Kec. Cibeunying Kaler, Kota Bandung.</span>
                 </div>
             </div>
+            <button class="event-map-btn" onclick="openMapModal()">
+                <i class="fas fa-external-link-alt"></i> Open Maps
+            </button>
+        </div>
+    </div>
 
         </div>
 
+
+        
     </div>
 
 </section>
