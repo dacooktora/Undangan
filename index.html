@@ -2188,7 +2188,7 @@
 .doorprize-section {
     opacity: 0;
     visibility: hidden;
-    transition: all 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+    transition: all 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
 }
 
 /* Saat muncul (saat discroll) */
@@ -2237,15 +2237,35 @@
     transform: scale(1) rotate(0deg);
 }
 
-/* Prewedding Gallery - Blur to clear */
+/* Prewedding Gallery - Stagger Cards (muncul satu per satu) */
 .futuristic-gallery-section {
-    filter: blur(8px);
-    transform: scale(0.95);
+    opacity: 0;
+    transition: opacity 0.8s ease;
 }
 .futuristic-gallery-section.revealed {
-    filter: blur(0);
-    transform: scale(1);
+    opacity: 1;
 }
+
+.gallery-item {
+    opacity: 0;
+    transform: translateY(40px);
+    transition: all 0.6s cubic-bezier(0.2, 0.8, 0.3, 1);
+}
+
+.futuristic-gallery-section.revealed .gallery-item {
+    opacity: 1;
+    transform: translateY(0);
+}
+
+/* Delay bertahap */
+.futuristic-gallery-section.revealed .gallery-item:nth-child(1) { transition-delay: 0.05s; }
+.futuristic-gallery-section.revealed .gallery-item:nth-child(2) { transition-delay: 0.1s; }
+.futuristic-gallery-section.revealed .gallery-item:nth-child(3) { transition-delay: 0.15s; }
+.futuristic-gallery-section.revealed .gallery-item:nth-child(4) { transition-delay: 0.2s; }
+.futuristic-gallery-section.revealed .gallery-item:nth-child(5) { transition-delay: 0.25s; }
+.futuristic-gallery-section.revealed .gallery-item:nth-child(6) { transition-delay: 0.3s; }
+.futuristic-gallery-section.revealed .gallery-item:nth-child(7) { transition-delay: 0.35s; }
+.futuristic-gallery-section.revealed .gallery-item:nth-child(8) { transition-delay: 0.4s; }
 
 /* Wedding Wishes - Slide from bottom */
 .wishes-section {
@@ -2255,18 +2275,17 @@
     transform: translateY(0);
 }
 
-/* Amplop Digital - Flip Y */
+/* Amplop Digital - Scale pelan */
 .gift-section {
-    transform: rotateY(15deg);
-    transform-origin: center;
+    transform: scale(0.92);
 }
 .gift-section.revealed {
-    transform: rotateY(0deg);
+    transform: scale(1);
 }
 
-/* Doorprize - Bounce + fade */
+/* Doorprize - Scale + fade */
 .doorprize-section {
-    transform: scale(0.9);
+    transform: scale(0.95);
 }
 .doorprize-section.revealed {
     transform: scale(1);
