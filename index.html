@@ -2171,6 +2171,106 @@
                 min-width: 65px;
             }
         }
+
+        /* ========================= */
+/* SCROLL REVEAL ANIMATIONS */
+/* ========================= */
+
+/* Default semua section disembunyikan dulu */
+.section,
+.hero,
+.event-section,
+.countdown-section,
+.journey-car-section,
+.futuristic-gallery-section,
+.wishes-section,
+.gift-section,
+.doorprize-section {
+    opacity: 0;
+    visibility: hidden;
+    transition: all 0.8s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+/* Saat muncul (saat discroll) */
+.section.revealed,
+.hero.revealed,
+.event-section.revealed,
+.countdown-section.revealed,
+.journey-car-section.revealed,
+.futuristic-gallery-section.revealed,
+.wishes-section.revealed,
+.gift-section.revealed,
+.doorprize-section.revealed {
+    opacity: 1;
+    visibility: visible;
+}
+
+/* Hero - Fade in + scale */
+.hero {
+    transform: scale(0.95);
+}
+.hero.revealed {
+    transform: scale(1);
+}
+
+/* Wedding Event - Slide from left */
+.event-section {
+    transform: translateX(-50px);
+}
+.event-section.revealed {
+    transform: translateX(0);
+}
+
+/* Countdown - Slide from right */
+.countdown-section {
+    transform: translateX(50px);
+}
+.countdown-section.revealed {
+    transform: translateX(0);
+}
+
+/* Journey Map - Scale up + subtle rotate */
+.journey-car-section {
+    transform: scale(0.9) rotate(-1deg);
+}
+.journey-car-section.revealed {
+    transform: scale(1) rotate(0deg);
+}
+
+/* Prewedding Gallery - Blur to clear */
+.futuristic-gallery-section {
+    filter: blur(8px);
+    transform: scale(0.95);
+}
+.futuristic-gallery-section.revealed {
+    filter: blur(0);
+    transform: scale(1);
+}
+
+/* Wedding Wishes - Slide from bottom */
+.wishes-section {
+    transform: translateY(50px);
+}
+.wishes-section.revealed {
+    transform: translateY(0);
+}
+
+/* Amplop Digital - Flip Y */
+.gift-section {
+    transform: rotateY(15deg);
+    transform-origin: center;
+}
+.gift-section.revealed {
+    transform: rotateY(0deg);
+}
+
+/* Doorprize - Bounce + fade */
+.doorprize-section {
+    transform: scale(0.9);
+}
+.doorprize-section.revealed {
+    transform: scale(1);
+}
     </style>
 </head>
 <body>
@@ -3713,7 +3813,40 @@ galleries.forEach(gallery => {
 
 })();
 
-        
+        // =========================
+// SCROLL REVEAL ANIMATION
+// =========================
+
+const sections = [
+    '.hero',
+    '.event-section',
+    '.countdown-section',
+    '.journey-car-section',
+    '.futuristic-gallery-section',
+    '.wishes-section',
+    '.gift-section',
+    '.doorprize-section'
+];
+
+const observerOptions = {
+    threshold: 0.2,
+    rootMargin: '0px 0px -50px 0px'
+};
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+        }
+    });
+}, observerOptions);
+
+sections.forEach(selector => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(el => {
+        revealObserver.observe(el);
+    });
+});
 </script>
 
   <script type="module">
