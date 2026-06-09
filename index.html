@@ -2336,9 +2336,7 @@
 <!-- ======================================== -->
 <section class="journey-car-section">
     <!-- Button Reset (muncul setelah LOVE penuh) -->
-<div id="resetJourneyBtn" style="text-align: center; margin-top: 30px; display: none;">
-    <button class="journey-reset-btn" id="resetJourneyButton">⟳ Jelajahi Kembali</button>
-</div>
+
     <div class="car-bg-glow"></div>
     <div class="container">
         <div class="section-header">
@@ -2375,6 +2373,9 @@
         <div class="car-loading" id="carLoading">
             <div class="loading-text">🚗 Mobil sedang berjalan menuju kenangan...</div>
         </div>
+    </div>
+    <div id="resetJourneyWrapper" style="text-align: center; margin-top: 30px; display: none;">
+    <button id="resetJourneyBtn" class="journey-reset-btn">⟳ Jelajahi Kembali</button>
     </div>
 </section>
 
@@ -3116,7 +3117,7 @@ function nextQuestion() {
     carImage.src = 'mobilwd.png';
     
     let couplePhoto = new Image();
-    couplePhoto.src = 'couple.png';
+    couplePhoto.src = 'couple.jpg';
 
     function generateLoveCurve(width, height) {
         const points = [];
@@ -3529,11 +3530,12 @@ if (isComplete) {
         carAngle = 0;
     }
     
-    const resetWrapper = document.getElementById('resetJourneyBtn');
+    const resetWrapper = document.getElementById('resetJourneyWrapper');
     if (resetWrapper) resetWrapper.style.display = 'none';
     
     drawEverything();
     }
+    
     
     document.getElementById('closeModalBtn')?.addEventListener('click', () => {
         const vid = document.getElementById('modalVideo');
