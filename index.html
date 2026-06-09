@@ -423,7 +423,7 @@
     right: -20px;
     width: 90px;
     height: 90px;
-    animation: pulseGlow 2.5s ease-in-out infinite;
+    animation: animation: slowSpin 12s linear infinite;
 }
 
 /* Bawah Kanan - DIAM, DIPERBESAR (keluar card) */
@@ -435,13 +435,13 @@
     animation: none;
 }
 
-/* Animasi goyang untuk atas kanan */
-@keyframes pulseGlow {
-    0% { opacity: 0.6; transform: scale(1); }
-    50% { opacity: 1; transform: scale(1.08); filter: drop-shadow(0 0 5px #D6B98C); }
-    100% { opacity: 0.6; transform: scale(1); }
+@keyframes slowSpin {
+    0% { transform: rotate(0deg); }
+    100% { transform: rotate(360deg); }
 }
 
+
+    
     
 
 /* Hover card: semua corner jadi lebih terang */
