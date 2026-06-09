@@ -3811,7 +3811,7 @@ galleries.forEach(gallery => {
 })();
 
         // =========================
-// SCROLL REVEAL ANIMATION
+// SCROLL REVEAL ANIMATION (ULANG TERUS)
 // =========================
 
 const sections = [
@@ -3833,7 +3833,11 @@ const observerOptions = {
 const revealObserver = new IntersectionObserver((entries) => {
     entries.forEach(entry => {
         if (entry.isIntersecting) {
+            // Tambah class revealed saat masuk
             entry.target.classList.add('revealed');
+        } else {
+            // HAPUS class revealed saat keluar (biar animasi bisa jalan lagi)
+            entry.target.classList.remove('revealed');
         }
     });
 }, observerOptions);
