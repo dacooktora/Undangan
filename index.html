@@ -423,7 +423,7 @@
     right: -20px;
     width: 90px;
     height: 90px;
-    animation: animation: slowSpin 12s linear infinite;
+    animation: gentleFade 3s ease-in-out infinite;
 }
 
 /* Bawah Kanan - DIAM, DIPERBESAR (keluar card) */
@@ -435,12 +435,11 @@
     animation: none;
 }
 
-@keyframes slowSpin {
-    0% { transform: rotate(0deg); }
-    100% { transform: rotate(360deg); }
+@keyframes gentleFade {
+    0% { opacity: 0.4; }
+    50% { opacity: 1; }
+    100% { opacity: 0.4; }
 }
-
-
     
     
 
