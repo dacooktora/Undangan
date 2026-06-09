@@ -282,12 +282,12 @@
     margin: 70px auto 0;
 }
 
-/* card */
+/* card - DESKTOP: icon di samping kiri, teks di kanan */
 .event-card {
     position: relative;
     display: flex;
-    align-items: flex-start;
-    gap: 25px;
+    align-items: center;
+    gap: 30px;
     padding: 30px 35px;
     border-radius: 38px;
     background: linear-gradient(145deg, rgba(255,255,255,0.05), rgba(255,255,255,0.015));
@@ -297,14 +297,12 @@
     transition: transform 0.5s ease, border 0.5s ease, box-shadow 0.5s ease;
 }
 
-/* hover card */
 .event-card:hover {
     transform: translateY(-8px) scale(1.01);
     border: 1px solid rgba(255,255,255,0.16);
     box-shadow: 0 25px 60px rgba(0,0,0,0.45);
 }
 
-/* top glow */
 .event-card::before {
     content: '';
     position: absolute;
@@ -315,7 +313,7 @@
     right: -120px;
 }
 
-/* icon - lebih kecil */
+/* icon */
 .event-icon {
     width: 55px;
     height: 55px;
@@ -336,46 +334,46 @@
     box-shadow: 0 0 25px rgba(214,185,140,0.6);
 }
 
-/* content */
+/* content - mengambil sisa ruang */
 .event-content {
     flex: 1;
 }
 
-/* title di samping icon */
+/* title */
 .event-type {
     font-family: 'Playfair Display', serif;
     font-size: 1.6rem;
     color: #D6B98C;
-    margin-bottom: 15px;
+    margin-bottom: 12px;
 }
 
 /* detail wrapper - jarak rapat */
 .event-details {
     display: flex;
     flex-direction: column;
-    gap: 8px;
-    margin-bottom: 18px;
+    gap: 6px;
+    margin-bottom: 15px;
 }
 
 /* setiap baris detail */
 .event-detail-item {
     display: flex;
     align-items: center;
-    gap: 12px;
-    font-size: 0.9rem;
+    gap: 10px;
+    font-size: 0.85rem;
     color: rgba(255,255,255,0.7);
 }
 
 .event-detail-item i {
-    width: 22px;
+    width: 20px;
     color: #D6B98C;
-    font-size: 0.9rem;
+    font-size: 0.8rem;
     text-align: center;
 }
 
 /* map button */
 .event-map-btn {
-    padding: 8px 20px;
+    padding: 6px 18px;
     border-radius: 50px;
     border: 1px solid rgba(214,185,140,0.5);
     background: transparent;
@@ -384,8 +382,8 @@
     transition: 0.3s;
     display: inline-flex;
     align-items: center;
-    gap: 8px;
-    font-size: 0.8rem;
+    gap: 6px;
+    font-size: 0.75rem;
 }
 
 .event-map-btn:hover {
@@ -394,48 +392,60 @@
     border-color: #D6B98C;
 }
 
-/* MOBILE RESPONSIVE */
+/* ========== MOBILE (HP) ========== */
 @media (max-width: 768px) {
     .event-section {
-        padding: 90px 0;
+        padding: 80px 0;
     }
     
     .event-card {
-        flex-direction: column;
+        flex-direction: row;
         align-items: center;
-        text-align: center;
-        padding: 25px 20px;
-        gap: 15px;
-    }
-    
-    .event-icon {
-        width: 50px;
-        height: 50px;
-        font-size: 1.3rem;
-    }
-    
-    .event-type {
-        font-size: 1.4rem;
-        text-align: center;
-    }
-    
-    .event-detail-item {
-        justify-content: center;
-    }
-    
-    .event-details {
-        align-items: center;
-    }
-}
-
-/* TABLET */
-@media (min-width: 769px) and (max-width: 1024px) {
-    .event-card {
-        padding: 30px;
+        text-align: left;
+        padding: 20px 25px;
         gap: 20px;
     }
     
     .event-icon {
+        width: 45px;
+        height: 45px;
+        font-size: 1.2rem;
+    }
+    
+    .event-type {
+        font-size: 1.3rem;
+        margin-bottom: 8px;
+    }
+    
+    .event-details {
+        gap: 4px;
+        margin-bottom: 10px;
+    }
+    
+    .event-detail-item {
+        font-size: 0.75rem;
+        gap: 8px;
+    }
+    
+    .event-detail-item i {
+        width: 18px;
+        font-size: 0.7rem;
+    }
+    
+    .event-map-btn {
+        padding: 5px 14px;
+        font-size: 0.7rem;
+    }
+}
+
+/* ========== TABLET ========== */
+@media (min-width: 769px) and (max-width: 1024px) {
+    .event-card {
+        padding: 25px 30px;
+        gap: 25px;
+    }
+    
+    .event-icon {
         width: 50px;
         height: 50px;
         font-size: 1.3rem;
@@ -446,6 +456,7 @@
     }
 }
 
+                    
 
 
     
@@ -2193,11 +2204,11 @@
             <div class="event-type">Lokasi Acara</div>
             <div class="event-details">
                 <div class="event-detail-item">
-                    <i class="fas fa-location-dot"></i>
+                
                     <span>Bandung, Indonesia</span>
                 </div>
                 <div class="event-detail-item">
-                    <i class="fas fa-address-card"></i>
+                    <i class="fas fa-location-dot"></i>
                     <span>Jl. Cikutra No.276A, Neglasari, Kec. Cibeunying Kaler, Kota Bandung.</span>
                 </div>
             </div>
