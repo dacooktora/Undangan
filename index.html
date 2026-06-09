@@ -423,7 +423,7 @@
     right: -20px;
     width: 90px;
     height: 90px;
-    animation: gentleFade 3s ease-in-out infinite;
+    animation: softWaveGlow 4s ease-in-out infinite;
 }
 
 /* Bawah Kanan - DIAM, DIPERBESAR (keluar card) */
@@ -435,12 +435,33 @@
     animation: none;
 }
 
-@keyframes gentleFade {
-    0% { opacity: 0.4; }
-    50% { opacity: 1; }
-    100% { opacity: 0.4; }
+@keyframes softWaveGlow {
+    0% {
+        transform: translateY(0px) translateX(0px);
+        filter: drop-shadow(0 0 2px rgba(214,185,140,0.3));
+        opacity: 0.7;
+    }
+    25% {
+        transform: translateY(-6px) translateX(4px);
+        filter: drop-shadow(0 0 8px rgba(214,185,140,0.6));
+        opacity: 0.9;
+    }
+    50% {
+        transform: translateY(2px) translateX(-2px);
+        filter: drop-shadow(0 0 12px rgba(214,185,140,0.8));
+        opacity: 1;
+    }
+    75% {
+        transform: translateY(-3px) translateX(3px);
+        filter: drop-shadow(0 0 6px rgba(214,185,140,0.5));
+        opacity: 0.85;
+    }
+    100% {
+        transform: translateY(0px) translateX(0px);
+        filter: drop-shadow(0 0 2px rgba(214,185,140,0.3));
+        opacity: 0.7;
+    }
 }
-    
     
 
 /* Hover card: semua corner jadi lebih terang */
