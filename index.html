@@ -401,82 +401,73 @@
         /* ========== CORNER ELEMENTS ========== */
 .corner {
     position: absolute;
-    width: 50px;
-    height: 50px;
     object-fit: contain;
     pointer-events: none;
     z-index: 1;
-    opacity: 0.7;
     transition: all 0.3s ease;
 }
 
-/* Posisi sudut */
+/* Bawah Kiri - DIAM, DIPERBESAR (keluar card) */
 .corner-bottom-left {
-    bottom: 10px;
-    left: 10px;
+    bottom: 0px;
+    left: 0px;
+    width: 130px;
+    height: 130px;
+    animation: none;
 }
 
+/* Atas Kanan - GOYANG */
 .corner-top-right {
-    top: 10px;
-    right: 10px;
-}
-
-.corner-bottom-right {
-    bottom: 10px;
-    right: 10px;
-}
-
-/* Animasi floating */
-@keyframes floatCorner {
-    0% { transform: translateY(0px) translateX(0px); }
-    50% { transform: translateY(-5px) translateX(3px); }
-    100% { transform: translateY(0px) translateX(0px); }
-}
-
-@keyframes floatCornerRight {
-    0% { transform: translateY(0px) translateX(0px); }
-    50% { transform: translateY(-5px) translateX(-3px); }
-    100% { transform: translateY(0px) translateX(0px); }
-}
-
-.corner-bottom-left {
+    top: -20px;
+    right: -20px;
+    width: 90px;
+    height: 90px;
     animation: floatCorner 3s ease-in-out infinite;
 }
 
-.corner-top-right {
-    animation: floatCornerRight 3.5s ease-in-out infinite;
-}
-
+/* Bawah Kanan - DIAM, DIPERBESAR (keluar card) */
 .corner-bottom-right {
-    animation: floatCorner 4s ease-in-out infinite;
+    bottom: 0px;
+    right: 0px;
+    width: 130px;
+    height: 130px;
+    animation: none;
 }
 
-/* Hover card: corner jadi lebih terang */
+/* Animasi goyang untuk atas kanan */
+@keyframes floatCorner {
+    0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+    50% { transform: translateY(-8px) translateX(5px) rotate(5deg); }
+    100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+}
+
+/* Hover card: semua corner jadi lebih terang */
 .event-card:hover .corner {
     opacity: 1;
-    transform: scale(1.05);
+    filter: brightness(1.1);
 }
 
-/* MOBILE: ukuran corner lebih kecil */
+/* MOBILE: ukuran corner disesuaikan */
 @media (max-width: 768px) {
-    .corner {
-        width: 35px;
-        height: 35px;
-    }
-    
     .corner-bottom-left {
-        bottom: 5px;
-        left: 5px;
+        width: 130px;
+        height: 130px;
+        bottom: 0px;
+        left: 0px;
     }
     
     .corner-top-right {
-        top: 5px;
-        right: 5px;
+        width: 75px;
+        height: 75px;
+        top: -15px;
+        right: -15px;
     }
     
     .corner-bottom-right {
-        bottom: 5px;
-        right: 5px;
+        width: 130px;
+        height: 130px;
+        bottom: 0px;
+        right: 0px;
     }
 }
 
@@ -2259,9 +2250,9 @@
 
     <!-- RESEPSI (CARD 2) -->
     <div class="event-card">
-        <img src="bawahkiri2.png" class="corner corner-bottom-left" alt="">
+        <img src="bawahkiri.png" class="corner corner-bottom-left" alt="">
         <img src="ataskanan2.png" class="corner corner-top-right" alt="">
-        <img src="bawahkanan2.png" class="corner corner-bottom-right" alt="">
+        <img src="bawahkanan.png" class="corner corner-bottom-right" alt="">
         
         <div class="event-icon">
             <i class="fas fa-champagne-glasses"></i>
@@ -2288,9 +2279,9 @@
 
     <!-- LOKASI (CARD 3) -->
     <div class="event-card">
-        <img src="bawahkiri3.png" class="corner corner-bottom-left" alt="">
+        <img src="bawahkiri.png" class="corner corner-bottom-left" alt="">
         <img src="ataskanan3.png" class="corner corner-top-right" alt="">
-        <img src="bawahkanan3.png" class="corner corner-bottom-right" alt="">
+        <img src="bawahkanan.png" class="corner corner-bottom-right" alt="">
         
         <div class="event-icon">
             <i class="fas fa-map-marker-alt"></i>
