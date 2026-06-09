@@ -3094,8 +3094,8 @@ function nextQuestion() {
         // ========================================
 // JOURNEY MAP LOVE + MOBIL 3D
 // ========================================
-  // ========================================
-// JOURNEY MAP – COMPLETE (LOVE + RESET)
+// ========================================
+// JOURNEY MAP – LOVE PENUH + FOTO + RESET (FINAL FIX)
 // ========================================
 (function() {
     let canvas, ctx;
@@ -3109,13 +3109,14 @@ function nextQuestion() {
     let journeyData = [];
     let dpr = window.devicePixelRatio || 1;
     
-    let currentCheckpoint = 0; // 0-6 (0=belum ke mana-mana, 6=sudah semua)
+    let currentCheckpoint = -1; // mulai dari -1 (belum ada titik yang dikunjungi)
+    let totalPoints = 6;
     
     let carImage = new Image();
     carImage.src = 'mobilwd.png';
     
     let couplePhoto = new Image();
-    couplePhoto.src = 'couple.png'; // GANTI dengan foto kalian (bisa juga pakai foto prewedding kecil)
+    couplePhoto.src = 'couple.png';
 
     function generateLoveCurve(width, height) {
         const points = [];
@@ -3125,10 +3126,7 @@ function nextQuestion() {
         for (let t = 0; t < Math.PI * 2; t += 0.03) {
             const xRaw = 16 * Math.pow(Math.sin(t), 3);
             const yRaw = 13 * Math.cos(t) - 5 * Math.cos(2*t) - 2 * Math.cos(3*t) - Math.cos(4*t);
-            points.push({
-                x: offsetX + xRaw * scale,
-                y: offsetY - yRaw * scale
-            });
+            points.push({ x: offsetX + xRaw * scale, y: offsetY - yRaw * scale });
         }
         return points;
     }
@@ -3168,11 +3166,11 @@ function nextQuestion() {
         ctx.clearRect(0, 0, rect.width, rect.height);
         if (lovePoints.length < 2) return;
 
-        // CEK APAKAH SEMUA TITIK SUDAH DIJELAJAHI (checkpoint == 6)
-        const isComplete = (currentCheckpoint >= 6);
+        // FIX 1: index terakhir adalah 5 (karena total 6 titik, index 0-5)
+        const isComplete = (currentCheckpoint >= totalPoints - 1);
 
         if (isComplete) {
-            // ========== LOVE PENUH PINK (SOLID) ==========
+            // LOVE PENUH PINK SOLID
             ctx.beginPath();
             ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
             for (let i = 1; i < lovePoints.length; i++) {
@@ -3182,17 +3180,14 @@ function nextQuestion() {
             ctx.fillStyle = '#FF4D6D';
             ctx.fill();
             
-            // Garis tepi LOVE
             ctx.strokeStyle = '#D6336C';
             ctx.lineWidth = 3;
             ctx.stroke();
             
-            // ========== FOTO KECIL DI TENGAH LOVE ==========
-            const centerIdx = Math.floor(lovePoints.length / 2);
-            const centerX = lovePoints[centerIdx].x;
-            const centerY = lovePoints[centerIdx].y;
+            // FIX 2: Pusat LOVE pakai tengah canvas (lebih presisi)
+            const centerX = rect.width / 2;
+            const centerY = rect.height / 2;
             
-            // Lingkaran putih di tengah
             ctx.beginPath();
             ctx.arc(centerX, centerY, 32, 0, Math.PI * 2);
             ctx.fillStyle = '#ffffff';
@@ -3201,7 +3196,6 @@ function nextQuestion() {
             ctx.lineWidth = 2;
             ctx.stroke();
             
-            // Gambar foto (jika sudah load)
             if (couplePhoto.complete && couplePhoto.src) {
                 ctx.save();
                 ctx.beginPath();
@@ -3209,32 +3203,25 @@ function nextQuestion() {
                 ctx.clip();
                 ctx.drawImage(couplePhoto, centerX - 28, centerY - 28, 56, 56);
                 ctx.restore();
-            } else {
-                couplePhoto.onload = () => drawEverything();
             }
             
-            // Tampilkan tombol reset
-            const resetBtn = document.getElementById('resetJourneyBtn');
-            if (resetBtn) resetBtn.style.display = 'block';
-            
-            // Jangan gambar elemen lain
+            const resetWrapper = document.getElementById('resetJourneyWrapper');
+            if (resetWrapper) resetWrapper.style.display = 'block';
             return;
         }
         
-        // ========== BELUM SELESAI (Tampilkan LOVE biasa) ==========
-        // Sembunyikan tombol reset
-        const resetBtn = document.getElementById('resetJourneyBtn');
-        if (resetBtn) resetBtn.style.display = 'none';
+        // BELUM SELESAI
+        const resetWrapper = document.getElementById('resetJourneyWrapper');
+        if (resetWrapper) resetWrapper.style.display = 'none';
         
-        // Cari index progress (garis yang udah dilewati)
         let progressIndex = 0;
-        if (currentCheckpoint > 0) {
+        if (currentCheckpoint >= 0) {
             const htmlPoints = document.querySelectorAll('.car-point');
             const coords = getPointCoordinates(htmlPoints[currentCheckpoint]);
             progressIndex = findNearestLoveIndex(coords.x, coords.y);
         }
         
-        // Gambar garis MERAH untuk yang sudah dilewati
+        // Garis MERAH yang sudah dilewati
         if (progressIndex > 0) {
             ctx.beginPath();
             ctx.moveTo(lovePoints[0].x, lovePoints[0].y);
@@ -3246,7 +3233,7 @@ function nextQuestion() {
             ctx.stroke();
         }
         
-        // Gambar garis PINK untuk yang belum dilewati
+        // Garis PINK yang belum dilewati
         ctx.beginPath();
         ctx.moveTo(lovePoints[progressIndex].x, lovePoints[progressIndex].y);
         for (let i = progressIndex + 1; i < lovePoints.length; i++) {
@@ -3256,7 +3243,7 @@ function nextQuestion() {
         ctx.lineWidth = 3;
         ctx.stroke();
 
-        // Gambar titik 1-6 (FULL PINK + angka putih di tengah)
+        // Titik 1-6 FULL PINK + angka putih
         const htmlPoints = document.querySelectorAll('.car-point');
         const containerRect = document.getElementById('carMapContainer').getBoundingClientRect();
         htmlPoints.forEach((point, i) => {
@@ -3280,7 +3267,7 @@ function nextQuestion() {
         ctx.textAlign = 'left';
         ctx.textBaseline = 'alphabetic';
 
-        // Gambar mobil
+        // Gambar mobil (hanya jika belum complete)
         if (carImage.complete && carImage.src) {
             ctx.save();
             ctx.translate(carX, carY);
@@ -3316,6 +3303,8 @@ function nextQuestion() {
         }
 
         const htmlPoints = document.querySelectorAll('.car-point');
+        totalPoints = htmlPoints.length;
+        
         htmlPoints.forEach((point, i) => {
             journeyData[i] = {
                 title: point.dataset.title,
@@ -3327,8 +3316,12 @@ function nextQuestion() {
                 img2: point.dataset.img2,
                 img3: point.dataset.img3
             };
+            
+            // FIX 3: Tidak bisa loncat titik
             point.addEventListener('click', () => {
-                if (!isAnimating) startJourney(i);
+                if (isAnimating) return;
+                if (i > currentCheckpoint + 1) return; // tidak bisa loncat
+                startJourney(i);
             });
         });
 
@@ -3356,7 +3349,7 @@ function nextQuestion() {
         
         if (targetIdx < currentCheckpoint) {
             startLoveIdx = findNearestLoveIndex(lovePoints[0].x, lovePoints[0].y);
-            currentCheckpoint = 0;
+            currentCheckpoint = -1;
             carX = lovePoints[startLoveIdx].x;
             carY = lovePoints[startLoveIdx].y;
             carAngle = 0;
@@ -3387,9 +3380,18 @@ function nextQuestion() {
         if (currentSegment >= currentTargetIndex) {
             isAnimating = false;
             document.getElementById('carLoading')?.classList.remove('show');
+            
+            // UPDATE CHECKPOINT
             currentCheckpoint = window._targetIdx;
+            
+            // REDRAW LOVE
             drawEverything();
-            openDetail(window._targetIdx);
+            
+            // FIX 4: Delay cinematic sebelum modal terbuka
+            setTimeout(() => {
+                openDetail(window._targetIdx);
+            }, 500);
+            
             return;
         }
         
@@ -3478,7 +3480,7 @@ function nextQuestion() {
     function resetJourney() {
         if (isAnimating) return;
         
-        currentCheckpoint = 0;
+        currentCheckpoint = -1;
         currentTargetIndex = 0;
         currentSegment = 0;
         animProgress = 0;
@@ -3489,8 +3491,8 @@ function nextQuestion() {
             carAngle = 0;
         }
         
-        const resetBtn = document.getElementById('resetJourneyBtn');
-        if (resetBtn) resetBtn.style.display = 'none';
+        const resetWrapper = document.getElementById('resetJourneyWrapper');
+        if (resetWrapper) resetWrapper.style.display = 'none';
         
         drawEverything();
     }
@@ -3509,7 +3511,7 @@ function nextQuestion() {
         }
     });
 
-    document.getElementById('resetJourneyButton')?.addEventListener('click', resetJourney);
+    document.getElementById('resetJourneyBtn')?.addEventListener('click', resetJourney);
 
     window.addEventListener('load', () => setTimeout(init, 300));
 })();                                              
