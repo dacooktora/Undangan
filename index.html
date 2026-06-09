@@ -398,6 +398,88 @@
     border-color: #D6B98C;
 }
 
+        /* ========== CORNER ELEMENTS ========== */
+.corner {
+    position: absolute;
+    width: 50px;
+    height: 50px;
+    object-fit: contain;
+    pointer-events: none;
+    z-index: 1;
+    opacity: 0.7;
+    transition: all 0.3s ease;
+}
+
+/* Posisi sudut */
+.corner-bottom-left {
+    bottom: 10px;
+    left: 10px;
+}
+
+.corner-top-right {
+    top: 10px;
+    right: 10px;
+}
+
+.corner-bottom-right {
+    bottom: 10px;
+    right: 10px;
+}
+
+/* Animasi floating */
+@keyframes floatCorner {
+    0% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-5px) translateX(3px); }
+    100% { transform: translateY(0px) translateX(0px); }
+}
+
+@keyframes floatCornerRight {
+    0% { transform: translateY(0px) translateX(0px); }
+    50% { transform: translateY(-5px) translateX(-3px); }
+    100% { transform: translateY(0px) translateX(0px); }
+}
+
+.corner-bottom-left {
+    animation: floatCorner 3s ease-in-out infinite;
+}
+
+.corner-top-right {
+    animation: floatCornerRight 3.5s ease-in-out infinite;
+}
+
+.corner-bottom-right {
+    animation: floatCorner 4s ease-in-out infinite;
+}
+
+/* Hover card: corner jadi lebih terang */
+.event-card:hover .corner {
+    opacity: 1;
+    transform: scale(1.05);
+}
+
+/* MOBILE: ukuran corner lebih kecil */
+@media (max-width: 768px) {
+    .corner {
+        width: 35px;
+        height: 35px;
+    }
+    
+    .corner-bottom-left {
+        bottom: 5px;
+        left: 5px;
+    }
+    
+    .corner-top-right {
+        top: 5px;
+        right: 5px;
+    }
+    
+    .corner-bottom-right {
+        bottom: 5px;
+        right: 5px;
+    }
+}
+
 /* ========== MOBILE (HP) ========== */
 @media (max-width: 768px) {
     .event-section {
@@ -2143,10 +2225,15 @@
             </h2>
         </div>
 
-        <div class="event-wrapper">
+         <div class="event-wrapper">
 
-    <!-- AKAD -->
+    <!-- AKAD (CARD 1) -->
     <div class="event-card">
+        <!-- Sudut-sudut -->
+        <img src="bawahkiri.png" class="corner corner-bottom-left" alt="">
+        <img src="ataskanan.png" class="corner corner-top-right" alt="">
+        <img src="bawahkanan.png" class="corner corner-bottom-right" alt="">
+        
         <div class="event-icon">
             <i class="fas fa-ring"></i>
         </div>
@@ -2170,8 +2257,12 @@
         </div>
     </div>
 
-    <!-- RESEPSI -->
+    <!-- RESEPSI (CARD 2) -->
     <div class="event-card">
+        <img src="bawahkiri2.png" class="corner corner-bottom-left" alt="">
+        <img src="ataskanan2.png" class="corner corner-top-right" alt="">
+        <img src="bawahkanan2.png" class="corner corner-bottom-right" alt="">
+        
         <div class="event-icon">
             <i class="fas fa-champagne-glasses"></i>
         </div>
@@ -2195,8 +2286,12 @@
         </div>
     </div>
 
-    <!-- LOKASI -->
+    <!-- LOKASI (CARD 3) -->
     <div class="event-card">
+        <img src="bawahkiri3.png" class="corner corner-bottom-left" alt="">
+        <img src="ataskanan3.png" class="corner corner-top-right" alt="">
+        <img src="bawahkanan3.png" class="corner corner-bottom-right" alt="">
+        
         <div class="event-icon">
             <i class="fas fa-map-marker-alt"></i>
         </div>
@@ -2204,7 +2299,7 @@
             <div class="event-type">Lokasi Acara</div>
             <div class="event-details">
                 <div class="event-detail-item">
-                
+                    
                     <span>Bandung, Indonesia</span>
                 </div>
                 <div class="event-detail-item">
@@ -2218,7 +2313,7 @@
         </div>
     </div>
 
-        </div>
+         </div>
 
 
         
