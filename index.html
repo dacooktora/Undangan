@@ -305,24 +305,39 @@
 
 /* card */
 .event-card {
+
     position: relative;
+
     display: flex;
+
     align-items: center;
+
     gap: 40px;
+
     padding: 40px;
+
     border-radius: 38px;
-    background: linear-gradient(145deg, rgba(30,30,30,0.85), rgba(15,15,15,0.75));
-    border: 1px solid rgba(214,185,140,0.2);
-    backdrop-filter: blur(20px);
+
+    background:
+        linear-gradient(
+            145deg,
+            rgba(255,255,255,0.05),
+            rgba(255,255,255,0.015)
+        );
+
+    border:
+        1px solid rgba(255,255,255,0.08);
+
+    backdrop-filter: blur(24px);
+
     overflow: hidden;
-    transition: transform .5s ease, border .5s ease, box-shadow .5s ease;
-    
-    /* TAMBAHKAN INI UNTUK BACKGROUND GAMBAR */
-    background-image: url('event1.png');
-    background-size: cover;
-    background-position: center;
-    background-repeat: no-repeat;
+
+    transition:
+        transform .5s ease,
+        border .5s ease,
+        box-shadow .5s ease;
 }
+
 
 /* hover */
 .event-card:hover {
