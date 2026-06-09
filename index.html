@@ -2171,11 +2171,101 @@
                 min-width: 65px;
             }
         }
-
-        /* ========================= */
+/* ========================= */
 /* SCROLL REVEAL ANIMATIONS */
 /* ========================= */
 
+/* Default semua section disembunyikan dulu */
+.section,
+.hero,
+.event-section,
+.countdown-section,
+.journey-car-section,
+.futuristic-gallery-section,
+.wishes-section,
+.gift-section,
+.doorprize-section {
+    opacity: 0;
+    transition: all 2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
+}
+
+/* Saat muncul (saat discroll) */
+.section.revealed,
+.hero.revealed,
+.event-section.revealed,
+.countdown-section.revealed,
+.journey-car-section.revealed,
+.futuristic-gallery-section.revealed,
+.wishes-section.revealed,
+.gift-section.revealed,
+.doorprize-section.revealed {
+    opacity: 1;
+}
+
+/* Hero */
+.hero {
+    transform: scale(0.97);
+}
+.hero.revealed {
+    transform: scale(1);
+}
+
+/* Wedding Event */
+.event-section {
+    transform: translateX(-40px);
+}
+.event-section.revealed {
+    transform: translateX(0);
+}
+
+/* Countdown */
+.countdown-section {
+    transform: translateX(40px);
+}
+.countdown-section.revealed {
+    transform: translateX(0);
+}
+
+/* Journey Map */
+.journey-car-section {
+    transform: scale(0.97);
+}
+.journey-car-section.revealed {
+    transform: scale(1);
+}
+
+/* Prewedding Gallery */
+.futuristic-gallery-section {
+    opacity: 0;
+    transition: opacity 2s ease;
+}
+.futuristic-gallery-section.revealed {
+    opacity: 1;
+}
+
+/* Wedding Wishes */
+.wishes-section {
+    transform: translateY(40px);
+}
+.wishes-section.revealed {
+    transform: translateY(0);
+}
+
+/* Amplop Digital */
+.gift-section {
+    transform: scale(0.97);
+}
+.gift-section.revealed {
+    transform: scale(1);
+}
+
+/* Doorprize */
+.doorprize-section {
+    transform: scale(0.97);
+}
+.doorprize-section.revealed {
+    transform: scale(1);
+}
 
     
     </style>
@@ -3720,7 +3810,40 @@ galleries.forEach(gallery => {
 
 })();
 
-        
+        // =========================
+// SCROLL REVEAL ANIMATION
+// =========================
+
+const sections = [
+    '.hero',
+    '.event-section',
+    '.countdown-section',
+    '.journey-car-section',
+    '.futuristic-gallery-section',
+    '.wishes-section',
+    '.gift-section',
+    '.doorprize-section'
+];
+
+const observerOptions = {
+    threshold: 0.15,
+    rootMargin: '0px 0px -30px 0px'
+};
+
+const revealObserver = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+        if (entry.isIntersecting) {
+            entry.target.classList.add('revealed');
+        }
+    });
+}, observerOptions);
+
+sections.forEach(selector => {
+    const elements = document.querySelectorAll(selector);
+    elements.forEach(el => {
+        revealObserver.observe(el);
+    });
+});
 </script>
 
   <script type="module">
