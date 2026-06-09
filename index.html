@@ -423,7 +423,7 @@
     right: -20px;
     width: 90px;
     height: 90px;
-    animation: floatCorner 3s ease-in-out infinite;
+    animation: pulseGlow 2.5s ease-in-out infinite;
 }
 
 /* Bawah Kanan - DIAM, DIPERBESAR (keluar card) */
@@ -436,11 +436,13 @@
 }
 
 /* Animasi goyang untuk atas kanan */
-@keyframes floatCorner {
-    0% { transform: translateY(0px) translateX(0px) rotate(0deg); }
-    50% { transform: translateY(-8px) translateX(5px) rotate(5deg); }
-    100% { transform: translateY(0px) translateX(0px) rotate(0deg); }
+@keyframes pulseGlow {
+    0% { opacity: 0.6; transform: scale(1); }
+    50% { opacity: 1; transform: scale(1.08); filter: drop-shadow(0 0 5px #D6B98C); }
+    100% { opacity: 0.6; transform: scale(1); }
 }
+
+    
 
 /* Hover card: semua corner jadi lebih terang */
 .event-card:hover .corner {
