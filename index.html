@@ -2176,120 +2176,8 @@
 /* SCROLL REVEAL ANIMATIONS */
 /* ========================= */
 
-/* Default semua section disembunyikan dulu */
-.section,
-.hero,
-.event-section,
-.countdown-section,
-.journey-car-section,
-.futuristic-gallery-section,
-.wishes-section,
-.gift-section,
-.doorprize-section {
-    opacity: 0;
-    visibility: hidden;
-    transition: all 1.2s cubic-bezier(0.2, 0.9, 0.4, 1.1);
-}
 
-/* Saat muncul (saat discroll) */
-.section.revealed,
-.hero.revealed,
-.event-section.revealed,
-.countdown-section.revealed,
-.journey-car-section.revealed,
-.futuristic-gallery-section.revealed,
-.wishes-section.revealed,
-.gift-section.revealed,
-.doorprize-section.revealed {
-    opacity: 1;
-    visibility: visible;
-}
-
-/* Hero - Fade in + scale */
-.hero {
-    transform: scale(0.95);
-}
-.hero.revealed {
-    transform: scale(1);
-}
-
-/* Wedding Event - Slide from left */
-.event-section {
-    transform: translateX(-50px);
-}
-.event-section.revealed {
-    transform: translateX(0);
-}
-
-/* Countdown - Slide from right */
-.countdown-section {
-    transform: translateX(50px);
-}
-.countdown-section.revealed {
-    transform: translateX(0);
-}
-
-/* Journey Map - Scale up + subtle rotate */
-.journey-car-section {
-    transform: scale(0.9) rotate(-1deg);
-}
-.journey-car-section.revealed {
-    transform: scale(1) rotate(0deg);
-}
-
-/* Prewedding Gallery - Stagger Cards (muncul satu per satu) */
-.futuristic-gallery-section {
-    opacity: 0;
-    transition: opacity 0.8s ease;
-}
-.futuristic-gallery-section.revealed {
-    opacity: 1;
-}
-
-.gallery-item {
-    opacity: 0;
-    transform: translateY(40px);
-    transition: all 0.6s cubic-bezier(0.2, 0.8, 0.3, 1);
-}
-
-.futuristic-gallery-section.revealed .gallery-item {
-    opacity: 1;
-    transform: translateY(0);
-}
-
-/* Delay bertahap */
-.futuristic-gallery-section.revealed .gallery-item:nth-child(1) { transition-delay: 0.05s; }
-.futuristic-gallery-section.revealed .gallery-item:nth-child(2) { transition-delay: 0.1s; }
-.futuristic-gallery-section.revealed .gallery-item:nth-child(3) { transition-delay: 0.15s; }
-.futuristic-gallery-section.revealed .gallery-item:nth-child(4) { transition-delay: 0.2s; }
-.futuristic-gallery-section.revealed .gallery-item:nth-child(5) { transition-delay: 0.25s; }
-.futuristic-gallery-section.revealed .gallery-item:nth-child(6) { transition-delay: 0.3s; }
-.futuristic-gallery-section.revealed .gallery-item:nth-child(7) { transition-delay: 0.35s; }
-.futuristic-gallery-section.revealed .gallery-item:nth-child(8) { transition-delay: 0.4s; }
-
-/* Wedding Wishes - Slide from bottom */
-.wishes-section {
-    transform: translateY(50px);
-}
-.wishes-section.revealed {
-    transform: translateY(0);
-}
-
-/* Amplop Digital - Scale pelan */
-.gift-section {
-    transform: scale(0.92);
-}
-.gift-section.revealed {
-    transform: scale(1);
-}
-
-/* Doorprize - Scale + fade */
-.doorprize-section {
-    transform: scale(0.95);
-}
-.doorprize-section.revealed {
-    transform: scale(1);
-}
+    
     </style>
 </head>
 <body>
@@ -3832,40 +3720,7 @@ galleries.forEach(gallery => {
 
 })();
 
-        // =========================
-// SCROLL REVEAL ANIMATION
-// =========================
-
-const sections = [
-    '.hero',
-    '.event-section',
-    '.countdown-section',
-    '.journey-car-section',
-    '.futuristic-gallery-section',
-    '.wishes-section',
-    '.gift-section',
-    '.doorprize-section'
-];
-
-const observerOptions = {
-    threshold: 0.2,
-    rootMargin: '0px 0px -50px 0px'
-};
-
-const revealObserver = new IntersectionObserver((entries) => {
-    entries.forEach(entry => {
-        if (entry.isIntersecting) {
-            entry.target.classList.add('revealed');
-        }
-    });
-}, observerOptions);
-
-sections.forEach(selector => {
-    const elements = document.querySelectorAll(selector);
-    elements.forEach(el => {
-        revealObserver.observe(el);
-    });
-});
+        
 </script>
 
   <script type="module">
