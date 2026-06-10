@@ -630,6 +630,11 @@
     overflow: hidden;
 
     padding: 120px 0;
+    background-image: url('pohon2.png'); /* GANTI NAMA FILE */
+    background-size: cover;
+    background-position: center;
+    background-attachment: fixed; /* efek parallax */
+    background-repeat: no-repeat;
 }
 
 /* ambient background glow */
@@ -2195,45 +2200,8 @@
             }
         }
 /* ========== POHON DEKORASI ========== */
-.deco-tree {
-    position: absolute;
-    width: 120px;
-    height: auto;
-    opacity: 0.7;
-    pointer-events: none;
-    z-index: 1;
-}
 
-/* Event Section - Bawah */
-.tree-bottom-left {
-    bottom: 10px;
-    left: 10px;
-}
-
-.tree-bottom-right {
-    bottom: 10px;
-    right: 10px;
-    transform: scaleX(-1); /* biar menghadap ke kiri */
-}
-
-/* Countdown Section - Atas */
-.tree-top-left {
-    top: 10px;
-    left: 10px;
-}
-
-.tree-top-right {
-    top: 10px;
-    right: 10px;
-    transform: scaleX(-1);
-}
-
-/* Responsive HP - perkecil ukuran pohon */
-@media (max-width: 768px) {
-    .deco-tree {
-        width: 70px;
-    }
-}
+        
         /* ========================= */
 /* SCROLL REVEAL ANIMATIONS */
 /* ========================= */
@@ -2505,10 +2473,6 @@
 
         
     </div>
-    <!-- Pohon bawah kiri -->
-<img src="pohon2.png" class="deco-tree tree-bottom-left" alt="">
-<!-- Pohon bawah kanan -->
-<img src="pohon.jpg" class="deco-tree tree-bottom-right" alt="">
 
 </section>
 
@@ -2516,10 +2480,6 @@
 
 <!-- Countdown -->
 <section class="section countdown-section">
-    <!-- Pohon atas kiri -->
-<img src="pohon2.png" class="deco-tree tree-top-left" alt="">
-<!-- Pohon atas kanan -->
-<img src="pohon.jpg" class="deco-tree tree-top-right" alt="">
 
     <div class="countdown-bg-glow"></div>
 
